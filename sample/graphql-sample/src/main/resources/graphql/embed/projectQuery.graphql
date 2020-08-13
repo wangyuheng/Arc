@@ -1,0 +1,13 @@
+{
+    projects {
+        id
+        name
+        description
+        createTime
+        milestones(status:NOT_STARTED) {
+            name
+            description
+            status
+        }
+    }
+}

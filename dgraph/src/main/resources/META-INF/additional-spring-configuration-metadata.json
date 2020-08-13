@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "arc.dgraph.urls",
+      "type": "java.util.List",
+      "description": "dgraph host:port."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+<dgraph>
+    <var id="common">
+        id
+        name
+    </var>
+    <query id="testQuery">
+        query testQuery($a: string) {
+            testQuery(func: eq(name, $a)) {
+                $common
+            }
+        }
+    </query>
+</dgraph>

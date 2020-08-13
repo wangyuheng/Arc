@@ -1,0 +1,34 @@
+graphql.playground:
+  mapping: /playground
+  endpoint: /graphql
+  enabled: true
+  pageTitle: DgraphExample
+  cdn:
+    enabled: false
+  settings:
+    editor.cursorShape: line
+    editor.fontFamily: "'Source Code Pro', 'Consolas', 'Inconsolata', 'Droid Sans Mono', 'Monaco', monospace"
+    editor.fontSize: 14
+    editor.reuseHeaders: true
+    editor.theme: dark
+    prettier.printWidth: 80
+    prettier.tabWidth: 2
+    prettier.useTabs: false
+    request.credentials: omit
+    schema.polling.enable: false
+    schema.polling.interval: 20000
+    schema.disableComments: false
+    tracing.hideTracingResponse: true
+  headers:
+    Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2luZm8iOiJ7XCJlbWFpbFwiOlwiMTIzQDEyMy5jb21cIixcImlkXCI6MTAwMDAwNjksXCJwaG9uZVwiOlwiMTIzMTIzMTIzXCIsXCJyb2xlXCI6MSxcInRydWVOYW1lXCI6XCJhcGlcIixcInVzZXJuYW1lXCI6XCJhcGlcIn0iLCJpc3MiOiJLQUtBUE8iLCJleHAiOjE2NTI1MTE4OTZ9.uPA2nVPEJCVk6NvEurczy1hB8TeF9pjf5Qn_6-w9Feo
+    Namespace: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lc3BhY2UiOiIweDIifQ.uM_gyrCmoqyS81rJtgzxrl_gqZumgXK4lvmwmJSH3mk
+  tabs:
+    - name: projectQuery
+      query: classpath:graphql/embed/projectQuery.graphql
+      variables: classpath:graphql/embed/variables.json
+      responses:
+        - classpath:graphql/embed/projectResponse.json
+    - name: Create Project
+      query: classpath:graphql/embed/projectCreate.graphql
+    - name: Create Milestone
+      query: classpath:graphql/embed/milestoneCreate.graphql

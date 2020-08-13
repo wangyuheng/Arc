@@ -1,0 +1,24 @@
+<dgraph.graphql.schema>: string .
+<domainClass>: string .
+
+<has>: [uid] @reverse .
+
+<PROJECT.createTime>: datetime .
+<PROJECT.description>: string .
+<PROJECT.name>: string @index(fulltext, trigram) .
+
+<MILESTONE.name>: string @index(fulltext, trigram) .
+<MILESTONE.status>: string .
+
+type PROJECT {
+    domainClass
+    PROJECT.name
+    PROJECT.description
+    PROJECT.createTime
+}
+
+type MILESTONE {
+    domainClass
+    MILESTONE.name
+    MILESTONE.status
+}

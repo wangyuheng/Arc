@@ -1,0 +1,22 @@
+{
+  "properties": [
+    {
+      "name": "arc.graphql.path",
+      "type": "java.lang.String",
+      "description": "graphql execute post mapping path.",
+      "defaultValue": "graphql"
+    },
+    {
+      "name": "arc.graphql.define",
+      "type": "java.lang.String",
+      "description": "define graphql schema resource in classpath.",
+      "defaultValue": "graphql/schema.graphqls"
+    },
+    {
+      "name": "arc.graphql.event.enable",
+      "type": "java.lang.Boolean",
+      "description": "publish domain event after rest request.",
+      "defaultValue": "true"
+    }
+  ]
+}

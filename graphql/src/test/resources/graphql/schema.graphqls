@@ -1,0 +1,25 @@
+schema{
+    query: Query,
+    mutation: Mutation
+}
+
+type Query{
+    mock(
+        id: String
+    ): Mock
+}
+
+type Mutation{
+    createMock(
+        payload: MockInput
+    ): Mock
+}
+
+type Mock{
+    id: String!
+    name: String!
+}
+
+input MockInput{
+    name: String!
+}

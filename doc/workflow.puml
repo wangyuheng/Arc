@@ -1,0 +1,15 @@
+@startuml
+
+start
+
+: create GraphQL.schema;
+: create dgraph schema;
+: create javaBean with \n @DgraphType \n @UidField \n @RelationshipField;
+: create @Repository class extends SimpleDgraphRepository;
+: create @DataFetcherService class include \n @GraphQLQuery \n @GraphQLMutation;
+: browser http://localhost:${port}/playground for create;
+: add xxDgraph.xml;
+
+end
+
+@enduml

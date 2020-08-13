@@ -1,0 +1,15 @@
+{
+    project(id:"0x16") {
+        id
+        name
+
+        milestones {
+            name
+            status
+        }
+    }
+
+    users {
+        name
+    }
+}
