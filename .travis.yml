@@ -1,0 +1,18 @@
+language: java
+
+services:
+  - docker
+
+jdk:
+  - openjdk8
+
+jobs:
+  include:
+    - stage: test and code_quality
+      name: "Run test cases and code_quality with jacoco"
+      if: tag IS blank
+      script: mvn clean jacoco:prepare-agent test -B jacoco:report-aggregate jacoco:report -DfailIfNoTests=false coveralls:report -DrepoToken=${coverallsToken}
+
+notifications:
+  email:
+    - wangyuheng@outlook.com
