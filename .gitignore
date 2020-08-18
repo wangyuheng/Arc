@@ -1,3 +1,8 @@
+# CICD
+
+.github/
+.travis.yml
+
 # maven ignore
 target/
 .mvn
