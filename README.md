@@ -1,5 +1,7 @@
 # Arc
 
+![Java Test CI with Maven](https://github.com/wangyuheng/Arc/workflows/Java%20Test%20CI%20with%20Maven/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/wangyuheng/Arc/badge.svg?branch=master)](https://coveralls.io/github/wangyuheng/Arc?branch=master) 
+
 基于GraphQL+Dgraph的DDD实现，配合SpringBoot使用
 
 注: 基于 `SpringBoot 2.x`
