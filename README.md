@@ -1,6 +1,6 @@
 # Arc
 
-[![Coverage Status](https://coveralls.io/repos/github/YituHealthcare/Arc/badge.svg?branch=master)](https://coveralls.io/github/YituHealthcare/Arc?branch=master) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=alert_status)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=bugs)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc)
+![Maven Package](https://github.com/YituHealthcare/Arc/workflows/Maven%20Package/badge.svg?branch=master) [![Coverage Status](https://coveralls.io/repos/github/YituHealthcare/Arc/badge.svg?branch=master)](https://coveralls.io/github/YituHealthcare/Arc?branch=master) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=alert_status)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=bugs)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc)
 
 基于GraphQL+Dgraph的DDD实现，配合SpringBoot使用
 
