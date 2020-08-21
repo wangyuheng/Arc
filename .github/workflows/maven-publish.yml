@@ -22,6 +22,10 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
+    - name: Setup version
+      run: mvn versions:set -DnewVersion=$(basename $GITHUB_REF)
+      if: ${{ github.event == 'release' }}
+
     - name: Test
       run: mvn clean jacoco:prepare-agent test -B jacoco:report-aggregate jacoco:report -DfailIfNoTests=false
 
@@ -29,11 +33,19 @@ jobs:
       run: mvn coveralls:report -DrepoToken=$COVERALL      
       env:
         COVERALL: ${{secrets.COVERALLS}}
-
+        
+    - name: Report Sonar
+      run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=$SONAR_PROJECT_KEY  -Dsonar.organization=$SONAR_ORGANIZATION -Dsonar.host.url=https://sonarcloud.io  -Dsonar.login=$SONAR_TOKEN
+      env:
+        SONAR_ORGANIZATION: ${{secrets.SONAR_ORGANIZATION}}
+        SONAR_PROJECT_KEY: ${{secrets.SONAR_PROJECT_KEY}}
+        SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}  
+                
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
     - name: Publish to GitHub Packages Apache Maven
       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+      if: ${{ github.event == 'release' }}
       env:
         GITHUB_TOKEN: ${{ github.token }}
