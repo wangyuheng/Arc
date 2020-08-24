@@ -43,9 +43,9 @@ public class DgraphMapperManager implements InitializingBean {
                         .forEach(dgraphMutation -> this.addSql(baseName, dgraphMutation.id, dgraphMutation.value, mapper.getVars()));
             }
         } catch (FileNotFoundException fileNotFoundException) {
-            log.error("location is not found! location:{}", location, fileNotFoundException);
+            log.warn("dgraph location is not found! location:{}", location);
         } catch (IOException e) {
-            log.error("read xml fail! location:{}", location, e);
+            log.error("read dgraph xml fail! location:{}", location, e);
         }
 
     }
