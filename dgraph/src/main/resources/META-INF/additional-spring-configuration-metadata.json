@@ -4,6 +4,24 @@
       "name": "arc.dgraph.urls",
       "type": "java.util.List",
       "description": "dgraph host:port."
+    },
+    {
+      "name": "arc.dgraph.define",
+      "type": "org.springframework.core.io.Resource",
+      "description": "define dgraph schema resource in classpath.",
+      "defaultValue": "dgraph/schema.dgraph"
+    },
+    {
+      "name": "arc.dgraph.init",
+      "type": "java.lang.Boolean",
+      "description": "init dgraph schema by dgraph define.",
+      "defaultValue": "false"
+    },
+    {
+      "name": "arc.dgraph.drop-all",
+      "type": "java.lang.Boolean",
+      "description": "drop all data! & schema! when init.",
+      "defaultValue": "false"
     }
   ]
 }

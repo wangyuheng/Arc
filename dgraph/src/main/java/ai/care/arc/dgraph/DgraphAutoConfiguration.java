@@ -1,5 +1,6 @@
 package ai.care.arc.dgraph;
 
+import ai.care.arc.dgraph.datasource.DataSourceInitializer;
 import ai.care.arc.dgraph.repository.DgraphClientAdapter;
 import ai.care.arc.dgraph.repository.DgraphInterceptor;
 import ai.care.arc.dgraph.repository.mapper.DgraphMapperManager;
@@ -80,5 +81,12 @@ public class DgraphAutoConfiguration {
     @ConditionalOnClass(ZipkinAutoConfiguration.class)
     public DgraphTracerFilter dgraphTracerFilter() {
         return new DgraphTracerFilter();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "arc.dgraph.init", havingValue = "true")
+    public DataSourceInitializer dataSourceInitializer() {
+        return new DataSourceInitializer();
     }
 }
