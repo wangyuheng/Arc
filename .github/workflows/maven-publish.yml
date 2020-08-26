@@ -5,7 +5,7 @@ name: Maven Package
 
 on:
   release:
-    types: [created]
+    types: [released]
   workflow_dispatch:
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
 
     - name: Setup version
       run: mvn versions:set -DnewVersion=$(basename $GITHUB_REF)
-      if: ${{ github.event == 'release' }}
+      if: ${{ github.event.action == 'released' }}
 
     - name: Test
       run: mvn clean jacoco:prepare-agent test -B jacoco:report-aggregate jacoco:report -DfailIfNoTests=false
@@ -46,6 +46,6 @@ jobs:
 
     - name: Publish to GitHub Packages Apache Maven
       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
-      if: ${{ github.event == 'release' }}
+      if: ${{ github.event.action == 'released' }}
       env:
         GITHUB_TOKEN: ${{ github.token }}
