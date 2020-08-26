@@ -23,32 +23,24 @@ public class DataSourceInitializer implements InitializingBean {
     private ClassPathResource schemaPath;
     @Value("${arc.dgraph.drop-all:false}")
     private boolean dropAll;
-    @Value("${arc.dgraph.init:false}")
-    private boolean init;
 
     @Autowired
     private DgraphClient dgraphClient;
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (init) {
-            if (schemaPath.exists()) {
-                List<String> list = Files.readAllLines(schemaPath.getFile().toPath());
-                DgraphProto.Operation operation = DgraphProto.Operation.newBuilder()
-                        .setSchema(String.join("\n", list))
-                        .setDropAll(dropAll)
-                        .build();
-                log.debug("init dgraph by schema:{}", String.join("\n", list));
-                dgraphClient.alter(operation);
-                log.info("init dgraph by schemaPath:{}, dropAll:{}", schemaPath, dropAll);
-            } else {
-                log.warn("dgraph schema is not found! path:{} ", schemaPath);
-            }
+        if (schemaPath.exists()) {
+            List<String> list = Files.readAllLines(schemaPath.getFile().toPath());
+            DgraphProto.Operation operation = DgraphProto.Operation.newBuilder()
+                    .setSchema(String.join("\n", list))
+                    .setDropAll(dropAll)
+                    .build();
+            log.debug("init dgraph by schema:{}", String.join("\n", list));
+            dgraphClient.alter(operation);
+            log.info("init dgraph by schemaPath:{}, dropAll:{}", schemaPath, dropAll);
         } else {
-            // could not run this because do not register this bean when init set false
-            log.info("not enbalbe init dgraph schema");
+            log.warn("dgraph schema is not found! path:{} ", schemaPath);
         }
-
     }
 
 }
