@@ -1,5 +1,7 @@
 package ai.care.arc.dgraph;
 
+import io.dgraph.DgraphGrpc;
+import io.grpc.ManagedChannelBuilder;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -41,6 +43,16 @@ public class DgraphProperties {
         return addresses;
     }
 
+    public DgraphGrpc.DgraphStub[] getDgraphStubs(){
+        return this.getAddresses().stream()
+                .map(address -> ManagedChannelBuilder
+                        .forAddress(address.getName(), address.getPort())
+                        .usePlaintext()
+                        .build())
+                .map(DgraphGrpc::newStub)
+                .toArray(DgraphGrpc.DgraphStub[]::new);
+    }
+
     static class Address {
         private String name;
         private int port;
@@ -58,4 +70,5 @@ public class DgraphProperties {
             return port;
         }
     }
+
 }

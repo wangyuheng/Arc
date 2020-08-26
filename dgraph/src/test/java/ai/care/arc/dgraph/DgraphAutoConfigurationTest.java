@@ -1,20 +1,14 @@
 package ai.care.arc.dgraph;
 
-import io.dgraph.DgraphAsyncClient;
-import io.dgraph.DgraphClient;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.powermock.api.mockito.PowerMockito;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests for {@link DgraphAutoConfiguration}.
@@ -42,18 +36,6 @@ public class DgraphAutoConfigurationTest {
                     assertNotNull(context.getBean("dgraphClientAdapter"));
                     assertNotNull(context.getBean("dgraphTracerFilter"));
                 });
-    }
-
-    @Test
-    public void should_init_dgraph_client_stubs_by_properties() throws IllegalAccessException {
-        DgraphProperties dgraphProperties = new DgraphProperties();
-        dgraphProperties.setUrls(Arrays.asList("localhost:8080", "localhost:8081"));
-        DgraphClient dgraphClient = new DgraphAutoConfiguration().dgraphClient(dgraphProperties);
-
-        DgraphAsyncClient dgraphAsyncClient = (DgraphAsyncClient) PowerMockito.field(DgraphClient.class, "asyncClient").get(dgraphClient);
-        List<Object> stubs = (List<Object>) PowerMockito.field(DgraphAsyncClient.class, "stubs").get(dgraphAsyncClient);
-
-        assertEquals(2, stubs.size());
     }
 
     @Test

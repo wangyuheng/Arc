@@ -7,8 +7,6 @@ import ai.care.arc.dgraph.repository.mapper.DgraphMapperManager;
 import ai.care.arc.dgraph.scanner.AutoConfiguredDgraphScannerRegistrar;
 import ai.care.arc.dgraph.trace.DgraphTracerFilter;
 import io.dgraph.DgraphClient;
-import io.dgraph.DgraphGrpc;
-import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -49,15 +47,7 @@ public class DgraphAutoConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "arc.dgraph.urls")
     public DgraphClient dgraphClient(DgraphProperties properties) {
-        return new DgraphClient(
-                properties.getAddresses().stream()
-                        .map(address -> ManagedChannelBuilder
-                                .forAddress(address.getName(), address.getPort())
-                                .usePlaintext()
-                                .build())
-                        .map(DgraphGrpc::newStub)
-                        .toArray(DgraphGrpc.DgraphStub[]::new)
-        );
+        return new DgraphClient(properties.getDgraphStubs());
     }
 
     @Bean
