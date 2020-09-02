@@ -1,0 +1,30 @@
+<domainClass>: string .
+<dgraph.graphql.schema>: string .
+<PROJECT.name>: string .
+<PROJECT.description>: string .
+<PROJECT.category>: [string] .
+<PROJECT.createTime>: dateTime .
+<PROJECT.milestones>: [uid] .
+<MILESTONE.name>: string .
+<MILESTONE.status>: string .
+<USER.name>: string .
+type Project {
+domainClass
+dgraph.graphql.schema
+PROJECT.name
+PROJECT.description
+PROJECT.category
+PROJECT.createTime
+PROJECT.milestones
+}
+type Milestone {
+domainClass
+dgraph.graphql.schema
+MILESTONE.name
+MILESTONE.status
+}
+type User {
+domainClass
+dgraph.graphql.schema
+USER.name
+}
