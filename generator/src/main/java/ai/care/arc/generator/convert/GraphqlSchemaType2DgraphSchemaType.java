@@ -24,13 +24,7 @@ import java.util.stream.Collectors;
 public class GraphqlSchemaType2DgraphSchemaType implements Function<GraphqlSchemaType, DgraphSchemaType> {
 
     private static final List<String> IGNORE_FIELD = Arrays.asList("id", "uid");
-    private GraphqlFieldType2DgraphPredicateTypeConverter converter = new GraphqlFieldType2DgraphPredicateTypeConverter();
-
-    private BiFunction<GraphqlSchemaType, GraphqlSchemaField, DgraphSchemaPredicate> field2predicate = (graphqlSchemaType, graphqlSchemaField) -> DgraphSchemaPredicate.builder()
-            .name(graphqlSchemaType.getName().toUpperCase() + "." + graphqlSchemaField.getName())
-            .predicateType(converter.convert(graphqlSchemaField.getType()).orElse(DgraphPredicateTypeEnum.STRING))
-            .isList(graphqlSchemaField.isListType())
-            .build();
+    private BiFunction<GraphqlSchemaType, GraphqlSchemaField, DgraphSchemaPredicate> field2predicate = new GraphqlSchemaField2DgraphSchemaPredicate();
 
     @Override
     public DgraphSchemaType apply(GraphqlSchemaType graphqlSchemaType) {
@@ -43,5 +37,19 @@ public class GraphqlSchemaType2DgraphSchemaType implements Function<GraphqlSchem
                                 .collect(Collectors.toList())
                 )
                 .build();
+    }
+
+    static class GraphqlSchemaField2DgraphSchemaPredicate implements BiFunction<GraphqlSchemaType, GraphqlSchemaField, DgraphSchemaPredicate> {
+
+        private GraphqlFieldType2DgraphPredicateTypeConverter converter = new GraphqlFieldType2DgraphPredicateTypeConverter();
+
+        @Override
+        public DgraphSchemaPredicate apply(GraphqlSchemaType graphqlSchemaType, GraphqlSchemaField graphqlSchemaField) {
+            return DgraphSchemaPredicate.builder()
+                    .name(graphqlSchemaType.getName().toUpperCase() + "." + graphqlSchemaField.getName())
+                    .predicateType(converter.convert(graphqlSchemaField.getType()).orElse(DgraphPredicateTypeEnum.STRING))
+                    .isList(graphqlSchemaField.isListType())
+                    .build();
+        }
     }
 }

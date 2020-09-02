@@ -7,6 +7,7 @@ import ai.care.arc.graphql.util.GraphqlTypeUtils;
 import graphql.language.FieldDefinition;
 import graphql.language.ListType;
 import graphql.language.ObjectTypeDefinition;
+import graphql.language.Type;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import graphql.schema.idl.TypeInfo;
 
@@ -25,20 +26,7 @@ import java.util.stream.Stream;
  */
 public class TypeDefinitionRegistry2GraphqlSchemaTypes implements Function<TypeDefinitionRegistry, Stream<GraphqlSchemaType>> {
 
-    private BiFunction<TypeDefinitionRegistry, FieldDefinition, GraphqlSchemaField> fieldDefinition2GraphqlSchemaField = (typeDefinitionRegistry, fieldDefinition) -> GraphqlSchemaField.builder()
-            .name(fieldDefinition.getName())
-            .listType(fieldDefinition.getType() instanceof ListType)
-            .type(GraphqlFieldTypeEnum.parse(TypeInfo.typeInfo(fieldDefinition.getType()).getName())
-                    .orElseGet(() -> {
-                        if (typeDefinitionRegistry.isObjectType(fieldDefinition.getType())) {
-                            return GraphqlFieldTypeEnum.TYPE;
-                        } else if (GraphqlTypeUtils.isEnumType(typeDefinitionRegistry, fieldDefinition.getType())) {
-                            return GraphqlFieldTypeEnum.ENUM;
-                        } else {
-                            return GraphqlFieldTypeEnum.STRING;
-                        }
-                    }))
-            .build();
+    private BiFunction<TypeDefinitionRegistry, FieldDefinition, GraphqlSchemaField> fieldDefinition2GraphqlSchemaField = new FieldDefinition2GraphqlSchemaField(new GraphqlFieldType2GraphqlFieldType());
 
     @Override
     public Stream<GraphqlSchemaType> apply(TypeDefinitionRegistry typeDefinitionRegistry) {
@@ -51,5 +39,40 @@ public class TypeDefinitionRegistry2GraphqlSchemaTypes implements Function<TypeD
                                 .map(fieldDefinition -> fieldDefinition2GraphqlSchemaField.apply(typeDefinitionRegistry, fieldDefinition))
                                 .collect(Collectors.toList()))
                         .build());
+    }
+
+    static class FieldDefinition2GraphqlSchemaField implements BiFunction<TypeDefinitionRegistry, FieldDefinition, GraphqlSchemaField> {
+
+        private BiFunction<TypeDefinitionRegistry, Type<?>, GraphqlFieldTypeEnum> graphqlFieldType2GraphqlFieldType;
+
+        public FieldDefinition2GraphqlSchemaField(GraphqlFieldType2GraphqlFieldType graphqlFieldType2GraphqlFieldType) {
+            this.graphqlFieldType2GraphqlFieldType = graphqlFieldType2GraphqlFieldType;
+        }
+
+        @Override
+        public GraphqlSchemaField apply(TypeDefinitionRegistry typeDefinitionRegistry, FieldDefinition fieldDefinition) {
+            return GraphqlSchemaField.builder()
+                    .name(fieldDefinition.getName())
+                    .listType(fieldDefinition.getType() instanceof ListType)
+                    .type(graphqlFieldType2GraphqlFieldType.apply(typeDefinitionRegistry, fieldDefinition.getType()))
+                    .build();
+        }
+    }
+
+    static class GraphqlFieldType2GraphqlFieldType implements BiFunction<TypeDefinitionRegistry, Type<?>, GraphqlFieldTypeEnum> {
+
+        @Override
+        public GraphqlFieldTypeEnum apply(TypeDefinitionRegistry typeDefinitionRegistry, Type<?> type) {
+            return GraphqlFieldTypeEnum.parse(TypeInfo.typeInfo(type).getName())
+                    .orElseGet(() -> {
+                        if (typeDefinitionRegistry.isObjectType(type)) {
+                            return GraphqlFieldTypeEnum.TYPE;
+                        } else if (GraphqlTypeUtils.isEnumType(typeDefinitionRegistry, type)) {
+                            return GraphqlFieldTypeEnum.ENUM;
+                        } else {
+                            return GraphqlFieldTypeEnum.STRING;
+                        }
+                    });
+        }
     }
 }
