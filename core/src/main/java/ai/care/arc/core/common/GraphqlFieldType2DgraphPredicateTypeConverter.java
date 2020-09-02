@@ -10,7 +10,7 @@ import java.util.Optional;
  *
  * @author yuheng.wang
  */
-public class GraphqlField2DgraphPredicateConverter implements Converter<GraphqlFieldTypeEnum, DgraphPredicateTypeEnum> {
+public class GraphqlFieldType2DgraphPredicateTypeConverter implements Converter<GraphqlFieldTypeEnum, DgraphPredicateTypeEnum> {
 
     @Override
     public Optional<DgraphPredicateTypeEnum> convert(GraphqlFieldTypeEnum graphqlFieldTypeEnum) {

@@ -10,13 +10,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests for {@link GraphqlField2DgraphPredicateConverter}.
+ * Tests for {@link GraphqlFieldType2DgraphPredicateTypeConverter}.
  *
  * @author yuheng.wang
  */
-public class GraphqlField2DgraphPredicateConverterTest {
+public class GraphqlFieldType2DgraphPredicateTypeConverterTest {
 
-    private GraphqlField2DgraphPredicateConverter converter = new GraphqlField2DgraphPredicateConverter();
+    private GraphqlFieldType2DgraphPredicateTypeConverter converter = new GraphqlFieldType2DgraphPredicateTypeConverter();
 
     @Test
     public void all_enum_values_should_be_convert() {
