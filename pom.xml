@@ -19,6 +19,7 @@
         <module>graphql</module>
         <module>core</module>
         <module>mq</module>
+        <module>generator</module>
     </modules>
 
     <properties>
@@ -37,6 +38,7 @@
         <dgraph4j.version>20.03.0</dgraph4j.version>
         <jackson.version>2.9.8</jackson.version>
         <lombok.version>1.18.12</lombok.version>
+        <javapoet.version>1.13.0</javapoet.version>
     </properties>
 
     <dependencies>

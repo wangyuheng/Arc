@@ -12,6 +12,7 @@
 - dgraph: 封装 Dgraph 数据库操作
 - graphql: 提供 GraphQL 调用方式
 - mq: 简易内嵌消息队列
+- generator: 代码生成器。根据GraphQL Schema生成Java代码及Dgraph结构化语句
 
 ![arc-dependent](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/YituHealthcare/arc/master/doc/dependent.puml)
 
