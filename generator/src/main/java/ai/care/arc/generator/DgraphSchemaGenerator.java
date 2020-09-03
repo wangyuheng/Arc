@@ -4,7 +4,6 @@ import ai.care.arc.dgraph.datasource.DgraphSchemaType;
 import ai.care.arc.generator.convert.DgraphSchemaTypes2DdlString;
 import ai.care.arc.generator.convert.GraphqlSchemaType2DgraphSchemaType;
 import ai.care.arc.generator.convert.TypeDefinitionRegistry2GraphqlSchemaTypes;
-import ai.care.arc.graphql.idl.GraphqlSchemaType;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
@@ -36,9 +35,9 @@ import java.util.stream.Stream;
  */
 public class DgraphSchemaGenerator {
 
-    private Function<InputStream, TypeDefinitionRegistry> inputStream2TypeDefinitionRegistry;
-    private Function<Stream<DgraphSchemaType>, Stream<String>> dgraphSchemaTypes2DdlString;
-    private Function<TypeDefinitionRegistry, Stream<DgraphSchemaType>> typeDefinitionRegistry2DgraphSchemaTypes;
+    private final Function<InputStream, TypeDefinitionRegistry> inputStream2TypeDefinitionRegistry;
+    private final Function<Stream<DgraphSchemaType>, Stream<String>> dgraphSchemaTypes2DdlString;
+    private final Function<TypeDefinitionRegistry, Stream<DgraphSchemaType>> typeDefinitionRegistry2DgraphSchemaTypes;
 
     public DgraphSchemaGenerator(Function<InputStream, TypeDefinitionRegistry> inputStream2TypeDefinitionRegistry, Function<Stream<DgraphSchemaType>, Stream<String>> dgraphSchemaTypes2DdlString, Function<TypeDefinitionRegistry, Stream<DgraphSchemaType>> typeDefinitionRegistry2DgraphSchemaTypes) {
         this.inputStream2TypeDefinitionRegistry = inputStream2TypeDefinitionRegistry;
