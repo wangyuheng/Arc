@@ -19,10 +19,7 @@ public class DgraphSchemaTypeTest {
         DgraphSchemaType type = new DgraphSchemaType();
         assertEquals(Collections.emptyList(), type.buildDgraphSchemaLines());
         type.setName("t1");
-        assertEquals("type t1 {" +
-                "domainClass" +
-                "dgraph.graphql.schema" +
-                "}", String.join("", type.buildDgraphSchemaLines()));
+        assertEquals("type t1 {}", String.join("", type.buildDgraphSchemaLines()));
 
         type.setPredicateList(
                 Arrays.asList(
@@ -30,10 +27,9 @@ public class DgraphSchemaTypeTest {
                         new DgraphSchemaPredicate("p2", null)
                 ));
         assertEquals("type t1 {" +
-                "domainClass" +
-                "dgraph.graphql.schema" +
                 "p1" +
                 "p2" +
                 "}", String.join("", type.buildDgraphSchemaLines()));
     }
+
 }
