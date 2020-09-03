@@ -1,10 +1,6 @@
 package ai.care.arc.graphql.idl;
 
 import ai.care.arc.core.dictionary.GraphqlFieldTypeEnum;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * graphql schema 字段描述
@@ -14,14 +10,39 @@ import lombok.NoArgsConstructor;
  *
  * @author yuheng.wang
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class GraphqlSchemaField {
+
+    public GraphqlSchemaField(String name, boolean listType, GraphqlFieldTypeEnum type) {
+        this.name = name;
+        this.listType = listType;
+        this.type = type;
+    }
 
     private String name;
     private boolean listType;
     private GraphqlFieldTypeEnum type;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isListType() {
+        return listType;
+    }
+
+    public void setListType(boolean listType) {
+        this.listType = listType;
+    }
+
+    public GraphqlFieldTypeEnum getType() {
+        return type;
+    }
+
+    public void setType(GraphqlFieldTypeEnum type) {
+        this.type = type;
+    }
 }

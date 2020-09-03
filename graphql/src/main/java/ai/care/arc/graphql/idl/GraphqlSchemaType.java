@@ -1,10 +1,5 @@
 package ai.care.arc.graphql.idl;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 /**
@@ -14,13 +9,29 @@ import java.util.List;
  *
  * @author yuheng.wang
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class GraphqlSchemaType {
+
+    public GraphqlSchemaType(String name, List<GraphqlSchemaField> fieldList) {
+        this.name = name;
+        this.fieldList = fieldList;
+    }
 
     private String name;
     private List<GraphqlSchemaField> fieldList;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<GraphqlSchemaField> getFieldList() {
+        return fieldList;
+    }
+
+    public void setFieldList(List<GraphqlSchemaField> fieldList) {
+        this.fieldList = fieldList;
+    }
 }

@@ -33,12 +33,12 @@ public class TypeDefinitionRegistry2GraphqlSchemaTypes implements Function<TypeD
         final Predicate<ObjectTypeDefinition> isOperator = new IsOperator(typeDefinitionRegistry);
         return typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
                 .filter(isOperator.negate())
-                .map(typeDefinition -> GraphqlSchemaType.builder()
-                        .name(typeDefinition.getName())
-                        .fieldList(typeDefinition.getFieldDefinitions().stream()
-                                .map(fieldDefinition -> fieldDefinition2GraphqlSchemaField.apply(typeDefinitionRegistry, fieldDefinition))
-                                .collect(Collectors.toList()))
-                        .build());
+                .map(typeDefinition ->
+                        new GraphqlSchemaType(typeDefinition.getName(),
+                                typeDefinition.getFieldDefinitions().stream()
+                                        .map(fieldDefinition -> fieldDefinition2GraphqlSchemaField.apply(typeDefinitionRegistry, fieldDefinition))
+                                        .collect(Collectors.toList()))
+                );
     }
 
     static class FieldDefinition2GraphqlSchemaField implements BiFunction<TypeDefinitionRegistry, FieldDefinition, GraphqlSchemaField> {
@@ -51,11 +51,9 @@ public class TypeDefinitionRegistry2GraphqlSchemaTypes implements Function<TypeD
 
         @Override
         public GraphqlSchemaField apply(TypeDefinitionRegistry typeDefinitionRegistry, FieldDefinition fieldDefinition) {
-            return GraphqlSchemaField.builder()
-                    .name(fieldDefinition.getName())
-                    .listType(fieldDefinition.getType() instanceof ListType)
-                    .type(graphqlFieldType2GraphqlFieldType.apply(typeDefinitionRegistry, fieldDefinition.getType()))
-                    .build();
+            return new GraphqlSchemaField(fieldDefinition.getName(),
+                    fieldDefinition.getType() instanceof ListType,
+                    graphqlFieldType2GraphqlFieldType.apply(typeDefinitionRegistry, fieldDefinition.getType()));
         }
     }
 
