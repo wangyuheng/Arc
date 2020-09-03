@@ -2,8 +2,7 @@ package ai.care.arc.generator;
 
 import ai.care.arc.dgraph.datasource.DgraphSchemaType;
 import ai.care.arc.generator.convert.DgraphSchemaTypes2DdlString;
-import ai.care.arc.generator.convert.GraphqlSchemaType2DgraphSchemaType;
-import ai.care.arc.generator.convert.TypeDefinitionRegistry2GraphqlSchemaTypes;
+import ai.care.arc.generator.convert.TypeDefinitionRegistry2DgraphSchemaTypes;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
@@ -35,32 +34,30 @@ import java.util.stream.Stream;
  */
 public class DgraphSchemaGenerator {
 
-    private final Function<InputStream, TypeDefinitionRegistry> inputStream2TypeDefinitionRegistry;
-    private final Function<Stream<DgraphSchemaType>, Stream<String>> dgraphSchemaTypes2DdlString;
-    private final Function<TypeDefinitionRegistry, Stream<DgraphSchemaType>> typeDefinitionRegistry2DgraphSchemaTypes;
+    private final Function<InputStream, TypeDefinitionRegistry> toTypeDefinitionRegistry;
+    private final Function<TypeDefinitionRegistry, Stream<DgraphSchemaType>> toDgraphTypes;
+    private final Function<Stream<DgraphSchemaType>, Stream<String>> toDdlStrings;
 
-    public DgraphSchemaGenerator(Function<InputStream, TypeDefinitionRegistry> inputStream2TypeDefinitionRegistry, Function<Stream<DgraphSchemaType>, Stream<String>> dgraphSchemaTypes2DdlString, Function<TypeDefinitionRegistry, Stream<DgraphSchemaType>> typeDefinitionRegistry2DgraphSchemaTypes) {
-        this.inputStream2TypeDefinitionRegistry = inputStream2TypeDefinitionRegistry;
-        this.dgraphSchemaTypes2DdlString = dgraphSchemaTypes2DdlString;
-        this.typeDefinitionRegistry2DgraphSchemaTypes = typeDefinitionRegistry2DgraphSchemaTypes;
+    public DgraphSchemaGenerator(Function<InputStream, TypeDefinitionRegistry> toTypeDefinitionRegistry,
+                                 Function<TypeDefinitionRegistry, Stream<DgraphSchemaType>> toDgraphTypes,
+                                 Function<Stream<DgraphSchemaType>, Stream<String>> toDdlStrings) {
+        this.toTypeDefinitionRegistry = toTypeDefinitionRegistry;
+        this.toDgraphTypes = toDgraphTypes;
+        this.toDdlStrings = toDdlStrings;
     }
 
     public DgraphSchemaGenerator() {
-        this(inputStream -> new SchemaParser().parse(inputStream),
-                new DgraphSchemaTypes2DdlString(),
-                typeDefinitionRegistry -> {
-                    GraphqlSchemaType2DgraphSchemaType graphqlSchemaType2DgraphSchemaType = new GraphqlSchemaType2DgraphSchemaType();
-                    return new TypeDefinitionRegistry2GraphqlSchemaTypes()
-                            .andThen(graphqlSchemaTypeStream -> graphqlSchemaTypeStream.map(graphqlSchemaType2DgraphSchemaType))
-                            .apply(typeDefinitionRegistry);
-                }
+        this(
+                inputStream -> new SchemaParser().parse(inputStream),
+                new TypeDefinitionRegistry2DgraphSchemaTypes(),
+                new DgraphSchemaTypes2DdlString()
         );
     }
 
     public List<String> generate(InputStream graphSchemaInputStream) {
-        return typeDefinitionRegistry2DgraphSchemaTypes
-                .compose(inputStream2TypeDefinitionRegistry)
-                .andThen(dgraphSchemaTypes2DdlString)
+        return toDgraphTypes
+                .compose(toTypeDefinitionRegistry)
+                .andThen(toDdlStrings)
                 .apply(graphSchemaInputStream)
                 .collect(Collectors.toList());
     }
