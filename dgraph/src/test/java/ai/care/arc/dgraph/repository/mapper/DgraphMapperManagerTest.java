@@ -10,18 +10,10 @@ import org.springframework.test.util.ReflectionTestUtils;
  * DgraphMapperManager扫描进static.
  * 需要注意case顺序
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DgraphMapperManagerTest {
 
     @Test
-    public void s1_should_be_empty_with_empty_location() throws Exception {
-        DgraphMapperManager dgraphMapperManager = new DgraphMapperManager();
-        dgraphMapperManager.afterPropertiesSet();
-        Assert.assertNull(dgraphMapperManager.getSql("test.testQuery"));
-    }
-
-    @Test
-    public void s2_should_scan_TestDgraphXml_and_can_read_query_method() throws Exception {
+    public void should_scan_test_dgraph_xml_and_can_read_query_method() throws Exception {
         DgraphMapperManager dgraphMapperManager = new DgraphMapperManager();
         ReflectionTestUtils.setField(dgraphMapperManager, "location", "dgraph");
         dgraphMapperManager.afterPropertiesSet();
