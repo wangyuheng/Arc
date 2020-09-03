@@ -47,15 +47,15 @@ public class DgraphSchemaGenerator {
     }
 
     public DgraphSchemaGenerator() {
-        Function<TypeDefinitionRegistry, Stream<GraphqlSchemaType>> typeDefinitionRegistry2GraphqlSchemaTypes = new TypeDefinitionRegistry2GraphqlSchemaTypes();
-        Function<GraphqlSchemaType, DgraphSchemaType> graphqlSchemaType2DgraphSchemaType = new GraphqlSchemaType2DgraphSchemaType();
-
-        this.inputStream2TypeDefinitionRegistry = inputStream -> new SchemaParser().parse(inputStream);
-        this.dgraphSchemaTypes2DdlString = new DgraphSchemaTypes2DdlString();
-        this.typeDefinitionRegistry2DgraphSchemaTypes = typeDefinitionRegistry ->
-                typeDefinitionRegistry2GraphqlSchemaTypes
-                        .andThen(graphqlSchemaTypeStream -> graphqlSchemaTypeStream.map(graphqlSchemaType2DgraphSchemaType))
-                        .apply(typeDefinitionRegistry);
+        this(inputStream -> new SchemaParser().parse(inputStream),
+                new DgraphSchemaTypes2DdlString(),
+                typeDefinitionRegistry -> {
+                    GraphqlSchemaType2DgraphSchemaType graphqlSchemaType2DgraphSchemaType = new GraphqlSchemaType2DgraphSchemaType();
+                    return new TypeDefinitionRegistry2GraphqlSchemaTypes()
+                            .andThen(graphqlSchemaTypeStream -> graphqlSchemaTypeStream.map(graphqlSchemaType2DgraphSchemaType))
+                            .apply(typeDefinitionRegistry);
+                }
+        );
     }
 
     public List<String> generate(InputStream graphSchemaInputStream) {
