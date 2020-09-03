@@ -1,7 +1,5 @@
 package ai.care.arc.core.common;
 
-import java.util.Optional;
-
 /**
  * 类型转换 I <-> O
  *
@@ -9,7 +7,7 @@ import java.util.Optional;
  */
 public interface Converter<I, O> {
 
-    Optional<O> convert(I i);
+    O convert(I i);
 
-    Optional<I> reverse(O o);
+    I reverse(O o);
 }

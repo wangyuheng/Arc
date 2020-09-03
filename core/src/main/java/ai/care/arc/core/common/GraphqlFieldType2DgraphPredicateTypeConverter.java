@@ -3,8 +3,6 @@ package ai.care.arc.core.common;
 import ai.care.arc.core.dictionary.DgraphPredicateTypeEnum;
 import ai.care.arc.core.dictionary.GraphqlFieldTypeEnum;
 
-import java.util.Optional;
-
 /**
  * GraphqlField与DgraphPredicate类型互相转换
  *
@@ -13,27 +11,27 @@ import java.util.Optional;
 public class GraphqlFieldType2DgraphPredicateTypeConverter implements Converter<GraphqlFieldTypeEnum, DgraphPredicateTypeEnum> {
 
     @Override
-    public Optional<DgraphPredicateTypeEnum> convert(GraphqlFieldTypeEnum graphqlFieldTypeEnum) {
+    public DgraphPredicateTypeEnum convert(GraphqlFieldTypeEnum graphqlFieldTypeEnum) {
         switch (graphqlFieldTypeEnum) {
             case BOOLEAN:
-                return Optional.of(DgraphPredicateTypeEnum.BOOL);
+                return DgraphPredicateTypeEnum.BOOL;
             case ID:
             case TYPE:
-                return Optional.of(DgraphPredicateTypeEnum.UID);
+                return DgraphPredicateTypeEnum.UID;
             case DATE_TIME:
-                return Optional.of(DgraphPredicateTypeEnum.DATE_TIME);
+                return DgraphPredicateTypeEnum.DATE_TIME;
             case INT:
             case POSITIVE_INT:
             case NEGATIVE_INT:
             case NON_POSITIVE_INT:
             case NON_NEGATIVE_INT:
-                return Optional.of(DgraphPredicateTypeEnum.INT);
+                return DgraphPredicateTypeEnum.INT;
             case FLOAT:
             case POSITIVE_FLOAT:
             case NEGATIVE_FLOAT:
             case NON_POSITIVE_FLOAT:
             case NON_NEGATIVE_FLOAT:
-                return Optional.of(DgraphPredicateTypeEnum.FLOAT);
+                return DgraphPredicateTypeEnum.FLOAT;
             case STRING:
             case DATE:
             case TIME:
@@ -42,31 +40,31 @@ public class GraphqlFieldType2DgraphPredicateTypeConverter implements Converter<
             case URL:
             case LOCALE:
             case ENUM:
-                return Optional.of(DgraphPredicateTypeEnum.STRING);
+                return DgraphPredicateTypeEnum.STRING;
             default:
-                return Optional.empty();
+                throw new IllegalArgumentException("convert value not fount!");
         }
     }
 
     @Override
-    public Optional<GraphqlFieldTypeEnum> reverse(DgraphPredicateTypeEnum dgraphPredicateTypeEnum) {
+    public GraphqlFieldTypeEnum reverse(DgraphPredicateTypeEnum dgraphPredicateTypeEnum) {
         switch (dgraphPredicateTypeEnum) {
             case UID:
-                return Optional.of(GraphqlFieldTypeEnum.ID);
+                return GraphqlFieldTypeEnum.ID;
             case DATE_TIME:
-                return Optional.of(GraphqlFieldTypeEnum.DATE_TIME);
+                return GraphqlFieldTypeEnum.DATE_TIME;
             case FLOAT:
-                return Optional.of(GraphqlFieldTypeEnum.FLOAT);
+                return GraphqlFieldTypeEnum.FLOAT;
             case INT:
-                return Optional.of(GraphqlFieldTypeEnum.INT);
+                return GraphqlFieldTypeEnum.INT;
             case BOOL:
-                return Optional.of(GraphqlFieldTypeEnum.BOOLEAN);
+                return GraphqlFieldTypeEnum.BOOLEAN;
             case STRING:
             case GEO:
             case PASSWORD:
-                return Optional.of(GraphqlFieldTypeEnum.STRING);
+                return GraphqlFieldTypeEnum.STRING;
             default:
-                return Optional.empty();
+                throw new IllegalArgumentException("reverse value not fount!");
         }
     }
 

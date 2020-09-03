@@ -2,12 +2,13 @@ package ai.care.arc.core.common;
 
 import ai.care.arc.core.dictionary.DgraphPredicateTypeEnum;
 import ai.care.arc.core.dictionary.GraphqlFieldTypeEnum;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests for {@link GraphqlFieldType2DgraphPredicateTypeConverter}.
@@ -22,17 +23,17 @@ public class GraphqlFieldType2DgraphPredicateTypeConverterTest {
     public void all_enum_values_should_be_convert() {
         Arrays.stream(GraphqlFieldTypeEnum.values())
                 .map(graphqlFieldTypeEnum -> converter.convert(graphqlFieldTypeEnum))
-                .forEach(it -> assertTrue(it.isPresent()));
+                .forEach(Assert::assertNotNull);
 
         Arrays.stream(DgraphPredicateTypeEnum.values())
                 .map(dgraphPredicateTypeEnum -> converter.reverse(dgraphPredicateTypeEnum))
-                .forEach(it -> assertTrue(it.isPresent()));
+                .forEach(Assert::assertNotNull);
     }
 
     @Test
     public void mutual_convert() {
-        assertTrue(converter.convert(GraphqlFieldTypeEnum.STRING).isPresent());
-        assertEquals(DgraphPredicateTypeEnum.STRING, converter.convert(GraphqlFieldTypeEnum.STRING).get());
+        assertNotNull(converter.convert(GraphqlFieldTypeEnum.STRING));
+        assertEquals(DgraphPredicateTypeEnum.STRING, converter.convert(GraphqlFieldTypeEnum.STRING));
     }
 
 }

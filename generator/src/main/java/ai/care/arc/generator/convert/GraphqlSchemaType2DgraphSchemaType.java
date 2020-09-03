@@ -1,7 +1,6 @@
 package ai.care.arc.generator.convert;
 
 import ai.care.arc.core.common.GraphqlFieldType2DgraphPredicateTypeConverter;
-import ai.care.arc.core.dictionary.DgraphPredicateTypeEnum;
 import ai.care.arc.dgraph.datasource.DgraphSchemaPredicate;
 import ai.care.arc.dgraph.datasource.DgraphSchemaType;
 import ai.care.arc.graphql.idl.GraphqlSchemaField;
@@ -47,7 +46,7 @@ public class GraphqlSchemaType2DgraphSchemaType implements Function<GraphqlSchem
         public DgraphSchemaPredicate apply(GraphqlSchemaType graphqlSchemaType, GraphqlSchemaField graphqlSchemaField) {
             return DgraphSchemaPredicate.builder()
                     .name(graphqlSchemaType.getName().toUpperCase() + "." + graphqlSchemaField.getName())
-                    .predicateType(converter.convert(graphqlSchemaField.getType()).orElse(DgraphPredicateTypeEnum.STRING))
+                    .predicateType(converter.convert(graphqlSchemaField.getType()))
                     .isList(graphqlSchemaField.isListType())
                     .build();
         }
