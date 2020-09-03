@@ -2,10 +2,6 @@ package ai.care.arc.dgraph.datasource;
 
 import ai.care.arc.core.dictionary.DgraphPredicateTypeEnum;
 import ai.care.arc.dgraph.util.RDFUtil;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
 
@@ -14,16 +10,20 @@ import java.util.Arrays;
  *
  * @author yuheng.wang
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class DgraphSchemaPredicate {
 
+    public DgraphSchemaPredicate() {
+        this(null, null, false);
+    }
+
     public DgraphSchemaPredicate(String name, DgraphPredicateTypeEnum predicateType) {
+        this(name, predicateType, false);
+    }
+
+    public DgraphSchemaPredicate(String name, DgraphPredicateTypeEnum predicateType, boolean isList) {
         this.name = name;
         this.predicateType = predicateType;
-        this.isList = false;
+        this.isList = isList;
     }
 
     private String name;
@@ -42,4 +42,27 @@ public class DgraphSchemaPredicate {
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public DgraphPredicateTypeEnum getPredicateType() {
+        return predicateType;
+    }
+
+    public void setPredicateType(DgraphPredicateTypeEnum predicateType) {
+        this.predicateType = predicateType;
+    }
+
+    public boolean isList() {
+        return isList;
+    }
+
+    public void setList(boolean list) {
+        isList = list;
+    }
 }

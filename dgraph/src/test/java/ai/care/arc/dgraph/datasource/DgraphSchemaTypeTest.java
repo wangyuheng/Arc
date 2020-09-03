@@ -24,14 +24,11 @@ public class DgraphSchemaTypeTest {
                 "dgraph.graphql.schema" +
                 "}", String.join("", type.buildDgraphSchemaLines()));
 
-        type.setPredicateList(Arrays.asList(
-                DgraphSchemaPredicate.builder()
-                        .name("p1")
-                        .build(),
-                DgraphSchemaPredicate.builder()
-                        .name("p2")
-                        .build()
-        ));
+        type.setPredicateList(
+                Arrays.asList(
+                        new DgraphSchemaPredicate("p1", null),
+                        new DgraphSchemaPredicate("p2", null)
+                ));
         assertEquals("type t1 {" +
                 "domainClass" +
                 "dgraph.graphql.schema" +

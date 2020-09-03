@@ -44,11 +44,10 @@ public class GraphqlSchemaType2DgraphSchemaType implements Function<GraphqlSchem
 
         @Override
         public DgraphSchemaPredicate apply(GraphqlSchemaType graphqlSchemaType, GraphqlSchemaField graphqlSchemaField) {
-            return DgraphSchemaPredicate.builder()
-                    .name(graphqlSchemaType.getName().toUpperCase() + "." + graphqlSchemaField.getName())
-                    .predicateType(converter.convert(graphqlSchemaField.getType()))
-                    .isList(graphqlSchemaField.isListType())
-                    .build();
+            return new DgraphSchemaPredicate(graphqlSchemaType.getName().toUpperCase() + "." + graphqlSchemaField.getName(),
+                    converter.convert(graphqlSchemaField.getType()),
+                    graphqlSchemaField.isListType()
+            );
         }
     }
 }
