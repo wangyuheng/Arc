@@ -5,6 +5,7 @@ import ai.care.arc.core.util.DomainClassUtil;
 import ai.care.arc.dgraph.datasource.DgraphSchemaPredicate;
 import ai.care.arc.dgraph.datasource.DgraphSchemaType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -47,11 +48,11 @@ public class DgraphSchemaTypes2DdlString implements Function<Stream<DgraphSchema
 
         Stream<String> types = dgraphSchemaTypeList.stream()
                 .flatMap(dgraphSchemaType -> {
-                    if (null == dgraphSchemaType.getPredicateList()) {
-                        dgraphSchemaType.setPredicateList(GENERAL_DGRAPH_PREDICATE_LIST);
-                    } else {
-                        dgraphSchemaType.getPredicateList().addAll(GENERAL_DGRAPH_PREDICATE_LIST);
+                    List<DgraphSchemaPredicate> predicateList = new ArrayList<>(GENERAL_DGRAPH_PREDICATE_LIST);
+                    if (null != dgraphSchemaType.getPredicateList()) {
+                        predicateList.addAll(dgraphSchemaType.getPredicateList());
                     }
+                    dgraphSchemaType.setPredicateList(predicateList);
                     return dgraphSchemaType.buildDgraphSchemaLines().stream();
                 });
 
