@@ -27,15 +27,13 @@ public class GraphqlSchemaType2DgraphSchemaType implements Function<GraphqlSchem
 
     @Override
     public DgraphSchemaType apply(GraphqlSchemaType graphqlSchemaType) {
-        return DgraphSchemaType.builder()
-                .name(graphqlSchemaType.getName())
-                .predicateList(
-                        graphqlSchemaType.getFieldList().stream()
-                                .filter(graphqlSchemaField -> !IGNORE_FIELD.contains(graphqlSchemaField.getName()))
-                                .map(graphqlField -> field2predicate.apply(graphqlSchemaType, graphqlField))
-                                .collect(Collectors.toList())
-                )
-                .build();
+        return new DgraphSchemaType(
+                graphqlSchemaType.getName(),
+                graphqlSchemaType.getFieldList().stream()
+                        .filter(graphqlSchemaField -> !IGNORE_FIELD.contains(graphqlSchemaField.getName()))
+                        .map(graphqlField -> field2predicate.apply(graphqlSchemaType, graphqlField))
+                        .collect(Collectors.toList())
+        );
     }
 
     static class GraphqlSchemaField2DgraphSchemaPredicate implements BiFunction<GraphqlSchemaType, GraphqlSchemaField, DgraphSchemaPredicate> {

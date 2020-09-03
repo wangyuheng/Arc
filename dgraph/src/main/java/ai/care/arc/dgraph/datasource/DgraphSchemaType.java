@@ -2,10 +2,6 @@ package ai.care.arc.dgraph.datasource;
 
 import ai.care.arc.core.dictionary.DgraphPredicateTypeEnum;
 import ai.care.arc.core.util.DomainClassUtil;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,14 +14,18 @@ import java.util.stream.Collectors;
  *
  * @author yuheng.wang
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class DgraphSchemaType {
 
     private String name;
     private List<DgraphSchemaPredicate> predicateList;
+
+    public DgraphSchemaType() {
+    }
+
+    public DgraphSchemaType(String name, List<DgraphSchemaPredicate> predicateList) {
+        this.name = name;
+        this.predicateList = predicateList;
+    }
 
     public static final List<DgraphSchemaPredicate> GENERAL_DGRAPH_PREDICATE_LIST = Collections.unmodifiableList(
             Arrays.asList(
@@ -56,4 +56,19 @@ public class DgraphSchemaType {
 
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<DgraphSchemaPredicate> getPredicateList() {
+        return predicateList;
+    }
+
+    public void setPredicateList(List<DgraphSchemaPredicate> predicateList) {
+        this.predicateList = predicateList;
+    }
 }
