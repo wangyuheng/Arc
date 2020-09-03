@@ -28,10 +28,3 @@ USER.name
 dgraph.graphql.schema
 domainClass
 }
-
-<domainClass>: string .
-<USER.name>: string .
-type User {
-USER.name
-domainClass
-}
