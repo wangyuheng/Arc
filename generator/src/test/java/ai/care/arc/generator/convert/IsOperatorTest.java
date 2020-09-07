@@ -20,16 +20,22 @@ public class IsOperatorTest {
 
     @Test
     public void should_return_true_if_type_is_operation() throws IllegalAccessException {
+        final String operationName = "q";
+        final String operationTypeName = "Q";
+        final String notOperationName = "m";
         TypeDefinitionRegistry typeDefinitionRegistry = PowerMockito.spy(new TypeDefinitionRegistry());
         PowerMockito.field(TypeDefinitionRegistry.class, "schema").set(typeDefinitionRegistry, SchemaDefinition.newSchemaDefinition()
-                .operationTypeDefinition(OperationTypeDefinition.newOperationTypeDefinition().name("q").typeName(TypeName.newTypeName("Q").build()).build())
+                .operationTypeDefinition(OperationTypeDefinition.newOperationTypeDefinition().name(operationName).typeName(TypeName.newTypeName(operationTypeName).build()).build())
                 .build());
-        typeDefinitionRegistry.add(ObjectTypeDefinition.newObjectTypeDefinition().name("m").build());
+        typeDefinitionRegistry.add(this.buildObjectTypeDefinitionWithName(notOperationName));
         IsOperator isOperator = new IsOperator(typeDefinitionRegistry);
 
-        assertTrue(isOperator.test(ObjectTypeDefinition.newObjectTypeDefinition().name("Q").build()));
-        assertFalse(isOperator.test(ObjectTypeDefinition.newObjectTypeDefinition().name("q").build()));
-        assertFalse(isOperator.test(ObjectTypeDefinition.newObjectTypeDefinition().name("m").build()));
+        assertTrue(isOperator.test(this.buildObjectTypeDefinitionWithName(operationTypeName)));
+        assertFalse(isOperator.test(this.buildObjectTypeDefinitionWithName(operationName)));
+        assertFalse(isOperator.test(this.buildObjectTypeDefinitionWithName(notOperationName)));
     }
 
+    private ObjectTypeDefinition buildObjectTypeDefinitionWithName(String name) {
+        return ObjectTypeDefinition.newObjectTypeDefinition().name(name).build();
+    }
 }
