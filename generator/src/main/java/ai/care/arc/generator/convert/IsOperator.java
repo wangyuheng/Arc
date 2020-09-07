@@ -1,9 +1,8 @@
 package ai.care.arc.generator.convert;
 
-import ai.care.arc.graphql.util.GraphqlTypeUtils;
 import graphql.language.ObjectTypeDefinition;
-import graphql.schema.idl.TypeDefinitionRegistry;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 /**
@@ -13,14 +12,14 @@ import java.util.function.Predicate;
  */
 public class IsOperator implements Predicate<ObjectTypeDefinition> {
 
-    private final TypeDefinitionRegistry typeDefinitionRegistry;
+    private final List<String> operationTypeNames;
 
-    public IsOperator(TypeDefinitionRegistry typeDefinitionRegistry) {
-        this.typeDefinitionRegistry = typeDefinitionRegistry;
+    public IsOperator(List<String> operationTypeNames) {
+        this.operationTypeNames = operationTypeNames;
     }
 
     @Override
     public boolean test(ObjectTypeDefinition typeDefinition) {
-        return GraphqlTypeUtils.getOperationTypeNames(typeDefinitionRegistry).contains(typeDefinition.getName());
+        return operationTypeNames.contains(typeDefinition.getName());
     }
 }

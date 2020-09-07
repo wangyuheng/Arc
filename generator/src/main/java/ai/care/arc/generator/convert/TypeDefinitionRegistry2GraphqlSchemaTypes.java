@@ -30,7 +30,7 @@ public class TypeDefinitionRegistry2GraphqlSchemaTypes implements Function<TypeD
 
     @Override
     public Stream<GraphqlSchemaType> apply(TypeDefinitionRegistry typeDefinitionRegistry) {
-        final Predicate<ObjectTypeDefinition> isOperator = new IsOperator(typeDefinitionRegistry);
+        final Predicate<ObjectTypeDefinition> isOperator = new IsOperator(GraphqlTypeUtils.getOperationTypeNames(typeDefinitionRegistry));
         return typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
                 .filter(isOperator.negate())
                 .map(typeDefinition ->

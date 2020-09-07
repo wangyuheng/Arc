@@ -1,5 +1,6 @@
 package ai.care.arc.generator.convert;
 
+import ai.care.arc.graphql.util.GraphqlTypeUtils;
 import graphql.language.ObjectTypeDefinition;
 import graphql.language.OperationTypeDefinition;
 import graphql.language.SchemaDefinition;
@@ -28,7 +29,7 @@ public class IsOperatorTest {
                 .operationTypeDefinition(OperationTypeDefinition.newOperationTypeDefinition().name(operationName).typeName(TypeName.newTypeName(operationTypeName).build()).build())
                 .build());
         typeDefinitionRegistry.add(this.buildObjectTypeDefinitionWithName(notOperationName));
-        IsOperator isOperator = new IsOperator(typeDefinitionRegistry);
+        IsOperator isOperator = new IsOperator(GraphqlTypeUtils.getOperationTypeNames(typeDefinitionRegistry));
 
         assertTrue(isOperator.test(this.buildObjectTypeDefinitionWithName(operationTypeName)));
         assertFalse(isOperator.test(this.buildObjectTypeDefinitionWithName(operationName)));
