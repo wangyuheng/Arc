@@ -2,6 +2,7 @@ package ai.care.arc.dgraph.datasource;
 
 import ai.care.arc.core.dictionary.DgraphPredicateTypeEnum;
 import ai.care.arc.dgraph.util.RDFUtil;
+import org.springframework.util.Assert;
 
 import java.util.Arrays;
 
@@ -34,12 +35,10 @@ public class DgraphSchemaPredicate {
      * 转换RDF格式，用于sql执行
      */
     public String buildRdf() {
-        if (null == predicateType || null == name) {
-            return null;
-        } else {
-            String type = isList ? "[" + predicateType.getKey() + "]" : predicateType.getKey();
-            return String.join(" ", Arrays.asList(RDFUtil.wrapper(this.getName()) + ":", type, "."));
-        }
+        Assert.notNull(name, "name must be not null!");
+        Assert.notNull(predicateType, "name must be not null!");
+        String type = isList ? "[" + predicateType.getKey() + "]" : predicateType.getKey();
+        return String.join(" ", Arrays.asList(RDFUtil.wrapper(name) + ":", type, "."));
     }
 
     public String getName() {
