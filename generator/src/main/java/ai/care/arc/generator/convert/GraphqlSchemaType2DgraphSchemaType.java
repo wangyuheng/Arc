@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class GraphqlSchemaType2DgraphSchemaType implements Function<GraphqlSchemaType, DgraphSchemaType> {
 
     private static final List<String> IGNORE_FIELD = Arrays.asList("id", "uid");
-    private BiFunction<GraphqlSchemaType, GraphqlSchemaField, DgraphSchemaPredicate> field2predicate = new GraphqlSchemaField2DgraphSchemaPredicate();
+    private final BiFunction<GraphqlSchemaType, GraphqlSchemaField, DgraphSchemaPredicate> field2predicate = new GraphqlSchemaField2DgraphSchemaPredicate();
 
     @Override
     public DgraphSchemaType apply(GraphqlSchemaType graphqlSchemaType) {
@@ -38,7 +38,7 @@ public class GraphqlSchemaType2DgraphSchemaType implements Function<GraphqlSchem
 
     static class GraphqlSchemaField2DgraphSchemaPredicate implements BiFunction<GraphqlSchemaType, GraphqlSchemaField, DgraphSchemaPredicate> {
 
-        private GraphqlFieldType2DgraphPredicateTypeConverter converter = new GraphqlFieldType2DgraphPredicateTypeConverter();
+        private final GraphqlFieldType2DgraphPredicateTypeConverter converter = new GraphqlFieldType2DgraphPredicateTypeConverter();
 
         @Override
         public DgraphSchemaPredicate apply(GraphqlSchemaType graphqlSchemaType, GraphqlSchemaField graphqlSchemaField) {

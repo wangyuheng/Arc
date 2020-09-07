@@ -13,7 +13,7 @@ import java.util.function.Predicate;
  */
 public class IsOperator implements Predicate<ObjectTypeDefinition> {
 
-    private TypeDefinitionRegistry typeDefinitionRegistry;
+    private final TypeDefinitionRegistry typeDefinitionRegistry;
 
     public IsOperator(TypeDefinitionRegistry typeDefinitionRegistry) {
         this.typeDefinitionRegistry = typeDefinitionRegistry;

@@ -26,7 +26,7 @@ import java.util.stream.Stream;
  */
 public class TypeDefinitionRegistry2GraphqlSchemaTypes implements Function<TypeDefinitionRegistry, Stream<GraphqlSchemaType>> {
 
-    private BiFunction<TypeDefinitionRegistry, FieldDefinition, GraphqlSchemaField> fieldDefinition2GraphqlSchemaField = new FieldDefinition2GraphqlSchemaField(new GraphqlFieldType2GraphqlFieldType());
+    private final BiFunction<TypeDefinitionRegistry, FieldDefinition, GraphqlSchemaField> fieldDefinition2GraphqlSchemaField = new FieldDefinition2GraphqlSchemaField(new GraphqlFieldType2GraphqlFieldType());
 
     @Override
     public Stream<GraphqlSchemaType> apply(TypeDefinitionRegistry typeDefinitionRegistry) {
@@ -43,7 +43,7 @@ public class TypeDefinitionRegistry2GraphqlSchemaTypes implements Function<TypeD
 
     static class FieldDefinition2GraphqlSchemaField implements BiFunction<TypeDefinitionRegistry, FieldDefinition, GraphqlSchemaField> {
 
-        private BiFunction<TypeDefinitionRegistry, Type<?>, GraphqlFieldTypeEnum> graphqlFieldType2GraphqlFieldType;
+        private final BiFunction<TypeDefinitionRegistry, Type<?>, GraphqlFieldTypeEnum> graphqlFieldType2GraphqlFieldType;
 
         public FieldDefinition2GraphqlSchemaField(GraphqlFieldType2GraphqlFieldType graphqlFieldType2GraphqlFieldType) {
             this.graphqlFieldType2GraphqlFieldType = graphqlFieldType2GraphqlFieldType;
