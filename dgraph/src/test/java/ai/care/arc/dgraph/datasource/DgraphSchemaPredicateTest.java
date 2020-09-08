@@ -19,25 +19,21 @@ public class DgraphSchemaPredicateTest {
 
     @Test
     public void parse_rdf() {
-        DgraphSchemaPredicate predicate = new DgraphSchemaPredicate("n1", DgraphPredicateTypeEnum.STRING);
-        assertEquals("<n1>: string .", predicate.buildRdf());
-        predicate.setList(true);
-        assertEquals("<n1>: [string] .", predicate.buildRdf());
+        assertEquals("<n1>: string .", new DgraphSchemaPredicate("n1", DgraphPredicateTypeEnum.STRING).buildRdf());
+        assertEquals("<n2>: [string] .", new DgraphSchemaPredicate("n2", DgraphPredicateTypeEnum.STRING, true).buildRdf());
     }
 
     @Test
     public void name_must_be_not_null_when_build_rdf() {
-        DgraphSchemaPredicate predicate = new DgraphSchemaPredicate();
-        predicate.setPredicateType(DgraphPredicateTypeEnum.STRING);
         thrown.expect(IllegalArgumentException.class);
-        predicate.buildRdf();
+        thrown.expectMessage("name must be not null!");
+        DgraphSchemaPredicate predicate = new DgraphSchemaPredicate(null, DgraphPredicateTypeEnum.STRING);
     }
 
     @Test
     public void predicate_type_must_be_not_null_when_build_rdf() {
-        DgraphSchemaPredicate predicate = new DgraphSchemaPredicate();
-        predicate.setName("n1");
         thrown.expect(IllegalArgumentException.class);
-        predicate.buildRdf();
+        thrown.expectMessage("predicateType must be not null!");
+        DgraphSchemaPredicate predicate = new DgraphSchemaPredicate("n1", null);
     }
 }

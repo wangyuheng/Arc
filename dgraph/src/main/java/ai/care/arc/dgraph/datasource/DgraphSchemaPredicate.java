@@ -4,6 +4,7 @@ import ai.care.arc.core.dictionary.DgraphPredicateTypeEnum;
 import ai.care.arc.dgraph.util.RDFUtil;
 import org.springframework.util.Assert;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 /**
@@ -13,15 +14,13 @@ import java.util.Arrays;
  */
 public class DgraphSchemaPredicate {
 
-    public DgraphSchemaPredicate() {
-        this(null, null, false);
-    }
-
-    public DgraphSchemaPredicate(String name, DgraphPredicateTypeEnum predicateType) {
+    public DgraphSchemaPredicate(@Nonnull String name, @Nonnull DgraphPredicateTypeEnum predicateType) {
         this(name, predicateType, false);
     }
 
-    public DgraphSchemaPredicate(String name, DgraphPredicateTypeEnum predicateType, boolean isList) {
+    public DgraphSchemaPredicate(@Nonnull String name, @Nonnull DgraphPredicateTypeEnum predicateType, boolean isList) {
+        Assert.notNull(name, "name must be not null!");
+        Assert.notNull(predicateType, "predicateType must be not null!");
         this.name = name;
         this.predicateType = predicateType;
         this.isList = isList;
@@ -35,8 +34,6 @@ public class DgraphSchemaPredicate {
      * 转换RDF格式，用于sql执行
      */
     public String buildRdf() {
-        Assert.notNull(name, "name must be not null!");
-        Assert.notNull(predicateType, "name must be not null!");
         String type = isList ? "[" + predicateType.getKey() + "]" : predicateType.getKey();
         return String.join(" ", Arrays.asList(RDFUtil.wrapper(name) + ":", type, "."));
     }
@@ -45,23 +42,12 @@ public class DgraphSchemaPredicate {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public DgraphPredicateTypeEnum getPredicateType() {
         return predicateType;
-    }
-
-    public void setPredicateType(DgraphPredicateTypeEnum predicateType) {
-        this.predicateType = predicateType;
     }
 
     public boolean isList() {
         return isList;
     }
 
-    public void setList(boolean list) {
-        isList = list;
-    }
 }

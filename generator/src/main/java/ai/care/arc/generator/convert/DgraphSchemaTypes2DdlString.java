@@ -47,14 +47,14 @@ public class DgraphSchemaTypes2DdlString implements Function<Stream<DgraphSchema
                 .distinct();
 
         Stream<String> types = dgraphSchemaTypeList.stream()
-                .flatMap(dgraphSchemaType -> {
+                .map(dgraphSchemaType -> {
                     List<DgraphSchemaPredicate> predicateList = new ArrayList<>(GENERAL_DGRAPH_PREDICATE_LIST);
                     if (null != dgraphSchemaType.getPredicateList()) {
                         predicateList.addAll(dgraphSchemaType.getPredicateList());
                     }
-                    dgraphSchemaType.setPredicateList(predicateList);
-                    return dgraphSchemaType.buildDgraphSchemaLines().stream();
-                });
+                    return new DgraphSchemaType(dgraphSchemaType.getName(), predicateList);
+                })
+                .flatMap(dgraphSchemaType -> dgraphSchemaType.buildDgraphSchemaLines().stream());
 
         return Stream.of(GENERAL_DGRAPH_PREDICATE_LIST.stream().map(DgraphSchemaPredicate::buildRdf), fields, types)
                 .flatMap(it -> it);

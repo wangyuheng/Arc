@@ -2,7 +2,9 @@ package ai.care.arc.dgraph.datasource;
 
 import org.springframework.util.Assert;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,15 +15,13 @@ import java.util.stream.Collectors;
  */
 public class DgraphSchemaType {
 
-    private String name;
-    private List<DgraphSchemaPredicate> predicateList;
+    private final String name;
+    private final List<DgraphSchemaPredicate> predicateList;
 
-    public DgraphSchemaType() {
-    }
-
-    public DgraphSchemaType(String name, List<DgraphSchemaPredicate> predicateList) {
+    public DgraphSchemaType(@Nonnull String name, List<DgraphSchemaPredicate> predicateList) {
+        Assert.notNull(name, "name must be not null!");
         this.name = name;
-        this.predicateList = predicateList;
+        this.predicateList = Collections.unmodifiableList(predicateList);;
     }
 
     /**
@@ -29,7 +29,6 @@ public class DgraphSchemaType {
      * 只需要predicate name 不校验类型等信息，不包含通用predicate
      */
     public List<String> buildDgraphSchemaLines() {
-        Assert.notNull(name, "name must be not null!");
         List<DgraphSchemaPredicate> allPredicateList = new ArrayList<>();
         if (null != predicateList) {
             allPredicateList.addAll(predicateList);
@@ -45,15 +44,8 @@ public class DgraphSchemaType {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public List<DgraphSchemaPredicate> getPredicateList() {
         return predicateList;
     }
 
-    public void setPredicateList(List<DgraphSchemaPredicate> predicateList) {
-        this.predicateList = predicateList;
-    }
 }
