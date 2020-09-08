@@ -1,5 +1,8 @@
 package ai.care.arc.graphql.idl;
 
+import org.springframework.lang.NonNull;
+import org.springframework.util.Assert;
+
 import java.util.List;
 
 /**
@@ -11,27 +14,21 @@ import java.util.List;
  */
 public class GraphqlSchemaType {
 
-    public GraphqlSchemaType(String name, List<GraphqlSchemaField> fieldList) {
+    private final String name;
+    private final List<GraphqlSchemaField> fieldList;
+
+    public GraphqlSchemaType(@NonNull String name, List<GraphqlSchemaField> fieldList) {
+        Assert.notNull(name, "name must be not null!");
         this.name = name;
         this.fieldList = fieldList;
     }
 
-    private String name;
-    private List<GraphqlSchemaField> fieldList;
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public List<GraphqlSchemaField> getFieldList() {
         return fieldList;
     }
 
-    public void setFieldList(List<GraphqlSchemaField> fieldList) {
-        this.fieldList = fieldList;
-    }
 }

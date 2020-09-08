@@ -2,9 +2,9 @@ package ai.care.arc.dgraph.datasource;
 
 import ai.care.arc.core.dictionary.DgraphPredicateTypeEnum;
 import ai.care.arc.dgraph.util.RDFUtil;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 /**
@@ -14,11 +14,11 @@ import java.util.Arrays;
  */
 public class DgraphSchemaPredicate {
 
-    public DgraphSchemaPredicate(@Nonnull String name, @Nonnull DgraphPredicateTypeEnum predicateType) {
+    public DgraphSchemaPredicate(@NonNull String name, @NonNull DgraphPredicateTypeEnum predicateType) {
         this(name, predicateType, false);
     }
 
-    public DgraphSchemaPredicate(@Nonnull String name, @Nonnull DgraphPredicateTypeEnum predicateType, boolean isList) {
+    public DgraphSchemaPredicate(@NonNull String name, @NonNull DgraphPredicateTypeEnum predicateType, boolean isList) {
         Assert.notNull(name, "name must be not null!");
         Assert.notNull(predicateType, "predicateType must be not null!");
         this.name = name;

@@ -1,6 +1,8 @@
 package ai.care.arc.graphql.idl;
 
 import ai.care.arc.core.dictionary.GraphqlFieldTypeEnum;
+import org.springframework.lang.NonNull;
+import org.springframework.util.Assert;
 
 /**
  * graphql schema 字段描述
@@ -12,37 +14,27 @@ import ai.care.arc.core.dictionary.GraphqlFieldTypeEnum;
  */
 public class GraphqlSchemaField {
 
-    public GraphqlSchemaField(String name, boolean listType, GraphqlFieldTypeEnum type) {
-        this.name = name;
-        this.listType = listType;
-        this.type = type;
-    }
+    private final String name;
+    private final GraphqlFieldTypeEnum type;
+    private final boolean listType;
 
-    private String name;
-    private boolean listType;
-    private GraphqlFieldTypeEnum type;
+    public GraphqlSchemaField(@NonNull String name, @NonNull GraphqlFieldTypeEnum type, boolean listType) {
+        Assert.notNull(name, "name must be not null!");
+        Assert.notNull(type, "type must be not null!");
+        this.name = name;
+        this.type = type;
+        this.listType = listType;
+    }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isListType() {
-        return listType;
-    }
-
-    public void setListType(boolean listType) {
-        this.listType = listType;
     }
 
     public GraphqlFieldTypeEnum getType() {
         return type;
     }
 
-    public void setType(GraphqlFieldTypeEnum type) {
-        this.type = type;
+    public boolean isListType() {
+        return listType;
     }
 }

@@ -1,8 +1,8 @@
 package ai.care.arc.dgraph.datasource;
 
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +18,7 @@ public class DgraphSchemaType {
     private final String name;
     private final List<DgraphSchemaPredicate> predicateList;
 
-    public DgraphSchemaType(@Nonnull String name, List<DgraphSchemaPredicate> predicateList) {
+    public DgraphSchemaType(@NonNull String name, List<DgraphSchemaPredicate> predicateList) {
         Assert.notNull(name, "name must be not null!");
         this.name = name;
         this.predicateList = Collections.unmodifiableList(predicateList);;

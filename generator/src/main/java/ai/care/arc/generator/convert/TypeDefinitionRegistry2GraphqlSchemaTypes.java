@@ -52,8 +52,8 @@ public class TypeDefinitionRegistry2GraphqlSchemaTypes implements Function<TypeD
         @Override
         public GraphqlSchemaField apply(TypeDefinitionRegistry typeDefinitionRegistry, FieldDefinition fieldDefinition) {
             return new GraphqlSchemaField(fieldDefinition.getName(),
-                    fieldDefinition.getType() instanceof ListType,
-                    graphqlFieldType2GraphqlFieldType.apply(typeDefinitionRegistry, fieldDefinition.getType()));
+                    graphqlFieldType2GraphqlFieldType.apply(typeDefinitionRegistry, fieldDefinition.getType()),
+                    fieldDefinition.getType() instanceof ListType);
         }
     }
 
