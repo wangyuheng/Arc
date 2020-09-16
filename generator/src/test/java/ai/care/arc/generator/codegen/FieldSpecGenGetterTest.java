@@ -17,7 +17,7 @@ public class FieldSpecGenGetterTest {
 
     @Test
     public void generate_string_getter() {
-        final String expected = "public void getAbc() {\n" +
+        final String expected = "public java.lang.String getAbc() {\n" +
                 "  return abc;\n" +
                 "}\n";
 
@@ -28,7 +28,7 @@ public class FieldSpecGenGetterTest {
 
     @Test
     public void generate_boolean_getter() {
-        final String expected = "public void isAbc() {\n" +
+        final String expected = "public java.lang.Boolean isAbc() {\n" +
                 "  return abc;\n" +
                 "}\n";
 

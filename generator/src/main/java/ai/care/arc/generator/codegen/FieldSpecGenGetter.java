@@ -23,6 +23,7 @@ public class FieldSpecGenGetter implements Function<FieldSpec, MethodSpec> {
         return MethodSpec.methodBuilder(getPrefix(fieldSpec) + StringUtils.capitalize(fieldSpec.name))
                 .addModifiers(Modifier.PUBLIC)
                 .addStatement("return $L", fieldSpec.name)
+                .returns(fieldSpec.type)
                 .build();
     }
 
