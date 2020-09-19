@@ -1,9 +1,6 @@
 package ai.care.arc.graphql.util;
 
-import graphql.language.EnumTypeDefinition;
-import graphql.language.OperationTypeDefinition;
-import graphql.language.Type;
-import graphql.language.TypeName;
+import graphql.language.*;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import graphql.schema.idl.TypeInfo;
 
@@ -18,6 +15,8 @@ import java.util.stream.Collectors;
  */
 public class GraphqlTypeUtils {
 
+    private GraphqlTypeUtils() {}
+
     public static List<String> getOperationTypeNames(TypeDefinitionRegistry typeRegistry) {
         return typeRegistry.schemaDefinition()
                 .map(schemaDefinition -> schemaDefinition.getOperationTypeDefinitions().stream()
@@ -31,6 +30,15 @@ public class GraphqlTypeUtils {
         return typeRegistry.getTypes(EnumTypeDefinition.class).stream()
                 .map(EnumTypeDefinition::getName)
                 .anyMatch(name -> name.equalsIgnoreCase(TypeInfo.typeInfo(type).getName()));
+    }
+
+    public static boolean isListType(Type<?> type) {
+        TypeInfo typeInfo = TypeInfo.typeInfo(type);
+        if (typeInfo.isNonNull()) {
+            return isListType(((NonNullType) type).getType());
+        } else {
+            return typeInfo.isList();
+        }
     }
 
 }

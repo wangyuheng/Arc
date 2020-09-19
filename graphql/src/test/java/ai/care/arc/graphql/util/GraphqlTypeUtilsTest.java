@@ -1,9 +1,6 @@
 package ai.care.arc.graphql.util;
 
-import graphql.language.EnumTypeDefinition;
-import graphql.language.OperationTypeDefinition;
-import graphql.language.SchemaDefinition;
-import graphql.language.TypeName;
+import graphql.language.*;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import org.junit.Test;
 import org.powermock.api.mockito.PowerMockito;
@@ -43,6 +40,16 @@ public class GraphqlTypeUtilsTest {
         typeDefinitionRegistry.add(EnumTypeDefinition.newEnumTypeDefinition().name("e2").build());
 
         assertEquals(Arrays.asList("Q", "M"), GraphqlTypeUtils.getOperationTypeNames(typeDefinitionRegistry));
+    }
+
+    @Test
+    public void is_list_type_when_nonnull_wrapper_list() {
+        assertTrue(GraphqlTypeUtils.isListType(NonNullType.newNonNullType()
+                .type(ListType.newListType().type(TypeName.newTypeName("T").build()).build())
+                .build()));
+        assertFalse(GraphqlTypeUtils.isListType(NonNullType.newNonNullType()
+                .type(TypeName.newTypeName("T").build())
+                .build()));
     }
 
 }
