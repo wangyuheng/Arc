@@ -1,3 +1,17 @@
+# 1.1.0
+
+## highlight
+
+- 新增generator模块，用于代码生成
+
+### generator
+
+1. 根据GraphqlSchema生成DgraphSchema
+
+### Dgraph
+
+1. 通过配置初始化数据库Schema
+
 # 1.0.0
 
 ### Graphql
