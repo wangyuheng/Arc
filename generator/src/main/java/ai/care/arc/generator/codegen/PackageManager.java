@@ -1,9 +1,7 @@
 package ai.care.arc.generator.codegen;
 
-import graphql.language.EnumTypeDefinition;
-import graphql.language.InputObjectTypeDefinition;
-import graphql.language.ObjectTypeDefinition;
-import graphql.language.Type;
+import ai.care.arc.generator.conf.CodeGenType;
+import graphql.language.*;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
 /**
@@ -12,6 +10,8 @@ import graphql.schema.idl.TypeDefinitionRegistry;
  * @author yuheng.wang
  */
 public class PackageManager {
+
+    private static final String PACKAGE_SEPARATOR = ".";
 
     private String basePackage;
     private TypeDefinitionRegistry typeDefinitionRegistry;
@@ -22,23 +22,23 @@ public class PackageManager {
     }
 
     public String getTypePackage() {
-        return this.basePackage + ".type";
+        return this.basePackage + PACKAGE_SEPARATOR + CodeGenType.TYPE.getDirName();
     }
 
     public String getRepoPackage() {
-        return this.basePackage + ".repo";
+        return this.basePackage + PACKAGE_SEPARATOR + CodeGenType.REPO.getDirName();
     }
 
     public String getInterfacePackage() {
-        return this.basePackage + ".api";
+        return this.basePackage + PACKAGE_SEPARATOR + CodeGenType.API.getDirName();
     }
 
     public String getInputPackage() {
-        return this.basePackage + ".input";
+        return this.basePackage + PACKAGE_SEPARATOR + CodeGenType.INPUT.getDirName();
     }
 
     public String getEnumPackage() {
-        return this.basePackage + ".dictionary";
+        return this.basePackage + PACKAGE_SEPARATOR + CodeGenType.DICTIONARY.getDirName();
     }
 
     /**
@@ -49,7 +49,9 @@ public class PackageManager {
             return this.getEnumPackage();
         } else if (typeDefinitionRegistry.getType(graphqlType, InputObjectTypeDefinition.class).isPresent()) {
             return this.getInputPackage();
-        } else if (typeDefinitionRegistry.getType(graphqlType, ObjectTypeDefinition.class).isPresent()) {
+        } else if (typeDefinitionRegistry.getType(graphqlType, ObjectTypeDefinition.class).isPresent()
+                || typeDefinitionRegistry.getType(graphqlType, UnionTypeDefinition.class).isPresent()
+                || typeDefinitionRegistry.getType(graphqlType, InterfaceTypeDefinition.class).isPresent()) {
             return this.getTypePackage();
         } else {
             throw new IllegalArgumentException("not support or type not existed graphqlType: " + graphqlType);
