@@ -50,9 +50,8 @@ public class PackageManagerTest {
     }
 
     @Test
-    public void should_throw_if_union_type() {
-        thrown.expect(IllegalArgumentException.class);
-        packageManager.getPackageByGraphqlType(TypeName.newTypeName("u1").build());
+    public void should_return_type_if_union_type() {
+        assertEquals(packageManager.getTypePackage(), packageManager.getPackageByGraphqlType(TypeName.newTypeName("u1").build()));
     }
 
 }
