@@ -3,6 +3,8 @@ package ai.care.arc.generator.codegen;
 import ai.care.arc.dgraph.annotation.DgraphType;
 import ai.care.arc.dgraph.annotation.UidField;
 import ai.care.arc.dgraph.dictionary.IDgraphType;
+import ai.care.arc.generator.codegen.spec.FieldSpecGenGetter;
+import ai.care.arc.generator.codegen.spec.FieldSpecGenSetter;
 import ai.care.arc.generator.convert.GraphqlType2JavapoetTypeName;
 import ai.care.arc.generator.convert.IsContainsGraphqlMethodField;
 import ai.care.arc.generator.convert.IsGraphqlMethodField;

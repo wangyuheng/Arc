@@ -5,7 +5,6 @@ import ai.care.arc.graphql.idl.GraphqlSchemaField;
 import ai.care.arc.graphql.idl.GraphqlSchemaType;
 import ai.care.arc.graphql.util.GraphqlTypeUtils;
 import graphql.language.FieldDefinition;
-import graphql.language.ListType;
 import graphql.language.ObjectTypeDefinition;
 import graphql.language.Type;
 import graphql.schema.idl.TypeDefinitionRegistry;

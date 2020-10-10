@@ -1,4 +1,4 @@
-package ai.care.arc.generator.codegen;
+package ai.care.arc.generator.codegen.spec;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;

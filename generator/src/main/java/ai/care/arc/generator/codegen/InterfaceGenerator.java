@@ -2,7 +2,6 @@ package ai.care.arc.generator.codegen;
 
 import ai.care.arc.generator.convert.GraphqlType2JavapoetTypeName;
 import ai.care.arc.generator.convert.IsGraphqlMethodField;
-import ai.care.arc.generator.convert.IsOperator;
 import ai.care.arc.generator.dictionary.GeneratorGlobalConst;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;

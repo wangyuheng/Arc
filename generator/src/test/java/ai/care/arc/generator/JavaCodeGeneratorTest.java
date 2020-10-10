@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 import java.util.Collections;
 
 @Ignore
-public class JavaCodeGeneratorHandlerTest {
+public class JavaCodeGeneratorTest {
 
     @Test
     public void gene_java_code() throws IOException {
@@ -22,7 +22,7 @@ public class JavaCodeGeneratorHandlerTest {
         CodeWriter codeWriter = new CodeWriter(Paths.get(".", "/src/main/java"));
         CodeGenConfig config = new CodeGenConfig(Collections.singletonList(new CodeGenStrategy(CodeGenType.REPO, CodeGenOperation.SKIP_IF_EXISTED)));
 
-        new JavaCodeGeneratorHandler(codeWriter, config).handle(schema.getInputStream(), "ai.care.generatorsample.generated");
+        new JavaCodeGenerator(codeWriter, config).generate(schema.getInputStream(), "ai.care.generatorsample.generated");
     }
 
 }

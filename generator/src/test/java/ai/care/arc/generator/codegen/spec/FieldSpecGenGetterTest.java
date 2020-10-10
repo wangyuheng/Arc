@@ -1,5 +1,6 @@
-package ai.care.arc.generator.codegen;
+package ai.care.arc.generator.codegen.spec;
 
+import ai.care.arc.generator.codegen.spec.FieldSpecGenGetter;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import org.junit.Test;

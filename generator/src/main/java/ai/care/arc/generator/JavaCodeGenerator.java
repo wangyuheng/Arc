@@ -1,8 +1,12 @@
 package ai.care.arc.generator;
 
 import ai.care.arc.generator.codegen.*;
+import ai.care.arc.generator.conf.CodeGenConfig;
+import ai.care.arc.generator.conf.CodeGenOperation;
+import ai.care.arc.generator.conf.CodeGenType;
 import ai.care.arc.generator.convert.IsContainsGraphqlMethodField;
 import ai.care.arc.generator.convert.IsOperator;
+import ai.care.arc.generator.io.CodeWriter;
 import ai.care.arc.graphql.util.GraphqlTypeUtils;
 import com.squareup.javapoet.JavaFile;
 import graphql.language.EnumTypeDefinition;
@@ -13,10 +17,8 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
 import java.io.InputStream;
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -34,9 +36,41 @@ import java.util.stream.Stream;
  */
 public class JavaCodeGenerator {
 
+    private CodeWriter codeWriter;
+    private CodeGenConfig config;
+
+    public JavaCodeGenerator(CodeWriter codeWriter, CodeGenConfig config) {
+        this.codeWriter = codeWriter;
+        this.config = config;
+    }
+
     private final Predicate<ObjectTypeDefinition> isContainGraphqlMethodField = new IsContainsGraphqlMethodField();
 
-    public List<JavaFile> generate(InputStream schema, String basePackage) {
+    private final Predicate<JavaFile> canExec = javaFile -> {
+        if (config.getIgnoreJavaFileNames().contains(javaFile.packageName)) {
+            return false;
+        } else {
+            CodeGenOperation operation = config.getOperationByType(CodeGenType.parse(javaFile.packageName));
+            switch (operation) {
+                case OVERRIDE:
+                    return true;
+                case SKIP:
+                    return false;
+                case SKIP_IF_EXISTED:
+                    return !codeWriter.exist(javaFile);
+                default:
+                    throw new IllegalArgumentException("operation illegal");
+            }
+        }
+    };
+
+    public void generate(InputStream inputStream, String basePackage) {
+        this.parseJavaFileStream(inputStream, basePackage)
+                .filter(canExec)
+                .forEach(codeWriter::write);
+    }
+
+    private Stream<JavaFile> parseJavaFileStream(InputStream schema, String basePackage) {
         final TypeDefinitionRegistry typeDefinitionRegistry = new SchemaParser().parse(schema);
         final PackageManager packageManager = new PackageManager(basePackage, typeDefinitionRegistry);
 
@@ -59,8 +93,6 @@ public class JavaCodeGenerator {
                 .map(new InterfaceGenerator(isOperator, packageManager));
 
         return Stream.of(genEnums, genInputs, genTypes, genTypesForUnion, genRepos, genTypeInterfaces)
-                .flatMap(it -> it.apply(typeDefinitionRegistry))
-                .collect(Collectors.toList());
+                .flatMap(it -> it.apply(typeDefinitionRegistry));
     }
-
 }

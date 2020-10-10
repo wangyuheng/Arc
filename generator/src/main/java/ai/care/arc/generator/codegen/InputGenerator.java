@@ -1,5 +1,7 @@
 package ai.care.arc.generator.codegen;
 
+import ai.care.arc.generator.codegen.spec.FieldSpecGenGetter;
+import ai.care.arc.generator.codegen.spec.FieldSpecGenSetter;
 import ai.care.arc.generator.convert.GraphqlType2JavapoetTypeName;
 import ai.care.arc.generator.dictionary.GeneratorGlobalConst;
 import com.squareup.javapoet.FieldSpec;
