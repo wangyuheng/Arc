@@ -17,6 +17,7 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -42,6 +43,11 @@ public class JavaCodeGenerator {
     public JavaCodeGenerator(CodeWriter codeWriter, CodeGenConfig config) {
         this.codeWriter = codeWriter;
         this.config = config;
+    }
+
+    public JavaCodeGenerator(CodeWriter codeWriter) {
+        this.codeWriter = codeWriter;
+        this.config = new CodeGenConfig(Collections.emptyList());
     }
 
     private final Predicate<ObjectTypeDefinition> isContainGraphqlMethodField = new IsContainsGraphqlMethodField();
@@ -88,11 +94,15 @@ public class JavaCodeGenerator {
                 .filter(isOperator.negate())
                 .map(new RepositoryGenerator(packageManager));
         final Function<TypeDefinitionRegistry, Stream<JavaFile>> genTypeInterfaces = t -> t.getTypes(ObjectTypeDefinition.class).stream()
-                .filter(isOperator.or(isContainGraphqlMethodField))
+                .filter(isOperator.negate().and(isContainGraphqlMethodField))
                 .distinct()
-                .map(new InterfaceGenerator(isOperator, packageManager));
+                .map(new InterfaceGenerator(packageManager));
+        final Function<TypeDefinitionRegistry, Stream<JavaFile>> genTypeInterfacesByOperator = t -> t.getTypes(ObjectTypeDefinition.class).stream()
+                .filter(isOperator)
+                .distinct()
+                .map(new OperatorInterfaceGenerator(packageManager));
 
-        return Stream.of(genEnums, genInputs, genTypes, genTypesForUnion, genRepos, genTypeInterfaces)
+        return Stream.of(genEnums, genInputs, genTypes, genTypesForUnion, genRepos, genTypeInterfaces, genTypeInterfacesByOperator)
                 .flatMap(it -> it.apply(typeDefinitionRegistry));
     }
 }
