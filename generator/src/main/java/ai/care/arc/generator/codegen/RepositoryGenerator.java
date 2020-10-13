@@ -1,6 +1,7 @@
 package ai.care.arc.generator.codegen;
 
 import ai.care.arc.dgraph.repository.SimpleDgraphRepository;
+import ai.care.arc.generator.codegen.util.PackageManager;
 import ai.care.arc.generator.convert.IsContainsGraphqlMethodField;
 import ai.care.arc.generator.convert.IsOperator;
 import ai.care.arc.generator.dictionary.GeneratorGlobalConst;

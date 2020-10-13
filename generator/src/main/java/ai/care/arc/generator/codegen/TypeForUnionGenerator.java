@@ -1,5 +1,6 @@
 package ai.care.arc.generator.codegen;
 
+import ai.care.arc.generator.codegen.util.PackageManager;
 import ai.care.arc.generator.dictionary.GeneratorGlobalConst;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;

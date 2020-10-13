@@ -2,6 +2,7 @@ package ai.care.arc.generator.codegen;
 
 import ai.care.arc.core.util.StreamUtils;
 import ai.care.arc.generator.codegen.spec.FieldDefinition2MethodSpec;
+import ai.care.arc.generator.codegen.util.PackageManager;
 import ai.care.arc.generator.convert.GraphqlType2JavapoetTypeName;
 import ai.care.arc.generator.convert.IsContainsGraphqlMethodField;
 import ai.care.arc.generator.convert.IsGraphqlMethodField;

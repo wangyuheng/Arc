@@ -1,4 +1,4 @@
-package ai.care.arc.generator.codegen.spec;
+package ai.care.arc.generator.codegen.util;
 
 import graphql.language.ObjectTypeDefinition;
 import org.springframework.util.StringUtils;

@@ -1,5 +1,7 @@
 package ai.care.arc.generator.codegen;
 
+import ai.care.arc.generator.codegen.util.JavadocUtils;
+import ai.care.arc.generator.codegen.util.PackageManager;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
 import graphql.language.Description;

@@ -1,4 +1,4 @@
-package ai.care.arc.generator.codegen;
+package ai.care.arc.generator.codegen.util;
 
 import ai.care.arc.generator.dictionary.GeneratorGlobalConst;
 import com.squareup.javapoet.CodeBlock;
