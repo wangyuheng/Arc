@@ -2,7 +2,7 @@ package ai.care.arc.generator.convert;
 
 import ai.care.arc.core.common.GraphqlFieldType2JavaTypeConverter;
 import ai.care.arc.core.dictionary.GraphqlFieldTypeEnum;
-import ai.care.arc.generator.codegen.PackageManager;
+import ai.care.arc.generator.codegen.util.PackageManager;
 import ai.care.arc.generator.dictionary.GeneratorGlobalConst;
 import ai.care.arc.graphql.util.GraphqlTypeUtils;
 import com.squareup.javapoet.ClassName;
