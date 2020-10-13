@@ -29,6 +29,10 @@ public class CodeGenConfig {
         this(genStrategies, false);
     }
 
+    public CodeGenConfig() {
+        this(Collections.emptyList(), false);
+    }
+
     public CodeGenConfig(List<CodeGenStrategy> genStrategies, boolean dropAll) {
         this(genStrategies, dropAll, Collections.emptyList());
     }

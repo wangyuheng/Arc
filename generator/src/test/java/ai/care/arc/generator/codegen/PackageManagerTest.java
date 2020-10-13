@@ -1,6 +1,5 @@
 package ai.care.arc.generator.codegen;
 
-import ai.care.arc.generator.codegen.PackageManager;
 import graphql.language.*;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import org.junit.Before;

@@ -1,9 +1,5 @@
 package ai.care.arc.generator;
 
-import ai.care.arc.generator.conf.CodeGenConfig;
-import ai.care.arc.generator.conf.CodeGenOperation;
-import ai.care.arc.generator.conf.CodeGenStrategy;
-import ai.care.arc.generator.conf.CodeGenType;
 import ai.care.arc.generator.io.CodeWriter;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -13,7 +9,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -26,14 +21,6 @@ public class JavaCodeGeneratorTest {
     private final String BASE_PACKAGE = "ai.care.generatorsample.generated";
     private final String BASE_PACKAGE_PATH = BASE_PACKAGE.replaceAll("\\.", "/");
     private final Path TEST_DATA_PATH = Paths.get(".", "/src/test/resources/testdata", BASE_PACKAGE_PATH);
-
-    @Test
-    public void gene_java_code() throws IOException {
-        ClassPathResource schema = new ClassPathResource("schema.graphqls");
-        CodeWriter codeWriter = new CodeWriter(Paths.get("./"));
-        CodeGenConfig config = new CodeGenConfig(Collections.singletonList(new CodeGenStrategy(CodeGenType.REPO, CodeGenOperation.SKIP_IF_EXISTED)));
-        new JavaCodeGenerator(codeWriter, config).generate(schema.getInputStream(), BASE_PACKAGE);
-    }
 
     @Test
     public void gene_java_code_e2e_test() throws IOException {
