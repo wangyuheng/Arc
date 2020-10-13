@@ -1,9 +1,6 @@
 package ai.care.arc.graphql.util;
 
-import graphql.language.EnumTypeDefinition;
-import graphql.language.OperationTypeDefinition;
-import graphql.language.SchemaDefinition;
-import graphql.language.TypeName;
+import graphql.language.*;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import org.junit.Test;
 import org.powermock.api.mockito.PowerMockito;
@@ -18,6 +15,8 @@ import static org.junit.Assert.*;
  * @author yuheng.wang
  */
 public class GraphqlTypeUtilsTest {
+
+    private final Type<?> COMMON_TYPE = TypeName.newTypeName("T").build();
 
     @Test
     public void should_return_true_if_type_is_enum_definition() {
@@ -43,6 +42,20 @@ public class GraphqlTypeUtilsTest {
         typeDefinitionRegistry.add(EnumTypeDefinition.newEnumTypeDefinition().name("e2").build());
 
         assertEquals(Arrays.asList("Q", "M"), GraphqlTypeUtils.getOperationTypeNames(typeDefinitionRegistry));
+    }
+
+    @Test
+    public void is_list_type_when_nonnull_wrapper_list() {
+        assertTrue(GraphqlTypeUtils.isListType(NonNullType.newNonNullType()
+                .type(ListType.newListType().type(COMMON_TYPE).build())
+                .build()));
+    }
+
+    @Test
+    public void is_not_list_type_when_nonnull_wrapper_type() {
+        assertFalse(GraphqlTypeUtils.isListType(NonNullType.newNonNullType()
+                .type(COMMON_TYPE)
+                .build()));
     }
 
 }
