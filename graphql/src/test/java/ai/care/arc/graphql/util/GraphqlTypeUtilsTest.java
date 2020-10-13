@@ -16,6 +16,8 @@ import static org.junit.Assert.*;
  */
 public class GraphqlTypeUtilsTest {
 
+    private final Type<?> COMMON_TYPE = TypeName.newTypeName("T").build();
+
     @Test
     public void should_return_true_if_type_is_enum_definition() {
         TypeDefinitionRegistry typeDefinitionRegistry = new TypeDefinitionRegistry();
@@ -45,10 +47,14 @@ public class GraphqlTypeUtilsTest {
     @Test
     public void is_list_type_when_nonnull_wrapper_list() {
         assertTrue(GraphqlTypeUtils.isListType(NonNullType.newNonNullType()
-                .type(ListType.newListType().type(TypeName.newTypeName("T").build()).build())
+                .type(ListType.newListType().type(COMMON_TYPE).build())
                 .build()));
+    }
+
+    @Test
+    public void is_not_list_type_when_nonnull_wrapper_type() {
         assertFalse(GraphqlTypeUtils.isListType(NonNullType.newNonNullType()
-                .type(TypeName.newTypeName("T").build())
+                .type(COMMON_TYPE)
                 .build()));
     }
 
