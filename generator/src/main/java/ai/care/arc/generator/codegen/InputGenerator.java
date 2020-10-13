@@ -28,28 +28,31 @@ import java.util.stream.Stream;
 
 public class InputGenerator implements IGenerator {
 
-    private final FieldSpecGenGetter fieldSpecGenGetter = new FieldSpecGenGetter();
-    private final FieldSpecGenSetter fieldSpecGenSetter = new FieldSpecGenSetter();
-
     private PackageManager packageManager;
-    private GraphqlType2JavapoetTypeName toJavapoetTypeName;
 
     public InputGenerator(PackageManager packageManager) {
         this.packageManager = packageManager;
-        this.toJavapoetTypeName = new GraphqlType2JavapoetTypeName(packageManager);
     }
 
     @Override
     public Stream<JavaFile> apply(TypeDefinitionRegistry typeDefinitionRegistry) {
         return typeDefinitionRegistry.getTypes(InputObjectTypeDefinition.class).stream()
-                .map(new InputObjectTypeDefinitionGenerator());
+                .map(new InputObjectTypeDefinitionGenerator(new GraphqlType2JavapoetTypeName(packageManager)))
+                .map(it -> JavaFile.builder(packageManager.getInputPackage(), it.build()).build());
     }
 
+    static class InputObjectTypeDefinitionGenerator implements Function<InputObjectTypeDefinition, TypeSpec.Builder> {
 
-    class InputObjectTypeDefinitionGenerator implements Function<InputObjectTypeDefinition, JavaFile> {
+        private final FieldSpecGenGetter fieldSpecGenGetter = new FieldSpecGenGetter();
+        private final FieldSpecGenSetter fieldSpecGenSetter = new FieldSpecGenSetter();
+        private GraphqlType2JavapoetTypeName toJavapoetTypeName;
+
+        public InputObjectTypeDefinitionGenerator(GraphqlType2JavapoetTypeName toJavapoetTypeName) {
+            this.toJavapoetTypeName = toJavapoetTypeName;
+        }
 
         @Override
-        public JavaFile apply(InputObjectTypeDefinition inputObjectTypeDefinition) {
+        public TypeSpec.Builder apply(InputObjectTypeDefinition inputObjectTypeDefinition) {
             List<FieldSpec> fieldSpecs = inputObjectTypeDefinition.getInputValueDefinitions().stream()
                     .map(inputValueDefinition -> FieldSpec.builder(toJavapoetTypeName.apply(inputValueDefinition.getType()), inputValueDefinition.getName(), Modifier.PRIVATE)
                             .addJavadoc(Optional.ofNullable(inputValueDefinition.getDescription()).map(Description::getContent).orElse(inputValueDefinition.getName()))
@@ -70,7 +73,7 @@ public class InputGenerator implements IGenerator {
                 });
             }
 
-            return JavaFile.builder(packageManager.getInputPackage(), typeSpecBuilder.build()).build();
+            return typeSpecBuilder;
         }
     }
 }

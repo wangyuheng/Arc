@@ -41,21 +41,25 @@ public class RepositoryGenerator implements IGenerator {
         return typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
                 .filter(isOperator.negate().and(isContainGraphqlMethodField))
                 .distinct()
-                .map(new ObjectTypeDefinitionGenerator());
+                .map(new ObjectTypeDefinitionGenerator(packageManager))
+                .map(it -> JavaFile.builder(packageManager.getRepoPackage(), it.build()).build());
     }
 
-    class ObjectTypeDefinitionGenerator implements Function<ObjectTypeDefinition, JavaFile> {
+    static class ObjectTypeDefinitionGenerator implements Function<ObjectTypeDefinition, TypeSpec.Builder> {
+
+        private PackageManager packageManager;
+
+        public ObjectTypeDefinitionGenerator(PackageManager packageManager) {
+            this.packageManager = packageManager;
+        }
 
         @Override
-        public JavaFile apply(ObjectTypeDefinition objectTypeDefinition) {
-            return JavaFile.builder(packageManager.getRepoPackage(),
-                    TypeSpec.classBuilder(objectTypeDefinition.getName() + GeneratorGlobalConst.REPOSITORY_SUFFIX)
-                            .superclass(ParameterizedTypeName.get(ClassName.get(SimpleDgraphRepository.class), ClassName.get(packageManager.getTypePackage(), objectTypeDefinition.getName())))
-                            .addModifiers(Modifier.PUBLIC)
-                            .addAnnotation(Repository.class)
-                            .addJavadoc(GeneratorGlobalConst.GENERAL_CODE_BLOCK)
-                            .build())
-                    .build();
+        public TypeSpec.Builder apply(ObjectTypeDefinition objectTypeDefinition) {
+            return TypeSpec.classBuilder(objectTypeDefinition.getName() + GeneratorGlobalConst.REPOSITORY_SUFFIX)
+                    .superclass(ParameterizedTypeName.get(ClassName.get(SimpleDgraphRepository.class), ClassName.get(packageManager.getTypePackage(), objectTypeDefinition.getName())))
+                    .addModifiers(Modifier.PUBLIC)
+                    .addAnnotation(Repository.class)
+                    .addJavadoc(GeneratorGlobalConst.GENERAL_CODE_BLOCK);
         }
     }
 

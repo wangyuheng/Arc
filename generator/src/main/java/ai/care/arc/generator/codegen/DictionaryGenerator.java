@@ -29,13 +29,14 @@ public class DictionaryGenerator implements IGenerator {
     @Override
     public Stream<JavaFile> apply(TypeDefinitionRegistry typeDefinitionRegistry) {
         return typeDefinitionRegistry.getTypes(EnumTypeDefinition.class).stream()
-                .map(new EnumTypeDefinitionGenerator());
+                .map(new EnumTypeDefinitionGenerator())
+                .map(it -> JavaFile.builder(packageManager.getEnumPackage(), it.build()).build());
     }
 
-    class EnumTypeDefinitionGenerator implements Function<EnumTypeDefinition, JavaFile> {
+    static class EnumTypeDefinitionGenerator implements Function<EnumTypeDefinition, TypeSpec.Builder> {
 
         @Override
-        public JavaFile apply(EnumTypeDefinition enumTypeDefinition) {
+        public TypeSpec.Builder apply(EnumTypeDefinition enumTypeDefinition) {
             TypeSpec.Builder typeSpecBuilder = TypeSpec.enumBuilder(enumTypeDefinition.getName())
                     .addModifiers(Modifier.PUBLIC)
                     .addJavadoc(JavadocUtils.getDocForType(enumTypeDefinition, enumTypeDefinition.getDescription()));
@@ -44,8 +45,7 @@ public class DictionaryGenerator implements IGenerator {
                             typeSpecBuilder.addEnumConstant(enumValueDefinition.getName(), TypeSpec.anonymousClassBuilder("")
                                     .addJavadoc(Optional.ofNullable(enumValueDefinition.getDescription()).map(Description::getContent).orElse(enumValueDefinition.getName()))
                                     .build()));
-            return JavaFile.builder(packageManager.getEnumPackage(), typeSpecBuilder.build())
-                    .build();
+            return typeSpecBuilder;
         }
     }
 

@@ -18,7 +18,6 @@ import graphql.schema.idl.TypeDefinitionRegistry;
 
 import javax.lang.model.element.Modifier;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -45,35 +44,64 @@ public class ApiGenerator implements IGenerator {
         final Predicate<FieldDefinition> isGraphqlMethodField = new IsGraphqlMethodField();
         final FieldDefinition2MethodSpec fieldDefinition2MethodSpec = new FieldDefinition2MethodSpec(new GraphqlType2JavapoetTypeName(packageManager));
 
-        final BiFunction<String, List<MethodSpec>, JavaFile> buildJavaFile = (name, methodSpecs) -> {
-            TypeSpec typeSpec = TypeSpec.interfaceBuilder(name + GeneratorGlobalConst.INTERFACE_SUFFIX)
-                    .addModifiers(Modifier.PUBLIC)
-                    .addMethods(methodSpecs)
-                    .addJavadoc(GeneratorGlobalConst.GENERAL_CODE_BLOCK)
-                    .build();
-            return JavaFile.builder(packageManager.getInterfacePackage(), typeSpec).build();
-        };
-
-        final Function<ObjectTypeDefinition, JavaFile> objectTypeDefinitionGenerator = typeDefinition ->
-                buildJavaFile.apply(typeDefinition.getName(), typeDefinition.getFieldDefinitions().stream()
-                        .filter(isGraphqlMethodField)
-                        .map(fieldDefinition2MethodSpec)
-                        .collect(Collectors.toList()));
-
-        final Function<ObjectTypeDefinition, JavaFile> operatorTypeDefinitionGenerator = typeDefinition ->
-                buildJavaFile.apply(typeDefinition.getName(), typeDefinition.getFieldDefinitions().stream()
-                        .map(fieldDefinition2MethodSpec)
-                        .collect(Collectors.toList()));
-
         return StreamUtils.merge(
                 typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
                         .filter(isOperator.negate().and(isContainGraphqlMethodField))
                         .distinct()
-                        .map(objectTypeDefinitionGenerator),
+                        .map(new ObjectTypeDefinitionGenerator(isGraphqlMethodField, fieldDefinition2MethodSpec)),
                 typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
                         .filter(isOperator)
                         .distinct()
-                        .map(operatorTypeDefinitionGenerator));
+                        .map(new OperatorDefinitionGenerator(fieldDefinition2MethodSpec))
+        ).map(it -> JavaFile.builder(packageManager.getInterfacePackage(), it.build()).build());
+
     }
 
+    static class OperatorDefinitionGenerator implements Function<ObjectTypeDefinition, TypeSpec.Builder> {
+
+        private final FieldDefinition2MethodSpec fieldDefinition2MethodSpec;
+
+        public OperatorDefinitionGenerator(FieldDefinition2MethodSpec fieldDefinition2MethodSpec) {
+            this.fieldDefinition2MethodSpec = fieldDefinition2MethodSpec;
+        }
+
+        @Override
+        public TypeSpec.Builder apply(ObjectTypeDefinition objectTypeDefinition) {
+            List<MethodSpec> methodSpecs = objectTypeDefinition.getFieldDefinitions().stream()
+                    .map(fieldDefinition2MethodSpec)
+                    .collect(Collectors.toList());
+
+            return TypeSpec.interfaceBuilder(objectTypeDefinition.getName() + GeneratorGlobalConst.INTERFACE_SUFFIX)
+                    .addModifiers(Modifier.PUBLIC)
+                    .addMethods(methodSpecs)
+                    .addJavadoc(GeneratorGlobalConst.GENERAL_CODE_BLOCK)
+                    ;
+        }
+    }
+
+    static class ObjectTypeDefinitionGenerator implements Function<ObjectTypeDefinition, TypeSpec.Builder> {
+
+        private final Predicate<FieldDefinition> isGraphqlMethodField;
+        private final FieldDefinition2MethodSpec fieldDefinition2MethodSpec;
+
+        public ObjectTypeDefinitionGenerator(Predicate<FieldDefinition> isGraphqlMethodField, FieldDefinition2MethodSpec fieldDefinition2MethodSpec) {
+            this.isGraphqlMethodField = isGraphqlMethodField;
+            this.fieldDefinition2MethodSpec = fieldDefinition2MethodSpec;
+        }
+
+        @Override
+        public TypeSpec.Builder apply(ObjectTypeDefinition objectTypeDefinition) {
+
+            List<MethodSpec> methodSpecs = objectTypeDefinition.getFieldDefinitions().stream()
+                    .filter(isGraphqlMethodField)
+                    .map(fieldDefinition2MethodSpec)
+                    .collect(Collectors.toList());
+
+            return TypeSpec.interfaceBuilder(objectTypeDefinition.getName() + GeneratorGlobalConst.INTERFACE_SUFFIX)
+                    .addModifiers(Modifier.PUBLIC)
+                    .addMethods(methodSpecs)
+                    .addJavadoc(GeneratorGlobalConst.GENERAL_CODE_BLOCK)
+                    ;
+        }
+    }
 }

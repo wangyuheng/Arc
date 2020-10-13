@@ -30,10 +30,10 @@ import org.springframework.util.StringUtils;
 import javax.lang.model.element.Modifier;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -62,14 +62,66 @@ public class TypeGenerator implements IGenerator {
     public Stream<JavaFile> apply(TypeDefinitionRegistry typeDefinitionRegistry) {
         final Predicate<ObjectTypeDefinition> isOperator = new IsOperator(GraphqlTypeUtils.getOperationTypeNames(typeDefinitionRegistry));
 
+        final BiFunction<ObjectTypeDefinition, FieldDefinition, MethodSpec> toMethodSpec = (objectTypeDefinition, fieldDefinition) ->
+                MethodSpec.methodBuilder(fieldDefinition.getName())
+                        .addModifiers(Modifier.PUBLIC)
+                        .beginControlFlow("return dataFetchingEnvironment -> ")
+                        .addAnnotation(AnnotationSpec.builder(GraphqlMethod.class).addMember("type", "$S", objectTypeDefinition.getName()).build())
+                        .addStatement(" return $L.handle$L(dataFetchingEnvironment)", SpecNameManager.getUnCapitalizeApiName(objectTypeDefinition), StringUtils.capitalize(fieldDefinition.getName()))
+                        .addStatement("}")
+                        .returns(ParameterizedTypeName.get(ClassName.get(DataFetcher.class), toJavapoetTypeName.apply(fieldDefinition.getType())))
+                        .build();
+
+        final Function<ObjectTypeDefinition, TypeSpec.Builder> toTypeSpecBuilder = objectTypeDefinition -> TypeSpec.classBuilder(objectTypeDefinition.getName())
+                .addModifiers(Modifier.PUBLIC)
+                .addAnnotation(DataFetcherService.class)
+                .addSuperinterface(IDgraphType.class)
+                .addJavadoc(Optional.ofNullable(objectTypeDefinition.getDescription()).map(Description::getContent).orElse(objectTypeDefinition.getName()))
+                .addJavadoc("\n")
+                .addJavadoc(GeneratorGlobalConst.GENERAL_CODE_BLOCK);
+
+        final BiConsumer<TypeSpec.Builder, ObjectTypeDefinition> fillDgraphType = (typeSpecBuilder, objectTypeDefinition) -> {
+            typeSpecBuilder.addAnnotation(AnnotationSpec.builder(DgraphType.class)
+                    .addMember("value", "$S", objectTypeDefinition.getName().toUpperCase()).build());
+            List<FieldSpec> fieldSpecs = objectTypeDefinition.getFieldDefinitions().stream()
+                    .filter(isGraphqlMethodField.negate())
+                    .map(fieldDefinition -> {
+                        FieldSpec.Builder fieldSpecBuilder = FieldSpec.builder(toJavapoetTypeName.apply(fieldDefinition.getType()), fieldDefinition.getName(), Modifier.PRIVATE)
+                                .addJavadoc(Optional.ofNullable(fieldDefinition.getDescription()).map(Description::getContent).orElse(fieldDefinition.getName()));
+                        if (DEFAULT_UID_FIELD_NAME.equals(fieldDefinition.getName())) {
+                            fieldSpecBuilder.addAnnotation(UidField.class);
+                        }
+                        return fieldSpecBuilder.build();
+                    })
+                    .collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(fieldSpecs)) {
+                fieldSpecs.forEach(fieldSpec -> {
+                    typeSpecBuilder.addMethod(fieldSpecGenSetter.apply(fieldSpec));
+                    typeSpecBuilder.addMethod(fieldSpecGenGetter.apply(fieldSpec));
+                });
+                typeSpecBuilder.addFields(fieldSpecs);
+            }
+        };
+
+        final BiConsumer<TypeSpec.Builder, ObjectTypeDefinition> fillAutowired = (typeSpecBuilder, objectTypeDefinition) -> {
+            if (isContainGraphqlMethodField.test(objectTypeDefinition)) {
+                typeSpecBuilder.addField(
+                        FieldSpec.builder(ClassName.get(packageManager.getInterfacePackage(), SpecNameManager.getApiName(objectTypeDefinition)), SpecNameManager.getUnCapitalizeApiName(objectTypeDefinition))
+                                .addModifiers(Modifier.PRIVATE)
+                                .addAnnotation(Autowired.class)
+                                .build()
+                );
+            }
+        };
+
         return StreamUtils.merge(
                 typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
                         .filter(isOperator.negate())
-                        .map(new TypeBuilder())
+                        .map(new TypeBuilder(toTypeSpecBuilder, fillDgraphType, fillAutowired, toMethodSpec))
                         .map(it -> JavaFile.builder(packageManager.getTypePackage(), it.build()).build()),
                 typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
                         .filter(isOperator)
-                        .map(new OperatorBuilder())
+                        .map(new OperatorBuilder(toTypeSpecBuilder, fillAutowired, toMethodSpec))
                         .map(it -> JavaFile.builder(packageManager.getTypePackage(), it.build()).build()),
                 typeDefinitionRegistry.getTypes(UnionTypeDefinition.class).stream()
                         .map(new UnionBuilder())
@@ -77,7 +129,69 @@ public class TypeGenerator implements IGenerator {
         );
     }
 
-    class UnionBuilder implements Function<UnionTypeDefinition, TypeSpec.Builder> {
+    static class TypeBuilder implements Function<ObjectTypeDefinition, TypeSpec.Builder> {
+
+        private final IsGraphqlMethodField isGraphqlMethodField = new IsGraphqlMethodField();
+        private final Function<ObjectTypeDefinition, TypeSpec.Builder> toTypeSpecBuilder;
+        private final BiConsumer<TypeSpec.Builder, ObjectTypeDefinition> fillDgraphType;
+        private final BiConsumer<TypeSpec.Builder, ObjectTypeDefinition> fillAutowired;
+        private final BiConsumer<TypeSpec.Builder, ObjectTypeDefinition> fillMethods;
+
+        public TypeBuilder(Function<ObjectTypeDefinition, TypeSpec.Builder> toTypeSpecBuilder,
+                           BiConsumer<TypeSpec.Builder, ObjectTypeDefinition> fillDgraphType,
+                           BiConsumer<TypeSpec.Builder, ObjectTypeDefinition> fillAutowired,
+                           BiFunction<ObjectTypeDefinition, FieldDefinition, MethodSpec> toMethodSpec) {
+            this.toTypeSpecBuilder = toTypeSpecBuilder;
+            this.fillDgraphType = fillDgraphType;
+            this.fillAutowired = fillAutowired;
+            this.fillMethods = (typeSpecBuilder, objectTypeDefinition) -> objectTypeDefinition.getFieldDefinitions().stream()
+                    .filter(isGraphqlMethodField)
+                    .map(fieldDefinition -> toMethodSpec.apply(objectTypeDefinition, fieldDefinition))
+                    .forEach(typeSpecBuilder::addMethod);
+        }
+
+        @Override
+        public TypeSpec.Builder apply(ObjectTypeDefinition objectTypeDefinition) {
+            TypeSpec.Builder typeSpecBuilder = toTypeSpecBuilder.apply(objectTypeDefinition);
+
+            fillMethods
+                    .andThen(fillDgraphType)
+                    .andThen(fillAutowired)
+                    .accept(typeSpecBuilder, objectTypeDefinition);
+            return typeSpecBuilder;
+        }
+
+    }
+
+
+    static class OperatorBuilder implements Function<ObjectTypeDefinition, TypeSpec.Builder> {
+
+        private final Function<ObjectTypeDefinition, TypeSpec.Builder> toTypeSpecBuilder;
+        private final BiConsumer<TypeSpec.Builder, ObjectTypeDefinition> fillAutowired;
+        private final BiConsumer<TypeSpec.Builder, ObjectTypeDefinition> fillMethods;
+
+        public OperatorBuilder(Function<ObjectTypeDefinition, TypeSpec.Builder> toTypeSpecBuilder,
+                               BiConsumer<TypeSpec.Builder, ObjectTypeDefinition> fillAutowired,
+                               BiFunction<ObjectTypeDefinition, FieldDefinition, MethodSpec> toMethodSpec) {
+            this.toTypeSpecBuilder = toTypeSpecBuilder;
+            this.fillAutowired = fillAutowired;
+            this.fillMethods = (typeSpecBuilder, objectTypeDefinition) -> objectTypeDefinition.getFieldDefinitions().stream()
+                    .map(fieldDefinition -> toMethodSpec.apply(objectTypeDefinition, fieldDefinition))
+                    .forEach(typeSpecBuilder::addMethod);
+        }
+
+
+        @Override
+        public TypeSpec.Builder apply(ObjectTypeDefinition objectTypeDefinition) {
+            TypeSpec.Builder typeSpecBuilder = toTypeSpecBuilder.apply(objectTypeDefinition);
+            fillMethods
+                    .andThen(fillAutowired)
+                    .accept(typeSpecBuilder, objectTypeDefinition);
+            return typeSpecBuilder;
+        }
+    }
+
+    static class UnionBuilder implements Function<UnionTypeDefinition, TypeSpec.Builder> {
 
         @Override
         public TypeSpec.Builder apply(UnionTypeDefinition unionTypeDefinition) {
@@ -88,100 +202,5 @@ public class TypeGenerator implements IGenerator {
                     .addJavadoc(GeneratorGlobalConst.GENERAL_CODE_BLOCK);
         }
     }
-
-    class TypeBuilder implements Function<ObjectTypeDefinition, TypeSpec.Builder> {
-
-        @Override
-        public TypeSpec.Builder apply(ObjectTypeDefinition objectTypeDefinition) {
-            TypeSpec.Builder typeSpecBuilder = base(objectTypeDefinition).get();
-            fillMethods(objectTypeDefinition, isGraphqlMethodField)
-                    .andThen(fillDgraphType(objectTypeDefinition))
-                    .andThen(fillAutowired(objectTypeDefinition))
-                    .accept(typeSpecBuilder);
-            return typeSpecBuilder;
-        }
-    }
-
-    class OperatorBuilder implements Function<ObjectTypeDefinition, TypeSpec.Builder> {
-
-        @Override
-        public TypeSpec.Builder apply(ObjectTypeDefinition objectTypeDefinition) {
-            TypeSpec.Builder typeSpecBuilder = base(objectTypeDefinition).get();
-            fillMethods(objectTypeDefinition, p -> true)
-                    .andThen(fillAutowired(objectTypeDefinition))
-                    .accept(typeSpecBuilder);
-            return typeSpecBuilder;
-        }
-    }
-
-    private List<FieldSpec> buildFieldSpecs(ObjectTypeDefinition objectTypeDefinition) {
-        return objectTypeDefinition.getFieldDefinitions().stream()
-                .filter(isGraphqlMethodField.negate())
-                .map(fieldDefinition -> {
-                    FieldSpec.Builder fieldSpecBuilder = FieldSpec.builder(toJavapoetTypeName.apply(fieldDefinition.getType()), fieldDefinition.getName(), Modifier.PRIVATE)
-                            .addJavadoc(Optional.ofNullable(fieldDefinition.getDescription()).map(Description::getContent).orElse(fieldDefinition.getName()));
-                    if (DEFAULT_UID_FIELD_NAME.equals(fieldDefinition.getName())) {
-                        fieldSpecBuilder.addAnnotation(UidField.class);
-                    }
-                    return fieldSpecBuilder.build();
-                })
-                .collect(Collectors.toList());
-    }
-
-
-    private Consumer<TypeSpec.Builder> fillMethods(ObjectTypeDefinition objectTypeDefinition, Predicate<FieldDefinition> predicate) {
-        return builder -> objectTypeDefinition.getFieldDefinitions().stream()
-                .filter(predicate)
-                .map(fieldDefinition ->
-                        MethodSpec.methodBuilder(fieldDefinition.getName())
-                                .addModifiers(Modifier.PUBLIC)
-                                .beginControlFlow("return dataFetchingEnvironment -> ")
-                                .addAnnotation(AnnotationSpec.builder(GraphqlMethod.class).addMember("type", "$S", objectTypeDefinition.getName()).build())
-                                .addStatement(" return $L.handle$L(dataFetchingEnvironment)", SpecNameManager.getUnCapitalizeApiName(objectTypeDefinition), StringUtils.capitalize(fieldDefinition.getName()))
-                                .addStatement("}")
-                                .returns(ParameterizedTypeName.get(ClassName.get(DataFetcher.class), toJavapoetTypeName.apply(fieldDefinition.getType())))
-                                .build())
-                .forEach(builder::addMethod);
-    }
-
-    private Supplier<TypeSpec.Builder> base(ObjectTypeDefinition objectTypeDefinition) {
-        return () -> TypeSpec.classBuilder(objectTypeDefinition.getName())
-                .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(DataFetcherService.class)
-                .addSuperinterface(IDgraphType.class)
-                .addJavadoc(Optional.ofNullable(objectTypeDefinition.getDescription()).map(Description::getContent).orElse(objectTypeDefinition.getName()))
-                .addJavadoc("\n")
-                .addJavadoc(GeneratorGlobalConst.GENERAL_CODE_BLOCK);
-    }
-
-    private Consumer<TypeSpec.Builder> fillAutowired(ObjectTypeDefinition objectTypeDefinition) {
-        return typeSpecBuilder -> {
-            if (isContainGraphqlMethodField.test(objectTypeDefinition)) {
-                typeSpecBuilder.addField(
-                        FieldSpec.builder(ClassName.get(packageManager.getInterfacePackage(), SpecNameManager.getApiName(objectTypeDefinition)), SpecNameManager.getUnCapitalizeApiName(objectTypeDefinition))
-                                .addModifiers(Modifier.PRIVATE)
-                                .addAnnotation(Autowired.class)
-                                .build()
-                );
-            }
-        };
-    }
-
-
-    private Consumer<TypeSpec.Builder> fillDgraphType(ObjectTypeDefinition objectTypeDefinition) {
-        return typeSpecBuilder -> {
-            typeSpecBuilder.addAnnotation(AnnotationSpec.builder(DgraphType.class)
-                    .addMember("value", "$S", objectTypeDefinition.getName().toUpperCase()).build());
-            List<FieldSpec> fieldSpecs = buildFieldSpecs(objectTypeDefinition);
-            if (!CollectionUtils.isEmpty(fieldSpecs)) {
-                fieldSpecs.forEach(fieldSpec -> {
-                    typeSpecBuilder.addMethod(fieldSpecGenSetter.apply(fieldSpec));
-                    typeSpecBuilder.addMethod(fieldSpecGenGetter.apply(fieldSpec));
-                });
-                typeSpecBuilder.addFields(fieldSpecs);
-            }
-        };
-    }
-
 
 }
