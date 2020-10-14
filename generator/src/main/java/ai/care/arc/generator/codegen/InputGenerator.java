@@ -25,7 +25,6 @@ import java.util.stream.Stream;
  *
  * @author yuheng.wang
  */
-
 public class InputGenerator implements IGenerator {
 
     private PackageManager packageManager;

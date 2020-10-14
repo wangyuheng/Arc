@@ -42,7 +42,6 @@ import java.util.stream.Stream;
  *
  * @author yuheng.wang
  */
-
 public class TypeGenerator implements IGenerator {
 
     private static final String DEFAULT_UID_FIELD_NAME = "id";
