@@ -41,4 +41,16 @@ public class GraphqlTypeUtils {
         }
     }
 
+    /**
+     * 获取list or nonNull 包装内的真实type
+     */
+    public static Type getUnWrapperType(Type<?> type) {
+        if (TypeInfo.typeInfo(type).isList()) {
+            return getUnWrapperType(((ListType) type).getType());
+        } else if (TypeInfo.typeInfo(type).isNonNull()) {
+            return getUnWrapperType(((NonNullType) type).getType());
+        } else {
+            return type;
+        }
+    }
 }
