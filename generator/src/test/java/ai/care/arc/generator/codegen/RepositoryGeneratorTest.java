@@ -111,9 +111,6 @@ public class RepositoryGeneratorTest {
 
     @Test
     public void repo_gen_e2e_test() {
-        System.out.println(repositoryGenerator.apply(typeDefinitionRegistry).findAny()
-                .orElseThrow(NullPointerException::new)
-                .toString());
         String expected = "package a.b.c.repo;" +
                 "import a.b.c.type.Project;" +
                 "import ai.care.arc.dgraph.repository.SimpleDgraphRepository;" +
