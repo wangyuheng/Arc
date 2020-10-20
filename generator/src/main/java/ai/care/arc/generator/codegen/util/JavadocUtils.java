@@ -12,14 +12,14 @@ import java.util.Optional;
  *
  * @author yuheng.wang
  */
-public class JavadocUtils {
+public interface JavadocUtils {
 
     /**
      * 获取graphql字段描述，填充javadoc
      *
      * 无法通过 {@link TypeDefinition} 获取 {@link Description}, 因为getDescription是每个子类<? extends TypeDefinition>自己的方法
      */
-    public static CodeBlock getDocForType(TypeDefinition<?> typeDefinition, Description description) {
+    static CodeBlock getDocForType(TypeDefinition<?> typeDefinition, Description description) {
         return CodeBlock.builder()
                 .add(Optional.ofNullable(description).map(Description::getContent).orElse(typeDefinition.getName()))
                 .add("\n")
