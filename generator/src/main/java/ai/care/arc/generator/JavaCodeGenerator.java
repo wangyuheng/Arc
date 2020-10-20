@@ -29,8 +29,8 @@ import java.util.stream.Stream;
  */
 public class JavaCodeGenerator {
 
-    private CodeWriter codeWriter;
-    private CodeGenConfig config;
+    private final CodeWriter codeWriter;
+    private final CodeGenConfig config;
 
     public JavaCodeGenerator(CodeWriter codeWriter, CodeGenConfig config) {
         this.codeWriter = codeWriter;
@@ -42,28 +42,24 @@ public class JavaCodeGenerator {
         this.config = new CodeGenConfig();
     }
 
-    /**
-     * 根据配置 {@link CodeGenConfig} 判断是否需要生成
-     */
-    private final Predicate<JavaFile> canExec = javaFile -> {
-        if (config.getIgnoreJavaFileNames().contains(javaFile.packageName)) {
-            return false;
-        } else {
-            CodeGenOperation operation = config.getOperationByType(CodeGenType.parse(javaFile.packageName));
-            switch (operation) {
-                case OVERRIDE:
-                    return true;
-                case SKIP:
-                    return false;
-                case SKIP_IF_EXISTED:
-                    return !codeWriter.exist(javaFile);
-                default:
-                    throw new IllegalArgumentException("operation illegal");
-            }
-        }
-    };
-
     public void generate(InputStream inputStream, String basePackage) {
+        final Predicate<JavaFile> canExec = javaFile -> {
+            if (config.getIgnoreJavaFileNames().contains(javaFile.packageName)) {
+                return false;
+            } else {
+                CodeGenOperation operation = config.getOperationByType(CodeGenType.parse(javaFile.packageName));
+                switch (operation) {
+                    case OVERRIDE:
+                        return true;
+                    case SKIP:
+                        return false;
+                    case SKIP_IF_EXISTED:
+                        return !codeWriter.exist(javaFile);
+                    default:
+                        throw new IllegalArgumentException("operation illegal");
+                }
+            }
+        };
         this.parseJavaFileStream(inputStream, basePackage)
                 .filter(canExec)
                 .forEach(codeWriter::write);

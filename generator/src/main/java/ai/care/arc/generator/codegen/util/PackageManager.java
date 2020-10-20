@@ -14,8 +14,8 @@ public class PackageManager {
 
     private static final String PACKAGE_SEPARATOR = ".";
 
-    private String basePackage;
-    private TypeDefinitionRegistry typeDefinitionRegistry;
+    private final String basePackage;
+    private final TypeDefinitionRegistry typeDefinitionRegistry;
 
     public PackageManager(String basePackage, TypeDefinitionRegistry typeDefinitionRegistry) {
         this.basePackage = basePackage;

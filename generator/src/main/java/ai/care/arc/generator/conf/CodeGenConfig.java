@@ -14,16 +14,16 @@ public class CodeGenConfig {
     /**
      * 生成策略
      */
-    private List<CodeGenStrategy> genStrategies;
+    private final List<CodeGenStrategy> genStrategies;
     /**
      * 是否删除上次生成的代码
      * 会清空指定包下全部代码
      */
-    private boolean dropAll;
+    private final boolean dropAll;
     /**
      * 全局忽略，不会覆盖相关代码文件
      */
-    private List<String> ignoreJavaFileNames;
+    private final List<String> ignoreJavaFileNames;
 
     public CodeGenConfig(List<CodeGenStrategy> genStrategies) {
         this(genStrategies, false);

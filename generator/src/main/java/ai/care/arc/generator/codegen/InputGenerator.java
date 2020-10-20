@@ -27,7 +27,7 @@ import java.util.stream.Stream;
  */
 public class InputGenerator implements IGenerator {
 
-    private PackageManager packageManager;
+    private final PackageManager packageManager;
 
     public InputGenerator(PackageManager packageManager) {
         this.packageManager = packageManager;
@@ -44,7 +44,7 @@ public class InputGenerator implements IGenerator {
 
         private final FieldSpecGenGetter fieldSpecGenGetter = new FieldSpecGenGetter();
         private final FieldSpecGenSetter fieldSpecGenSetter = new FieldSpecGenSetter();
-        private GraphqlType2JavapoetTypeName toJavapoetTypeName;
+        private final GraphqlType2JavapoetTypeName toJavapoetTypeName;
 
         public InputObjectTypeDefinitionGenerator(GraphqlType2JavapoetTypeName toJavapoetTypeName) {
             this.toJavapoetTypeName = toJavapoetTypeName;

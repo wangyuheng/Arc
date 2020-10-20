@@ -20,7 +20,7 @@ import java.util.stream.Stream;
  */
 public class DictionaryGenerator implements IGenerator {
 
-    private PackageManager packageManager;
+    private final PackageManager packageManager;
 
     public DictionaryGenerator(PackageManager packageManager) {
         this.packageManager = packageManager;

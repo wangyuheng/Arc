@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 @Slf4j
 public class CodeWriter {
 
-    private Path targetPath;
+    private final Path targetPath;
 
     public CodeWriter(Path targetPath) {
         this.targetPath = targetPath;

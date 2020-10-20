@@ -24,7 +24,7 @@ public class GraphqlType2JavapoetTypeName implements Function<Type<?>, TypeName>
 
     private final GraphqlFieldType2JavaTypeConverter graphqlFieldType2JavaTypeConverter = new GraphqlFieldType2JavaTypeConverter();
 
-    private PackageManager packageManager;
+    private final PackageManager packageManager;
 
     public GraphqlType2JavapoetTypeName(PackageManager packageManager) {
         this.packageManager = packageManager;

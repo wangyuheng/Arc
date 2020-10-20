@@ -27,7 +27,7 @@ import java.util.stream.Stream;
  */
 public class RepositoryGenerator implements IGenerator {
 
-    private PackageManager packageManager;
+    private final PackageManager packageManager;
 
     public RepositoryGenerator(PackageManager packageManager) {
         this.packageManager = packageManager;
@@ -47,7 +47,7 @@ public class RepositoryGenerator implements IGenerator {
 
     static class ObjectTypeDefinitionGenerator implements Function<ObjectTypeDefinition, TypeSpec.Builder> {
 
-        private PackageManager packageManager;
+        private final PackageManager packageManager;
 
         public ObjectTypeDefinitionGenerator(PackageManager packageManager) {
             this.packageManager = packageManager;

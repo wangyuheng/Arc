@@ -29,7 +29,7 @@ import java.util.stream.Stream;
  */
 public class ApiGenerator implements IGenerator {
 
-    private PackageManager packageManager;
+    private final PackageManager packageManager;
 
     public ApiGenerator(PackageManager packageManager) {
         this.packageManager = packageManager;

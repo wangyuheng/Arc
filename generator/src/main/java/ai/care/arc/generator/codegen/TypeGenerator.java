@@ -45,7 +45,7 @@ public class TypeGenerator implements IGenerator {
 
     private static final String DEFAULT_UID_FIELD_NAME = "id";
 
-    private PackageManager packageManager;
+    private final PackageManager packageManager;
 
     public TypeGenerator(PackageManager packageManager) {
         this.packageManager = packageManager;
@@ -211,7 +211,7 @@ public class TypeGenerator implements IGenerator {
 
     static class AutowiredFieldFiller implements BiConsumer<TypeSpec.Builder, ObjectTypeDefinition> {
         private final Predicate<ObjectTypeDefinition> isContainGraphqlMethodField = new IsContainsGraphqlMethodField();
-        private PackageManager packageManager;
+        private final PackageManager packageManager;
 
         public AutowiredFieldFiller(PackageManager packageManager) {
             this.packageManager = packageManager;

@@ -17,7 +17,7 @@ import java.util.function.Function;
  */
 public class FieldDefinition2MethodSpec implements Function<FieldDefinition, MethodSpec> {
 
-    private GraphqlType2JavapoetTypeName graphqlType2JavapoetTypeName;
+    private final GraphqlType2JavapoetTypeName graphqlType2JavapoetTypeName;
 
     public FieldDefinition2MethodSpec(GraphqlType2JavapoetTypeName graphqlType2JavapoetTypeName) {
         this.graphqlType2JavapoetTypeName = graphqlType2JavapoetTypeName;

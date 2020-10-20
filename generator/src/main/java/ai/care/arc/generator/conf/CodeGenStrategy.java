@@ -7,8 +7,8 @@ package ai.care.arc.generator.conf;
  * @author yuheng.wang
  */
 public class CodeGenStrategy {
-    private CodeGenType codeGenType;
-    private CodeGenOperation codeGenOperation;
+    private final CodeGenType codeGenType;
+    private final CodeGenOperation codeGenOperation;
 
     public CodeGenStrategy(CodeGenType codeGenType, CodeGenOperation codeGenOperation) {
         this.codeGenType = codeGenType;
