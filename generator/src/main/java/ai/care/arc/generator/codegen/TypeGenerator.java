@@ -1,6 +1,5 @@
 package ai.care.arc.generator.codegen;
 
-import ai.care.arc.core.util.StreamUtils;
 import ai.care.arc.dgraph.annotation.DgraphType;
 import ai.care.arc.dgraph.annotation.UidField;
 import ai.care.arc.dgraph.dictionary.IDgraphType;
@@ -61,16 +60,18 @@ public class TypeGenerator implements IGenerator {
         final AutowiredFieldFiller autowiredFieldFiller = new AutowiredFieldFiller(packageManager);
         final TypeSpecConvert typeSpecConvert = new TypeSpecConvert();
 
-        return StreamUtils.merge(
-                typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
-                        .filter(isOperator.negate())
-                        .map(new ObjectGenerator(typeSpecConvert, dgraphTypeFiller, autowiredFieldFiller, toMethodSpec)),
-                typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
-                        .filter(isOperator)
-                        .map(new OperatorGenerator(typeSpecConvert, autowiredFieldFiller, toMethodSpec)),
-                typeDefinitionRegistry.getTypes(UnionTypeDefinition.class).stream()
-                        .map(new UnionGenerator())
-        ).map(it -> JavaFile.builder(packageManager.getTypePackage(), it.build()).build());
+        return Stream.concat(
+                        Stream.concat(
+                                typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
+                                        .filter(isOperator.negate())
+                                        .map(new ObjectGenerator(typeSpecConvert, dgraphTypeFiller, autowiredFieldFiller, toMethodSpec)),
+                                typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
+                                        .filter(isOperator)
+                                        .map(new OperatorGenerator(typeSpecConvert, autowiredFieldFiller, toMethodSpec))
+                        ),
+                        typeDefinitionRegistry.getTypes(UnionTypeDefinition.class).stream()
+                                .map(new UnionGenerator())
+                ).map(it -> JavaFile.builder(packageManager.getTypePackage(), it.build()).build());
     }
 
     static class ObjectGenerator implements Function<ObjectTypeDefinition, TypeSpec.Builder> {

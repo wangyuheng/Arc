@@ -1,6 +1,5 @@
 package ai.care.arc.generator.codegen;
 
-import ai.care.arc.core.util.StreamUtils;
 import ai.care.arc.generator.codegen.spec.FieldDefinition2MethodSpec;
 import ai.care.arc.generator.codegen.util.PackageManager;
 import ai.care.arc.generator.convert.GraphqlType2JavapoetTypeName;
@@ -30,7 +29,6 @@ import java.util.stream.Stream;
  */
 public class ApiGenerator implements IGenerator {
 
-
     private PackageManager packageManager;
 
     public ApiGenerator(PackageManager packageManager) {
@@ -44,17 +42,16 @@ public class ApiGenerator implements IGenerator {
         final Predicate<FieldDefinition> isGraphqlMethodField = new IsGraphqlMethodField();
         final FieldDefinition2MethodSpec fieldDefinition2MethodSpec = new FieldDefinition2MethodSpec(new GraphqlType2JavapoetTypeName(packageManager));
 
-        return StreamUtils.merge(
-                typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
-                        .filter(isOperator.negate().and(isContainGraphqlMethodField))
-                        .distinct()
-                        .map(new ObjectTypeDefinitionGenerator(isGraphqlMethodField, fieldDefinition2MethodSpec)),
-                typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
-                        .filter(isOperator)
-                        .distinct()
-                        .map(new OperatorDefinitionGenerator(fieldDefinition2MethodSpec))
-        ).map(it -> JavaFile.builder(packageManager.getInterfacePackage(), it.build()).build());
-
+        return Stream.concat(
+                        typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
+                                .filter(isOperator.negate().and(isContainGraphqlMethodField))
+                                .distinct()
+                                .map(new ObjectTypeDefinitionGenerator(isGraphqlMethodField, fieldDefinition2MethodSpec)),
+                        typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
+                                .filter(isOperator)
+                                .distinct()
+                                .map(new OperatorDefinitionGenerator(fieldDefinition2MethodSpec))
+                ).map(it -> JavaFile.builder(packageManager.getInterfacePackage(), it.build()).build());
     }
 
     static class OperatorDefinitionGenerator implements Function<ObjectTypeDefinition, TypeSpec.Builder> {
