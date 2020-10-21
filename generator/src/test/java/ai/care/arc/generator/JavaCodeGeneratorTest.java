@@ -1,7 +1,6 @@
 package ai.care.arc.generator;
 
 import ai.care.arc.generator.io.CodeWriter;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
@@ -15,15 +14,14 @@ import java.util.stream.Stream;
 
 import static org.junit.Assert.assertArrayEquals;
 
-@Ignore
 public class JavaCodeGeneratorTest {
-
-    private final String BASE_PACKAGE = "ai.care.generatorsample.generated";
-    private final String BASE_PACKAGE_PATH = BASE_PACKAGE.replaceAll("\\.", "/");
-    private final Path TEST_DATA_PATH = Paths.get(".", "/src/test/resources/testdata", BASE_PACKAGE_PATH);
 
     @Test
     public void gene_java_code_e2e_test() throws IOException {
+        final String BASE_PACKAGE = "ai.care.generatorsample.generated";
+        final String BASE_PACKAGE_PATH = BASE_PACKAGE.replaceAll("\\.", "/");
+        final Path TEST_DATA_PATH = Paths.get(".", "/src/test/resources/testdata", BASE_PACKAGE_PATH);
+
         String generatedPath = "./src/test/resources/gd3";
         Path generatedPathWithPackage = Paths.get(generatedPath, BASE_PACKAGE_PATH);
 
@@ -38,6 +36,6 @@ public class JavaCodeGeneratorTest {
                 assertArrayEquals(Files.readAllBytes(tmp), Files.readAllBytes(p));
             }
         }
-
     }
+
 }

@@ -3,15 +3,13 @@ package ai.care.arc.generator;
 import ai.care.arc.generator.codegen.*;
 import ai.care.arc.generator.codegen.util.PackageManager;
 import ai.care.arc.generator.conf.CodeGenConfig;
-import ai.care.arc.generator.conf.CodeGenOperation;
-import ai.care.arc.generator.conf.CodeGenType;
+import ai.care.arc.generator.conf.CodeGenConfigHandler;
 import ai.care.arc.generator.io.CodeWriter;
 import com.squareup.javapoet.JavaFile;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
 import java.io.InputStream;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -30,38 +28,20 @@ import java.util.stream.Stream;
 public class JavaCodeGenerator {
 
     private final CodeWriter codeWriter;
-    private final CodeGenConfig config;
+    private final CodeGenConfigHandler codeGenConfigHandler;
 
     public JavaCodeGenerator(CodeWriter codeWriter, CodeGenConfig config) {
         this.codeWriter = codeWriter;
-        this.config = config;
+        this.codeGenConfigHandler = new CodeGenConfigHandler(codeWriter, config);
     }
 
     public JavaCodeGenerator(CodeWriter codeWriter) {
-        this.codeWriter = codeWriter;
-        this.config = new CodeGenConfig();
+        this(codeWriter, new CodeGenConfig());
     }
 
     public void generate(InputStream inputStream, String basePackage) {
-        final Predicate<JavaFile> canExec = javaFile -> {
-            if (config.getIgnoreJavaFileNames().contains(javaFile.packageName)) {
-                return false;
-            } else {
-                CodeGenOperation operation = config.getOperationByType(CodeGenType.parse(javaFile.packageName));
-                switch (operation) {
-                    case OVERRIDE:
-                        return true;
-                    case SKIP:
-                        return false;
-                    case SKIP_IF_EXISTED:
-                        return !codeWriter.exist(javaFile);
-                    default:
-                        throw new IllegalArgumentException("operation illegal");
-                }
-            }
-        };
         this.parseJavaFileStream(inputStream, basePackage)
-                .filter(canExec)
+                .filter(codeGenConfigHandler.canExec())
                 .forEach(codeWriter::write);
     }
 
