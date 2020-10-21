@@ -60,17 +60,17 @@ public class TypeGenerator implements IGenerator {
         final TypeSpecConvert typeSpecConvert = new TypeSpecConvert();
 
         return Stream.concat(
-                        Stream.concat(
-                                typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
-                                        .filter(isOperator.negate())
-                                        .map(new ObjectGenerator(typeSpecConvert, dgraphTypeFiller, autowiredFieldFiller, toMethodSpec)),
-                                typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
-                                        .filter(isOperator)
-                                        .map(new OperatorGenerator(typeSpecConvert, autowiredFieldFiller, toMethodSpec))
-                        ),
-                        typeDefinitionRegistry.getTypes(UnionTypeDefinition.class).stream()
-                                .map(new UnionGenerator())
-                ).map(it -> JavaFile.builder(packageManager.getTypePackage(), it.build()).build());
+                Stream.concat(
+                        typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
+                                .filter(isOperator.negate())
+                                .map(new ObjectGenerator(typeSpecConvert, dgraphTypeFiller, autowiredFieldFiller, toMethodSpec)),
+                        typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
+                                .filter(isOperator)
+                                .map(new OperatorGenerator(typeSpecConvert, autowiredFieldFiller, toMethodSpec))
+                ),
+                typeDefinitionRegistry.getTypes(UnionTypeDefinition.class).stream()
+                        .map(new UnionGenerator())
+        ).map(it -> JavaFile.builder(packageManager.getTypePackage(), it.build()).build());
     }
 
     static class ObjectGenerator implements Function<ObjectTypeDefinition, TypeSpec.Builder> {
@@ -120,6 +120,10 @@ public class TypeGenerator implements IGenerator {
         }
     }
 
+    /**
+     * Union 需要融合多个类的内容提供转换能力
+     * 目前只生成class未处理
+     */
     static class UnionGenerator implements Function<UnionTypeDefinition, TypeSpec.Builder> {
 
         @Override

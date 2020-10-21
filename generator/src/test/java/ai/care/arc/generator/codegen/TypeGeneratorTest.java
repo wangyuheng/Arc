@@ -16,4 +16,10 @@ public class TypeGeneratorTest {
     public void type_gen_e2e_test() {
     }
 
+    @GenE2ECase(clazz = TypeGenerator.class, schemaPath = "type_union_test.graphqls", javaPaths = {"type_union_test_Milestone.java","type_union_test_Entity.java","type_union_test_Project.java"})
+    public void union_type_gen_e2e_test() {
+    }
+
+
+
 }
