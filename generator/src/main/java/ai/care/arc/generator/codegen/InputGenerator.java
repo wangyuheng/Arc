@@ -12,6 +12,7 @@ import graphql.language.Description;
 import graphql.language.InputObjectTypeDefinition;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import javax.lang.model.element.Modifier;
 import java.util.List;
@@ -58,7 +59,7 @@ public class InputGenerator implements IGenerator {
                             .build())
                     .collect(Collectors.toList());
 
-            TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(inputObjectTypeDefinition.getName())
+            TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(StringUtils.capitalize(inputObjectTypeDefinition.getName()))
                     .addModifiers(Modifier.PUBLIC)
                     .addFields(fieldSpecs)
                     .addJavadoc(Optional.ofNullable(inputObjectTypeDefinition.getDescription()).map(Description::getContent).orElse(inputObjectTypeDefinition.getName()))

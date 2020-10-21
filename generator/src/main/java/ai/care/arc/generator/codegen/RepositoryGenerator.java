@@ -13,6 +13,7 @@ import com.squareup.javapoet.TypeSpec;
 import graphql.language.ObjectTypeDefinition;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.lang.model.element.Modifier;
 import java.util.function.Function;
@@ -55,7 +56,7 @@ public class RepositoryGenerator implements IGenerator {
 
         @Override
         public TypeSpec.Builder apply(ObjectTypeDefinition objectTypeDefinition) {
-            return TypeSpec.classBuilder(objectTypeDefinition.getName() + GeneratorGlobalConst.REPOSITORY_SUFFIX)
+            return TypeSpec.classBuilder(StringUtils.capitalize(objectTypeDefinition.getName()) + GeneratorGlobalConst.REPOSITORY_SUFFIX)
                     .superclass(ParameterizedTypeName.get(ClassName.get(SimpleDgraphRepository.class), ClassName.get(packageManager.getTypePackage(), objectTypeDefinition.getName())))
                     .addModifiers(Modifier.PUBLIC)
                     .addAnnotation(Repository.class)
