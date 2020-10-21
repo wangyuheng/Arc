@@ -29,7 +29,6 @@ import org.springframework.util.StringUtils;
 import javax.lang.model.element.Modifier;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -93,13 +92,10 @@ public class TypeGenerator implements IGenerator {
 
         @Override
         public TypeSpec.Builder apply(ObjectTypeDefinition objectTypeDefinition) {
-            TypeSpec.Builder typeSpecBuilder = typeSpecConvert.apply(objectTypeDefinition);
-
-            new MethodsFiller(toMethodSpec, new IsGraphqlMethodField())
+            return new MethodsFiller(toMethodSpec, new IsGraphqlMethodField())
                     .andThen(dgraphTypeFiller)
                     .andThen(autowiredFieldFiller)
-                    .accept(typeSpecBuilder, objectTypeDefinition);
-            return typeSpecBuilder;
+                    .apply(typeSpecConvert.apply(objectTypeDefinition), objectTypeDefinition);
         }
 
     }
@@ -118,11 +114,9 @@ public class TypeGenerator implements IGenerator {
 
         @Override
         public TypeSpec.Builder apply(ObjectTypeDefinition objectTypeDefinition) {
-            TypeSpec.Builder typeSpecBuilder = typeSpecConvert.apply(objectTypeDefinition);
-            new MethodsFiller(toMethodSpec, p -> true)
+            return new MethodsFiller(toMethodSpec, p -> true)
                     .andThen(autowiredFieldFiller)
-                    .accept(typeSpecBuilder, objectTypeDefinition);
-            return typeSpecBuilder;
+                    .apply(typeSpecConvert.apply(objectTypeDefinition), objectTypeDefinition);
         }
     }
 
@@ -173,7 +167,7 @@ public class TypeGenerator implements IGenerator {
         }
     }
 
-    static class DgraphTypeFiller implements BiConsumer<TypeSpec.Builder, ObjectTypeDefinition> {
+    static class DgraphTypeFiller implements Filler<TypeSpec.Builder, ObjectTypeDefinition> {
 
         private final GraphqlType2JavapoetTypeName toJavapoetTypeName;
         private final IsGraphqlMethodField isGraphqlMethodField = new IsGraphqlMethodField();
@@ -185,7 +179,7 @@ public class TypeGenerator implements IGenerator {
         }
 
         @Override
-        public void accept(TypeSpec.Builder typeSpecBuilder, ObjectTypeDefinition objectTypeDefinition) {
+        public TypeSpec.Builder apply(TypeSpec.Builder typeSpecBuilder, ObjectTypeDefinition objectTypeDefinition) {
             typeSpecBuilder.addAnnotation(AnnotationSpec.builder(DgraphType.class)
                     .addMember("value", "$S", objectTypeDefinition.getName().toUpperCase()).build());
             List<FieldSpec> fieldSpecs = objectTypeDefinition.getFieldDefinitions().stream()
@@ -206,10 +200,12 @@ public class TypeGenerator implements IGenerator {
                 });
                 typeSpecBuilder.addFields(fieldSpecs);
             }
+            return typeSpecBuilder;
         }
     }
 
-    static class AutowiredFieldFiller implements BiConsumer<TypeSpec.Builder, ObjectTypeDefinition> {
+    static class AutowiredFieldFiller implements Filler<TypeSpec.Builder, ObjectTypeDefinition> {
+
         private final Predicate<ObjectTypeDefinition> isContainGraphqlMethodField = new IsContainsGraphqlMethodField();
         private final PackageManager packageManager;
 
@@ -218,7 +214,7 @@ public class TypeGenerator implements IGenerator {
         }
 
         @Override
-        public void accept(TypeSpec.Builder typeSpecBuilder, ObjectTypeDefinition objectTypeDefinition) {
+        public TypeSpec.Builder apply(TypeSpec.Builder typeSpecBuilder, ObjectTypeDefinition objectTypeDefinition) {
             if (isContainGraphqlMethodField.test(objectTypeDefinition)) {
                 typeSpecBuilder.addField(
                         FieldSpec.builder(ClassName.get(packageManager.getInterfacePackage(), SpecNameManager.getApiName(objectTypeDefinition)), SpecNameManager.getUnCapitalizeApiName(objectTypeDefinition))
@@ -227,10 +223,11 @@ public class TypeGenerator implements IGenerator {
                                 .build()
                 );
             }
+            return typeSpecBuilder;
         }
     }
 
-    static class MethodsFiller implements BiConsumer<TypeSpec.Builder, ObjectTypeDefinition> {
+    static class MethodsFiller implements Filler<TypeSpec.Builder, ObjectTypeDefinition> {
 
         private final MethodSpecBuilder methodSpecBuilder;
         private final Predicate<FieldDefinition> filter;
@@ -241,11 +238,12 @@ public class TypeGenerator implements IGenerator {
         }
 
         @Override
-        public void accept(TypeSpec.Builder typeSpecBuilder, ObjectTypeDefinition objectTypeDefinition) {
+        public TypeSpec.Builder apply(TypeSpec.Builder typeSpecBuilder, ObjectTypeDefinition objectTypeDefinition) {
             objectTypeDefinition.getFieldDefinitions().stream()
                     .filter(filter)
                     .map(fieldDefinition -> methodSpecBuilder.apply(objectTypeDefinition, fieldDefinition))
                     .forEach(typeSpecBuilder::addMethod);
+            return typeSpecBuilder;
         }
     }
 }
