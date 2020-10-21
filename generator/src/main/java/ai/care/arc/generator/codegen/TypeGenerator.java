@@ -142,7 +142,7 @@ public class TypeGenerator implements IGenerator {
 
         @Override
         public MethodSpec apply(ObjectTypeDefinition objectTypeDefinition, FieldDefinition fieldDefinition) {
-            return MethodSpec.methodBuilder(StringUtils.capitalize(fieldDefinition.getName()))
+            return MethodSpec.methodBuilder(fieldDefinition.getName())
                     .addModifiers(Modifier.PUBLIC)
                     .beginControlFlow("return dataFetchingEnvironment -> ")
                     .addAnnotation(AnnotationSpec.builder(GraphqlMethod.class).addMember("type", "$S", objectTypeDefinition.getName()).build())
@@ -157,7 +157,7 @@ public class TypeGenerator implements IGenerator {
 
         @Override
         public TypeSpec.Builder apply(ObjectTypeDefinition objectTypeDefinition) {
-            return TypeSpec.classBuilder(objectTypeDefinition.getName())
+            return TypeSpec.classBuilder(StringUtils.capitalize(objectTypeDefinition.getName()))
                     .addModifiers(Modifier.PUBLIC)
                     .addAnnotation(DataFetcherService.class)
                     .addSuperinterface(IDgraphType.class)
