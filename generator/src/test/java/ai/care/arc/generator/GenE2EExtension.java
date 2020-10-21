@@ -11,10 +11,8 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.nio.file.Files;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Gen e2e 测试扩展
@@ -45,7 +43,7 @@ public class GenE2EExtension implements AfterTestExecutionCallback {
                             .map(JavaFile::toString)
                             .map(it -> it.replaceAll("\n", ""))
                             .map(it -> it.replaceAll("\\s+", ""))
-                    .toArray()
+                            .toArray()
                     , list.stream()
                             .map(it -> it.replaceAll("\n", ""))
                             .map(it -> it.replaceAll("\\s+", "")).toArray());
