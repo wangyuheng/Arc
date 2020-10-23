@@ -37,7 +37,7 @@ public class GeneratorIntegralTest {
             @CodeGenResource(generatorClazz = TypeGenerator.class, sourceGraphqlSchemaPath = "type_test.graphqls", generatedJavaCodePaths = {"type_test_Milestone.java", "type_test_Mutation.java", "type_test_Project.java", "type_test_Query.java", "type_test_User.java"}),
             @CodeGenResource(generatorClazz = TypeGenerator.class, sourceGraphqlSchemaPath = "type_union_test.graphqls", generatedJavaCodePaths = {"type_union_test_Milestone.java", "type_union_test_Entity.java", "type_union_test_Project.java"})
     })
-    public void input_gen_e2e_test(CodeGenResourceArgument argument) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
+    public void gen_e2e_test(CodeGenResourceArgument argument) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
         final TypeDefinitionRegistry typeDefinitionRegistry = new SchemaParser().parse(new ClassPathResource(argument.getSourceGraphqlSchemaPath()).getInputStream());
         final PackageManager packageManager = new PackageManager(argument.getBasePackage(), typeDefinitionRegistry);
         final IGenerator generator = argument.getGeneratorClazz().getConstructor(PackageManager.class).newInstance(packageManager);
