@@ -1,24 +1,16 @@
 package ai.care.arc.generator;
 
 import ai.care.arc.generator.codegen.IGenerator;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.Extension;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
-/**
- * 设置代码生成端到端测试case
- *
- * @author yuheng.wang
- * @see Extension
- */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-@Test
-public @interface GenE2ECase {
+@Documented
+@Repeatable(CodeGenResources.class)
+@ArgumentsSource(CodeGenResourceProvider.class)
+public @interface CodeGenResource {
 
     /**
      * 基础包路径
@@ -31,16 +23,16 @@ public @interface GenE2ECase {
      *
      * @see IGenerator
      */
-    Class<? extends IGenerator> clazz();
+    Class<? extends IGenerator> generatorClazz();
 
     /**
      * graphql schema在resource目录下路径
      */
-    String schemaPath();
+    String sourceGraphqlSchemaPath();
 
     /**
      * expected java文件在resource目录下路径
      */
-    String[] javaPaths();
+    String[] generatedJavaCodePaths();
 
 }
