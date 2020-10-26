@@ -34,7 +34,7 @@ public class GraphqlFieldType2JavaTypeConverter implements Converter<GraphqlFiel
             case NEGATIVE_FLOAT:
             case NON_POSITIVE_FLOAT:
             case NON_NEGATIVE_FLOAT:
-                return Float.class;
+                return Double.class;
             case BOOLEAN:
                 return Boolean.class;
             case DATE_TIME:
