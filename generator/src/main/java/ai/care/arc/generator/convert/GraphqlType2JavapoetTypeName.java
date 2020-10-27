@@ -33,7 +33,7 @@ public class GraphqlType2JavapoetTypeName implements Function<Type<?>, TypeName>
     @Override
     public TypeName apply(Type type) {
         final String graphqlTypeName = TypeInfo.typeInfo(type).getName();
-        final Optional<java.lang.reflect.Type> typeOptional = GraphqlFieldTypeEnum.parse(graphqlTypeName).map(graphqlFieldType2JavaTypeConverter::convert);
+        final Optional<Class<?>> typeOptional = GraphqlFieldTypeEnum.parse(graphqlTypeName).map(graphqlFieldType2JavaTypeConverter::convert);
 
         if (GraphqlTypeUtils.isListType(type)) {
             return typeOptional
