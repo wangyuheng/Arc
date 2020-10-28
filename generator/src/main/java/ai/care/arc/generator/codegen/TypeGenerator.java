@@ -17,10 +17,7 @@ import ai.care.arc.graphql.annotation.DataFetcherService;
 import ai.care.arc.graphql.annotation.GraphqlMethod;
 import ai.care.arc.graphql.util.GraphqlTypeUtils;
 import com.squareup.javapoet.*;
-import graphql.language.FieldDefinition;
-import graphql.language.InterfaceTypeDefinition;
-import graphql.language.ObjectTypeDefinition;
-import graphql.language.UnionTypeDefinition;
+import graphql.language.*;
 import graphql.schema.DataFetcher;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +25,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.lang.model.element.Modifier;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -41,6 +39,8 @@ import java.util.stream.Stream;
  * @author yuheng.wang
  */
 public class TypeGenerator implements IGenerator {
+
+    private static final Class<?>[] SUPPORT_TYPES = new Class[]{ObjectTypeDefinition.class, OperationTypeDefinition.class, UnionTypeDefinition.class, InterfaceTypeDefinition.class};
 
     private static final String DEFAULT_UID_FIELD_NAME = "id";
 
@@ -59,23 +59,29 @@ public class TypeGenerator implements IGenerator {
         final AutowiredFieldFiller autowiredFieldFiller = new AutowiredFieldFiller(packageManager);
         final TypeSpecConvert typeSpecConvert = new TypeSpecConvert(toJavapoetTypeName);
 
-        return
-                Stream.concat(
-                        Stream.concat(
-                                Stream.concat(
-                                        typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
-                                                .filter(isOperator.negate())
-                                                .map(new ObjectGenerator(typeSpecConvert, dgraphTypeFiller, autowiredFieldFiller, toMethodSpec)),
-                                        typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
-                                                .filter(isOperator)
-                                                .map(new OperatorGenerator(typeSpecConvert, autowiredFieldFiller, toMethodSpec))
-                                ),
-                                typeDefinitionRegistry.getTypes(UnionTypeDefinition.class).stream()
-                                        .map(new UnionGenerator())
-                        ),
-                        typeDefinitionRegistry.getTypes(InterfaceTypeDefinition.class).stream()
-                                .map(new InterfaceGenerator(toJavapoetTypeName))
-                ).map(it -> JavaFile.builder(packageManager.getTypePackage(), it.build()).build());
+        return typeDefinitionRegistry.types().values().stream()
+                .filter(it -> Arrays.stream(SUPPORT_TYPES).anyMatch(t -> t.isInstance(it)))
+                .map(typeDefinition -> {
+                    switch (TypeKind.getTypeKind(typeDefinition)) {
+                        case Operation:
+                            return new OperatorGenerator(typeSpecConvert, autowiredFieldFiller, toMethodSpec).apply((ObjectTypeDefinition)typeDefinition);
+                        case Object:
+                            if (isOperator.test((ObjectTypeDefinition)typeDefinition)) {
+                                return new OperatorGenerator(typeSpecConvert, autowiredFieldFiller, toMethodSpec).apply((ObjectTypeDefinition)typeDefinition);
+                            } else {
+                                return new ObjectGenerator(typeSpecConvert, dgraphTypeFiller, autowiredFieldFiller, toMethodSpec).apply((ObjectTypeDefinition)typeDefinition);
+                            }
+                        case Interface:
+                            return new InterfaceGenerator(toJavapoetTypeName).apply((InterfaceTypeDefinition) typeDefinition);
+                        case Union:
+                            return new UnionGenerator().apply((UnionTypeDefinition)typeDefinition);
+                        case Enum:
+                        case Scalar:
+                        case InputObject:
+                        default:
+                            throw new IllegalArgumentException("type generator not support this graphql type!");
+                    }
+                }).map(it -> JavaFile.builder(packageManager.getTypePackage(), it.build()).build());
     }
 
     static class ObjectGenerator implements Function<ObjectTypeDefinition, TypeSpec.Builder> {
