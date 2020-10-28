@@ -5,6 +5,7 @@ import ai.care.arc.dgraph.annotation.UidField;
 import ai.care.arc.dgraph.dictionary.IDgraphType;
 import ai.care.arc.generator.codegen.spec.FieldSpecGenGetter;
 import ai.care.arc.generator.codegen.spec.FieldSpecGenSetter;
+import ai.care.arc.generator.codegen.util.JavadocUtils;
 import ai.care.arc.generator.codegen.util.PackageManager;
 import ai.care.arc.generator.codegen.util.SpecNameManager;
 import ai.care.arc.generator.convert.GraphqlType2JavapoetTypeName;
@@ -130,9 +131,7 @@ public class TypeGenerator implements IGenerator {
         public TypeSpec.Builder apply(UnionTypeDefinition unionTypeDefinition) {
             return TypeSpec.classBuilder(unionTypeDefinition.getName())
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                    .addJavadoc(Optional.ofNullable(unionTypeDefinition.getDescription()).map(Description::getContent).orElse(unionTypeDefinition.getName()))
-                    .addJavadoc("\n")
-                    .addJavadoc(GeneratorGlobalConst.GENERAL_CODE_BLOCK);
+                    .addJavadoc(JavadocUtils.getDocForType(unionTypeDefinition));
         }
     }
 
@@ -165,9 +164,7 @@ public class TypeGenerator implements IGenerator {
                     .addModifiers(Modifier.PUBLIC)
                     .addAnnotation(DataFetcherService.class)
                     .addSuperinterface(IDgraphType.class)
-                    .addJavadoc(Optional.ofNullable(objectTypeDefinition.getDescription()).map(Description::getContent).orElse(objectTypeDefinition.getName()))
-                    .addJavadoc("\n")
-                    .addJavadoc(GeneratorGlobalConst.GENERAL_CODE_BLOCK);
+                    .addJavadoc(JavadocUtils.getDocForType(objectTypeDefinition));
         }
     }
 

@@ -2,13 +2,12 @@ package ai.care.arc.generator.codegen;
 
 import ai.care.arc.generator.codegen.spec.FieldSpecGenGetter;
 import ai.care.arc.generator.codegen.spec.FieldSpecGenSetter;
+import ai.care.arc.generator.codegen.util.JavadocUtils;
 import ai.care.arc.generator.codegen.util.PackageManager;
 import ai.care.arc.generator.convert.GraphqlType2JavapoetTypeName;
-import ai.care.arc.generator.dictionary.GeneratorGlobalConst;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
-import graphql.language.Description;
 import graphql.language.InputObjectTypeDefinition;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import org.springframework.util.CollectionUtils;
@@ -16,7 +15,6 @@ import org.springframework.util.StringUtils;
 
 import javax.lang.model.element.Modifier;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -55,16 +53,14 @@ public class InputGenerator implements IGenerator {
         public TypeSpec.Builder apply(InputObjectTypeDefinition inputObjectTypeDefinition) {
             List<FieldSpec> fieldSpecs = inputObjectTypeDefinition.getInputValueDefinitions().stream()
                     .map(inputValueDefinition -> FieldSpec.builder(toJavapoetTypeName.apply(inputValueDefinition.getType()), inputValueDefinition.getName(), Modifier.PRIVATE)
-                            .addJavadoc(Optional.ofNullable(inputValueDefinition.getDescription()).map(Description::getContent).orElse(inputValueDefinition.getName()))
+                            .addJavadoc(JavadocUtils.getFieldDocByDescription(inputValueDefinition.getDescription(), inputValueDefinition.getName()))
                             .build())
                     .collect(Collectors.toList());
 
             TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(StringUtils.capitalize(inputObjectTypeDefinition.getName()))
                     .addModifiers(Modifier.PUBLIC)
                     .addFields(fieldSpecs)
-                    .addJavadoc(Optional.ofNullable(inputObjectTypeDefinition.getDescription()).map(Description::getContent).orElse(inputObjectTypeDefinition.getName()))
-                    .addJavadoc("\n")
-                    .addJavadoc(GeneratorGlobalConst.GENERAL_CODE_BLOCK);
+                    .addJavadoc(JavadocUtils.getDocForType(inputObjectTypeDefinition));
 
             if (!CollectionUtils.isEmpty(fieldSpecs)) {
                 fieldSpecs.forEach(fieldSpec -> {

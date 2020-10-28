@@ -17,28 +17,39 @@ public class JavadocUtilsTest {
 
     @Test
     public void should_get_description() {
-        Description description = new Description("This is A Object Type", null, false);
-        TypeDefinition<?> typeDefinition = ObjectTypeDefinition.newObjectTypeDefinition().name("o1").build();
+        TypeDefinition<?> typeDefinition = ObjectTypeDefinition.newObjectTypeDefinition()
+                .name("o1")
+                .description(new Description("This is A Object Type", null, false))
+                .build();
 
-        assertEquals("This is A Object Type\n" +
-                GeneratorGlobalConst.GENERAL_CODE_BLOCK, JavadocUtils.getDocForType(typeDefinition, description).toString());
+        assertEquals("This is A Object Type\n" + GeneratorGlobalConst.GENERAL_CODE_BLOCK,
+                JavadocUtils.getDocForType(typeDefinition).toString());
     }
 
     @Test
-    public void should_get_type_name_if_content_is_null() {
+    public void should_get_type_name_if_description_content_is_null() {
+        TypeDefinition<?> typeDefinition = ObjectTypeDefinition.newObjectTypeDefinition()
+                .name("o1")
+                .description(new Description(null, null, false))
+                .build();
+
+        assertEquals("o1\n" + GeneratorGlobalConst.GENERAL_CODE_BLOCK,
+                JavadocUtils.getDocForType(typeDefinition).toString());
+    }
+
+    @Test
+    public void should_get_default_value_if_description_content_is_null() {
         Description description = new Description(null, null, false);
-        TypeDefinition<?> typeDefinition = ObjectTypeDefinition.newObjectTypeDefinition().name("o1").build();
 
-        assertEquals("o1\n" +
-                GeneratorGlobalConst.GENERAL_CODE_BLOCK, JavadocUtils.getDocForType(typeDefinition, description).toString());
+        assertEquals("d1\n" + GeneratorGlobalConst.GENERAL_CODE_BLOCK,
+                JavadocUtils.getClassDocByDescription(description, "d1").toString());
     }
 
     @Test
-    public void should_get_type_name_if_description_is_null() {
-        TypeDefinition<?> typeDefinition = ObjectTypeDefinition.newObjectTypeDefinition().name("o1").build();
+    public void should_get_description_without_general_by_field() {
+        Description description = new Description("Field1", null, false);
 
-        assertEquals("o1\n" +
-                GeneratorGlobalConst.GENERAL_CODE_BLOCK, JavadocUtils.getDocForType(typeDefinition, null).toString());
+        assertEquals("Field1", JavadocUtils.getFieldDocByDescription(description, "Field1").toString());
     }
 
 }
