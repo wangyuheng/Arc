@@ -3,6 +3,7 @@ package ai.care.arc.generator.codegen;
 import ai.care.arc.dgraph.annotation.DgraphType;
 import ai.care.arc.dgraph.annotation.UidField;
 import ai.care.arc.dgraph.dictionary.IDgraphType;
+import ai.care.arc.generator.codegen.spec.FieldSpecGenAbstractGetter;
 import ai.care.arc.generator.codegen.spec.FieldSpecGenGetter;
 import ai.care.arc.generator.codegen.spec.FieldSpecGenSetter;
 import ai.care.arc.generator.codegen.util.JavadocUtils;
@@ -12,13 +13,12 @@ import ai.care.arc.generator.convert.GraphqlType2JavapoetTypeName;
 import ai.care.arc.generator.convert.IsContainsGraphqlMethodField;
 import ai.care.arc.generator.convert.IsGraphqlMethodField;
 import ai.care.arc.generator.convert.IsOperator;
-import ai.care.arc.generator.dictionary.GeneratorGlobalConst;
 import ai.care.arc.graphql.annotation.DataFetcherService;
 import ai.care.arc.graphql.annotation.GraphqlMethod;
 import ai.care.arc.graphql.util.GraphqlTypeUtils;
 import com.squareup.javapoet.*;
-import graphql.language.Description;
 import graphql.language.FieldDefinition;
+import graphql.language.InterfaceTypeDefinition;
 import graphql.language.ObjectTypeDefinition;
 import graphql.language.UnionTypeDefinition;
 import graphql.schema.DataFetcher;
@@ -29,7 +29,6 @@ import org.springframework.util.StringUtils;
 
 import javax.lang.model.element.Modifier;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -58,20 +57,25 @@ public class TypeGenerator implements IGenerator {
         final MethodSpecBuilder toMethodSpec = new MethodSpecBuilder(toJavapoetTypeName);
         final DgraphTypeFiller dgraphTypeFiller = new DgraphTypeFiller(toJavapoetTypeName);
         final AutowiredFieldFiller autowiredFieldFiller = new AutowiredFieldFiller(packageManager);
-        final TypeSpecConvert typeSpecConvert = new TypeSpecConvert();
+        final TypeSpecConvert typeSpecConvert = new TypeSpecConvert(toJavapoetTypeName);
 
-        return Stream.concat(
+        return
                 Stream.concat(
-                        typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
-                                .filter(isOperator.negate())
-                                .map(new ObjectGenerator(typeSpecConvert, dgraphTypeFiller, autowiredFieldFiller, toMethodSpec)),
-                        typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
-                                .filter(isOperator)
-                                .map(new OperatorGenerator(typeSpecConvert, autowiredFieldFiller, toMethodSpec))
-                ),
-                typeDefinitionRegistry.getTypes(UnionTypeDefinition.class).stream()
-                        .map(new UnionGenerator())
-        ).map(it -> JavaFile.builder(packageManager.getTypePackage(), it.build()).build());
+                        Stream.concat(
+                                Stream.concat(
+                                        typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
+                                                .filter(isOperator.negate())
+                                                .map(new ObjectGenerator(typeSpecConvert, dgraphTypeFiller, autowiredFieldFiller, toMethodSpec)),
+                                        typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
+                                                .filter(isOperator)
+                                                .map(new OperatorGenerator(typeSpecConvert, autowiredFieldFiller, toMethodSpec))
+                                ),
+                                typeDefinitionRegistry.getTypes(UnionTypeDefinition.class).stream()
+                                        .map(new UnionGenerator())
+                        ),
+                        typeDefinitionRegistry.getTypes(InterfaceTypeDefinition.class).stream()
+                                .map(new InterfaceGenerator(toJavapoetTypeName))
+                ).map(it -> JavaFile.builder(packageManager.getTypePackage(), it.build()).build());
     }
 
     static class ObjectGenerator implements Function<ObjectTypeDefinition, TypeSpec.Builder> {
@@ -135,6 +139,32 @@ public class TypeGenerator implements IGenerator {
         }
     }
 
+    /**
+     * 创建 interface 类并生成 abstract getter 方法
+     */
+    static class InterfaceGenerator implements Function<InterfaceTypeDefinition, TypeSpec.Builder> {
+
+        private final FieldSpecGenAbstractGetter fieldSpecGenAbstractGetter = new FieldSpecGenAbstractGetter();
+        private final GraphqlType2JavapoetTypeName toJavapoetTypeName;
+
+        public InterfaceGenerator(GraphqlType2JavapoetTypeName toJavapoetTypeName) {
+            this.toJavapoetTypeName = toJavapoetTypeName;
+        }
+
+        @Override
+        public TypeSpec.Builder apply(InterfaceTypeDefinition interfaceTypeDefinition) {
+            return TypeSpec.interfaceBuilder(StringUtils.capitalize(interfaceTypeDefinition.getName()))
+                    .addModifiers(Modifier.PUBLIC)
+                    .addMethods(
+                            interfaceTypeDefinition.getFieldDefinitions().stream()
+                                    .map(fieldDefinition ->
+                                            fieldSpecGenAbstractGetter.apply(FieldSpec.builder(toJavapoetTypeName.apply(fieldDefinition.getType()), fieldDefinition.getName()).build())
+                                    ).collect(Collectors.toList())
+                    )
+                    .addJavadoc(JavadocUtils.getDocForType(interfaceTypeDefinition));
+        }
+    }
+
     static class MethodSpecBuilder implements BiFunction<ObjectTypeDefinition, FieldDefinition, MethodSpec> {
 
         private final GraphqlType2JavapoetTypeName toJavapoetTypeName;
@@ -157,6 +187,11 @@ public class TypeGenerator implements IGenerator {
     }
 
     static class TypeSpecConvert implements Function<ObjectTypeDefinition, TypeSpec.Builder> {
+        private final GraphqlType2JavapoetTypeName toJavapoetTypeName;
+
+        public TypeSpecConvert(GraphqlType2JavapoetTypeName toJavapoetTypeName) {
+            this.toJavapoetTypeName = toJavapoetTypeName;
+        }
 
         @Override
         public TypeSpec.Builder apply(ObjectTypeDefinition objectTypeDefinition) {
@@ -164,6 +199,9 @@ public class TypeGenerator implements IGenerator {
                     .addModifiers(Modifier.PUBLIC)
                     .addAnnotation(DataFetcherService.class)
                     .addSuperinterface(IDgraphType.class)
+                    .addSuperinterfaces(objectTypeDefinition.getImplements().stream()
+                            .map(it -> toJavapoetTypeName.apply(GraphqlTypeUtils.getUnWrapperType(it)))
+                            .collect(Collectors.toList()))
                     .addJavadoc(JavadocUtils.getDocForType(objectTypeDefinition));
         }
     }
@@ -187,7 +225,7 @@ public class TypeGenerator implements IGenerator {
                     .filter(isGraphqlMethodField.negate())
                     .map(fieldDefinition -> {
                         FieldSpec.Builder fieldSpecBuilder = FieldSpec.builder(toJavapoetTypeName.apply(fieldDefinition.getType()), fieldDefinition.getName(), Modifier.PRIVATE)
-                                .addJavadoc(Optional.ofNullable(fieldDefinition.getDescription()).map(Description::getContent).orElse(fieldDefinition.getName()));
+                                .addJavadoc(JavadocUtils.getFieldDocByDescription(fieldDefinition.getDescription(), fieldDefinition.getName()));
                         if (DEFAULT_UID_FIELD_NAME.equals(fieldDefinition.getName())) {
                             fieldSpecBuilder.addAnnotation(UidField.class);
                         }
