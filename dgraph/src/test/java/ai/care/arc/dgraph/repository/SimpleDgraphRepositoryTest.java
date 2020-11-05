@@ -2,7 +2,7 @@ package ai.care.arc.dgraph.repository;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class SimpleDgraphRepositoryTest {
 

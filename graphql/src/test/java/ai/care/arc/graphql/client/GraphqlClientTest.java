@@ -1,8 +1,7 @@
 package ai.care.arc.graphql.client;
 
-import com.alibaba.fastjson.TypeReference;
 import ai.care.arc.graphql.GraphQLProvider;
-import lombok.Data;
+import com.alibaba.fastjson.TypeReference;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
@@ -55,10 +54,40 @@ public class GraphqlClientTest {
         assertNull(result.get(0).getAge());
     }
 
-    @Data
     static class Item {
         private String id;
         private String name;
         private Integer age;
+
+        public Item() {
+        }
+
+        public String getId() {
+            return this.id;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public Integer getAge() {
+            return this.age;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setAge(Integer age) {
+            this.age = age;
+        }
+
+        public String toString() {
+            return "GraphqlClientTest.Item(id=" + this.getId() + ", name=" + this.getName() + ", age=" + this.getAge() + ")";
+        }
     }
 }

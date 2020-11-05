@@ -5,7 +5,6 @@ import ai.care.arc.graphql.annotation.GraphqlMethod;
 import ai.care.arc.graphql.annotation.GraphqlMutation;
 import ai.care.arc.graphql.annotation.GraphqlQuery;
 import graphql.schema.DataFetcher;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -23,7 +22,6 @@ import java.util.Optional;
  * @see GraphqlQuery
  * @see RuntimeWiringRegistry
  */
-@Slf4j
 public class DataFetcherServicePostProcessor implements BeanPostProcessor {
 
     @Override

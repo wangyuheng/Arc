@@ -37,7 +37,6 @@
 
         <dgraph4j.version>20.03.0</dgraph4j.version>
         <jackson.version>2.9.8</jackson.version>
-        <lombok.version>1.18.12</lombok.version>
         <javapoet.version>1.13.0</javapoet.version>
     </properties>
 
@@ -61,13 +60,6 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <optional>true</optional>
-        </dependency>
-
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-module-junit4</artifactId>

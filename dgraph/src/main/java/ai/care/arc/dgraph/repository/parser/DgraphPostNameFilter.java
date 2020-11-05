@@ -1,8 +1,7 @@
 package ai.care.arc.dgraph.repository.parser;
 
-import com.alibaba.fastjson.serializer.NameFilter;
 import ai.care.arc.dgraph.util.DgraphTypeHolder;
-import lombok.SneakyThrows;
+import com.alibaba.fastjson.serializer.NameFilter;
 
 import java.util.Comparator;
 
@@ -16,7 +15,6 @@ public class DgraphPostNameFilter implements NameFilter {
     /**
      * 排序避免 a.b.c 被 a 替换而忽略 a.b
      */
-    @SneakyThrows
     public String process(Object source, String name, Object value) {
         if (name == null || name.length() == 0) {
             return name;

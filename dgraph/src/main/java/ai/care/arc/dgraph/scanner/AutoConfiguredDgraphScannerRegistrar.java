@@ -1,9 +1,9 @@
 package ai.care.arc.dgraph.scanner;
 
-import ai.care.arc.dgraph.annotation.DgraphScan;
 import ai.care.arc.dgraph.annotation.ClassPathDgraphScanner;
+import ai.care.arc.dgraph.annotation.DgraphScan;
 import ai.care.arc.dgraph.util.DgraphTypeHolder;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -24,9 +24,9 @@ import java.util.List;
  *
  * @see ClassPathDgraphScanner
  */
-@Slf4j
 public class AutoConfiguredDgraphScannerRegistrar implements BeanFactoryAware, BeanDefinitionRegistryPostProcessor, ResourceLoaderAware {
 
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(AutoConfiguredDgraphScannerRegistrar.class);
     private BeanFactory beanFactory;
 
     private ResourceLoader resourceLoader;

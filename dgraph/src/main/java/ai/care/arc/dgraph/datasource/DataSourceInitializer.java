@@ -2,7 +2,7 @@ package ai.care.arc.dgraph.datasource;
 
 import io.dgraph.DgraphClient;
 import io.dgraph.DgraphProto;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,9 +16,9 @@ import java.util.List;
  *
  * @author yuheng.wang
  */
-@Slf4j
 public class DataSourceInitializer implements InitializingBean {
 
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(DataSourceInitializer.class);
     @Value("${arc.dgraph.define:dgraph/schema.dgraph}")
     private ClassPathResource schemaPath;
     @Value("${arc.dgraph.drop-all:false}")

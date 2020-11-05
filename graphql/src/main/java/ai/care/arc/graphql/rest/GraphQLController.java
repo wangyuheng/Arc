@@ -8,7 +8,7 @@ import brave.http.HttpResponseParser;
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQLContext;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -20,10 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@Slf4j
 @RestController
 public class GraphQLController {
 
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(GraphQLController.class);
     @Autowired(required = false)
     private Producer<DomainEvent> producer;
 

@@ -1,10 +1,10 @@
 package ai.care.arc.mq.consumer;
 
+import ai.care.arc.mq.store.Store;
 import brave.Span;
 import brave.Tracer;
 import brave.Tracing;
-import ai.care.arc.mq.store.Store;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -29,9 +29,9 @@ import java.util.Optional;
  * @see MessageHandler
  * @see Store
  */
-@Slf4j
 public class ConsumerBeanDefinitionRegistryPostProcessor implements BeanPostProcessor, ApplicationContextAware {
 
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(ConsumerBeanDefinitionRegistryPostProcessor.class);
     private ConfigurableApplicationContext applicationContext;
 
     @Override

@@ -1,9 +1,5 @@
 package ai.care.arc.dgraph.repository;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.google.protobuf.ByteString;
 import ai.care.arc.core.pageable.Filter;
 import ai.care.arc.core.pageable.Order;
 import ai.care.arc.core.pageable.Pagination;
@@ -13,10 +9,14 @@ import ai.care.arc.dgraph.repository.mapper.DgraphMapperManager;
 import ai.care.arc.dgraph.repository.parser.DgraphParser;
 import ai.care.arc.dgraph.util.DgraphSQLHelper;
 import ai.care.arc.dgraph.util.UidUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.google.protobuf.ByteString;
 import io.dgraph.DgraphProto;
 import io.dgraph.TxnConflictException;
 import io.grpc.StatusRuntimeException;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ResolvableType;
 import org.springframework.util.CollectionUtils;
@@ -27,8 +27,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Slf4j
 public abstract class SimpleDgraphRepository<T> implements DgraphRepository<T> {
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(SimpleDgraphRepository.class);
     @Autowired
     protected DgraphMapperManager dgraphMapperManager;
     @Autowired

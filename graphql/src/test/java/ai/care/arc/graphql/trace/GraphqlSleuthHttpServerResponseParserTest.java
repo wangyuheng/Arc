@@ -1,6 +1,5 @@
 package ai.care.arc.graphql.trace;
 
-import ai.care.arc.graphql.GraphqlAutoConfiguration;
 import brave.Span;
 import brave.Tracer;
 import brave.Tracing;

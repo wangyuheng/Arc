@@ -1,18 +1,12 @@
 package ai.care.arcfullsample.domain;
 
-import ai.care.arcfullsample.dictionary.MilestoneStatus;
 import ai.care.arc.dgraph.annotation.DgraphType;
 import ai.care.arc.dgraph.annotation.UidField;
 import ai.care.arc.graphql.annotation.DataFetcherService;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import ai.care.arcfullsample.dictionary.MilestoneStatus;
 
-@Slf4j
 @DataFetcherService
 @DgraphType("MILESTONE")
-@Data
-@NoArgsConstructor
 public class Milestone  {
 
     public Milestone(String name) {
@@ -24,4 +18,35 @@ public class Milestone  {
     private String name;
 
     private MilestoneStatus status;
+
+    public Milestone() {
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public MilestoneStatus getStatus() {
+        return this.status;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStatus(MilestoneStatus status) {
+        this.status = status;
+    }
+
+    public String toString() {
+        return "Milestone(id=" + this.getId() + ", name=" + this.getName() + ", status=" + this.getStatus() + ")";
+    }
 }

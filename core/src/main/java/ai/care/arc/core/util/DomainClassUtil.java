@@ -1,7 +1,7 @@
 package ai.care.arc.core.util;
 
 import com.alibaba.fastjson.JSONObject;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 
 import java.util.Collection;
 import java.util.Map;
@@ -12,8 +12,9 @@ import java.util.Objects;
  * <p>
  * 每个Type都包含一个domainClass字段，用于存储type对应javaBean的className
  */
-@Slf4j
 public class DomainClassUtil {
+
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(DomainClassUtil.class);
 
     private DomainClassUtil() {
     }
