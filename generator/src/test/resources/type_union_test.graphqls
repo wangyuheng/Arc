@@ -1,0 +1,11 @@
+union Entity = Milestone | Project
+
+type Milestone{
+    id: String!
+    name: String!
+}
+
+type Project {
+    id: String!
+    name: String!
+}

@@ -28,7 +28,7 @@ public class GraphqlSchemaType2DgraphSchemaType implements Function<GraphqlSchem
     @Override
     public DgraphSchemaType apply(GraphqlSchemaType graphqlSchemaType) {
         return new DgraphSchemaType(
-                graphqlSchemaType.getName(),
+                graphqlSchemaType.getName().toUpperCase(),
                 graphqlSchemaType.getFieldList().stream()
                         .filter(graphqlSchemaField -> !IGNORE_FIELD.contains(graphqlSchemaField.getName()))
                         .map(graphqlField -> field2predicate.apply(graphqlSchemaType, graphqlField))

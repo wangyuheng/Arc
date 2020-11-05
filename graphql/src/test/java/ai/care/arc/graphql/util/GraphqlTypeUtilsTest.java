@@ -58,4 +58,12 @@ public class GraphqlTypeUtilsTest {
                 .build()));
     }
 
+    @Test
+    public void should_get_type_when_nonnull_and_list_wrapper_type() {
+        Type<?> type = NonNullType.newNonNullType()
+                .type(ListType.newListType().type(COMMON_TYPE).build())
+                .build();
+        assertEquals(COMMON_TYPE, GraphqlTypeUtils.getUnWrapperType(type));
+    }
+
 }

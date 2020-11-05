@@ -8,7 +8,7 @@
 <PROJECT.milestones>: [uid] .
 <PROJECT.name>: string .
 <USER.name>: string .
-type Project {
+type PROJECT {
 PROJECT.category
 PROJECT.createTime
 PROJECT.description
@@ -17,13 +17,13 @@ PROJECT.name
 dgraph.graphql.schema
 domainClass
 }
-type Milestone {
+type MILESTONE {
 MILESTONE.name
 MILESTONE.status
 dgraph.graphql.schema
 domainClass
 }
-type User {
+type USER {
 USER.name
 dgraph.graphql.schema
 domainClass
