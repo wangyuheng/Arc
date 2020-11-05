@@ -1,7 +1,7 @@
 package ai.care.arc.dgraph.repository.mapper;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -13,11 +13,11 @@ import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 
-@Slf4j
 public class DgraphMapperManager implements InitializingBean {
 
     private static final Map<String, String> PATH_AND_SQL = new HashMap<>();
     private static final List<DgraphMapper> MAPPERS = new ArrayList<>();
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(DgraphMapperManager.class);
 
     @Value("${dgraph.location:dgraph}")
     private String location;

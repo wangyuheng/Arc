@@ -1,7 +1,7 @@
 package ai.care.arc.dgraph.util;
 
 import ai.care.arc.dgraph.annotation.DgraphType;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.config.BeanDefinition;
 
 import java.util.Collection;
@@ -12,8 +12,9 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 持有 {@link DgraphType} bean
  */
-@Slf4j
 public class DgraphTypeHolder {
+
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(DgraphTypeHolder.class);
 
     private DgraphTypeHolder(){}
 

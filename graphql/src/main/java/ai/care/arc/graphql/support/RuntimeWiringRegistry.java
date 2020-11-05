@@ -12,7 +12,7 @@ import graphql.schema.DataFetcher;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import graphql.schema.idl.TypeRuntimeWiring;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -31,8 +31,9 @@ import java.util.stream.Stream;
  *
  * @author yuheng.wang
  */
-@Slf4j
 public class RuntimeWiringRegistry {
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(RuntimeWiringRegistry.class);
+
     private RuntimeWiringRegistry() {
     }
 

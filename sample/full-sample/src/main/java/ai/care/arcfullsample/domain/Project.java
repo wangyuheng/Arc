@@ -1,12 +1,6 @@
 package ai.care.arcfullsample.domain;
 
 
-import ai.care.arcfullsample.dictionary.MilestoneStatus;
-import ai.care.arcfullsample.dictionary.ProjectCategory;
-import ai.care.arcfullsample.infrastructure.MilestoneRepository;
-import ai.care.arcfullsample.infrastructure.ProjectRepository;
-import ai.care.arcfullsample.input.MilestoneInput;
-import ai.care.arcfullsample.input.ProjectInput;
 import ai.care.arc.dgraph.annotation.DgraphType;
 import ai.care.arc.dgraph.annotation.RelationshipField;
 import ai.care.arc.dgraph.annotation.UidField;
@@ -18,9 +12,14 @@ import ai.care.arc.graphql.event.DomainEvent;
 import ai.care.arc.graphql.util.GraphqlPayloadUtil;
 import ai.care.arc.mq.Message;
 import ai.care.arc.mq.consumer.Consumer;
+import ai.care.arcfullsample.dictionary.MilestoneStatus;
+import ai.care.arcfullsample.dictionary.ProjectCategory;
+import ai.care.arcfullsample.infrastructure.MilestoneRepository;
+import ai.care.arcfullsample.infrastructure.ProjectRepository;
+import ai.care.arcfullsample.input.MilestoneInput;
+import ai.care.arcfullsample.input.ProjectInput;
 import graphql.schema.DataFetcher;
-import lombok.*;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
@@ -30,22 +29,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @DataFetcherService
 @DgraphType("PROJECT")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Project {
 
     private static final String RELATIONSHIP_HAS = "has";
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(Project.class);
 
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
     @Autowired
     private ProjectRepository projectRepository;
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
     @Autowired
     private MilestoneRepository milestoneRepository;
 
@@ -58,6 +50,20 @@ public class Project {
     private OffsetDateTime createTime;
     @RelationshipField(RELATIONSHIP_HAS)
     private List<Milestone> milestoneList;
+
+    public Project(ProjectRepository projectRepository, MilestoneRepository milestoneRepository, String id, String name, String description, ProjectCategory category, OffsetDateTime createTime, List<Milestone> milestoneList) {
+        this.projectRepository = projectRepository;
+        this.milestoneRepository = milestoneRepository;
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.createTime = createTime;
+        this.milestoneList = milestoneList;
+    }
+
+    public Project() {
+    }
 
     @GraphqlMutation
     public DataFetcher<Project> createProject() {
@@ -147,6 +153,54 @@ public class Project {
     @Consumer(topic = "users")
     public void usersListener(Message<DomainEvent> record) {
         log.info("listen users event: {}", record);
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public ProjectCategory getCategory() {
+        return this.category;
+    }
+
+    public OffsetDateTime getCreateTime() {
+        return this.createTime;
+    }
+
+    public List<Milestone> getMilestoneList() {
+        return this.milestoneList;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCategory(ProjectCategory category) {
+        this.category = category;
+    }
+
+    public void setCreateTime(OffsetDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public void setMilestoneList(List<Milestone> milestoneList) {
+        this.milestoneList = milestoneList;
     }
 
 }

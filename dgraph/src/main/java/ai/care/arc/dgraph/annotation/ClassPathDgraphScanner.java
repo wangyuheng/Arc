@@ -1,7 +1,7 @@
 package ai.care.arc.dgraph.annotation;
 
 import ai.care.arc.dgraph.util.DgraphTypeHolder;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
@@ -20,8 +20,9 @@ import java.util.stream.Collectors;
  * 扫描 {@link DgraphType} bean
  * 并通过 {@link DgraphTypeHolder} 持有
  */
-@Slf4j
 public class ClassPathDgraphScanner extends ClassPathBeanDefinitionScanner {
+
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(ClassPathDgraphScanner.class);
 
     public ClassPathDgraphScanner(BeanDefinitionRegistry registry) {
         super(registry, false);

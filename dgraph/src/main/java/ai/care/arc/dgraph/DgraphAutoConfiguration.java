@@ -7,7 +7,6 @@ import ai.care.arc.dgraph.repository.mapper.DgraphMapperManager;
 import ai.care.arc.dgraph.scanner.AutoConfiguredDgraphScannerRegistrar;
 import ai.care.arc.dgraph.trace.DgraphTracerFilter;
 import io.dgraph.DgraphClient;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -24,7 +23,6 @@ import java.util.List;
 /**
  * {@link EnableAutoConfiguration Auto-configuration}
  */
-@Slf4j
 @Configuration
 @AutoConfigurationPackage
 public class DgraphAutoConfiguration {

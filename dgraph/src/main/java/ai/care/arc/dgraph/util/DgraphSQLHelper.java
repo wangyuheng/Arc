@@ -2,7 +2,6 @@ package ai.care.arc.dgraph.util;
 
 import com.alibaba.fastjson.JSONObject;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.time.OffsetDateTime;

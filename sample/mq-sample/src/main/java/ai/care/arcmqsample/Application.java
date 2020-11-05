@@ -3,7 +3,7 @@ package ai.care.arcmqsample;
 import ai.care.arc.mq.Message;
 import ai.care.arc.mq.consumer.Consumer;
 import ai.care.arc.mq.producer.Producer;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -14,9 +14,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Slf4j
 @SpringBootApplication
 public class Application implements InitializingBean {
+
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

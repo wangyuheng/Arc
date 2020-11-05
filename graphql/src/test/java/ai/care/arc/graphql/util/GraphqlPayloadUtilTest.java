@@ -1,7 +1,6 @@
 package ai.care.arc.graphql.util;
 
 import com.alibaba.fastjson.JSON;
-import lombok.Data;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -35,8 +34,22 @@ public class GraphqlPayloadUtilTest {
         assertEquals("abc", mock.getId());
     }
 
-    @Data
     private static class Mock {
         private String id;
+
+        public Mock() {
+        }
+
+        public String getId() {
+            return this.id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String toString() {
+            return "GraphqlPayloadUtilTest.Mock(id=" + this.getId() + ")";
+        }
     }
 }

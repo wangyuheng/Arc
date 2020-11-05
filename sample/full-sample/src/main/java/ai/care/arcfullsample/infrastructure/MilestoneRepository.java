@@ -1,7 +1,7 @@
 package ai.care.arcfullsample.infrastructure;
 
-import ai.care.arcfullsample.domain.Milestone;
 import ai.care.arc.dgraph.repository.SimpleDgraphRepository;
+import ai.care.arcfullsample.domain.Milestone;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;

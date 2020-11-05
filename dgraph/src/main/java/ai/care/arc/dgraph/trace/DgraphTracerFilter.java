@@ -9,15 +9,16 @@ import io.dgraph.DgraphProto;
 import io.dgraph.Transaction;
 import io.grpc.Channel;
 import io.grpc.stub.AbstractStub;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.Optional;
 
-@Slf4j
 public class DgraphTracerFilter implements DgraphInterceptor {
+
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(DgraphTracerFilter.class);
 
     @Override
     public boolean preMutationHandle(String method, Transaction txn, DgraphProto.Request request) {

@@ -1,6 +1,6 @@
 package ai.care.arc.dgraph.annotation;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -19,9 +19,9 @@ import java.util.List;
  *
  * @see ClassPathDgraphScanner
  */
-@Slf4j
 public class DgraphScannerRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware {
 
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(DgraphScannerRegistrar.class);
     private ResourceLoader resourceLoader;
 
     @Override
