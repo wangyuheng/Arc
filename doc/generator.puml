@@ -1,0 +1,10 @@
+@startuml
+
+component "GraphQL Schema" as gs
+control "Generator" as g
+node "Business Project" as bp
+
+gs -> g
+g -> bp
+
+@enduml

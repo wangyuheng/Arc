@@ -4,13 +4,20 @@
 
 - 新增generator模块，用于代码生成
 
-### generator
+### Common
+
+1. 移除lombok依赖
+
+### Generator
 
 1. 根据GraphqlSchema生成DgraphSchema
+2. 根据GraphqlSchema生成Java代码
 
 ### Dgraph
 
 1. 通过配置初始化数据库Schema
+
+
 
 # 1.0.0
 

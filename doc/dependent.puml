@@ -5,6 +5,8 @@ component GraphQL as g
 component mq as mq
 component core as c
 
+component generator
+
 mq <-- c: depends
 g <-- mq: depends
 d <-- mq: depends
