@@ -2,7 +2,7 @@
 
 ![Maven Package](https://github.com/YituHealthcare/Arc/workflows/Maven%20Package/badge.svg?branch=master) [![Coverage Status](https://coveralls.io/repos/github/YituHealthcare/Arc/badge.svg?branch=master)](https://coveralls.io/github/YituHealthcare/Arc?branch=master) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=alert_status)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=bugs)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc)
 
-基于GraphQL+Dgraph的DDD实现，配合SpringBoot使用
+通过`GraphQL Schema`描述业务领域，并提供一套基于`GraphQL`+`Dgraph`的开发框架，快速落地**DDD**。
 
 注: 基于 `SpringBoot 2.x`
 
@@ -12,9 +12,11 @@
 - dgraph: 封装 Dgraph 数据库操作
 - graphql: 提供 GraphQL 调用方式
 - mq: 简易内嵌消息队列
-- generator: 代码生成器。根据GraphQL Schema生成Java代码及Dgraph结构化语句
+- generator: 代码生成器。根据GraphQL Schema生成Java代码及DgraphSchema
 
 ![arc-dependent](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/YituHealthcare/arc/master/doc/dependent.puml)
+
+![arc-generator](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/YituHealthcare/arc/master/doc/generator.puml)
 
 ## 如何使用
 
@@ -24,12 +26,12 @@
     <dependency>
         <groupId>ai.care</groupId>
         <artifactId>arc-graphql</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.1.0</version>
     </dependency>
     <dependency>
         <groupId>ai.care</groupId>
         <artifactId>arc-dgraph</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.1.0</version>
     </dependency>
 ```
 
@@ -69,7 +71,8 @@ arc.graphql.event.enable=true
 
 ## Manual
 
-- [arc-GraphQL](./GraphQL/README.md)
+- [Generator](./generator/README.md)
+- [arc-graphql](./graphql/README.md)
 
 ## Sample
 
