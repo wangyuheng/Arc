@@ -97,3 +97,9 @@ arc.graphql.event.enable=true
 5. 创建 @DataFetcherService类及@GraphQLQuery、@GraphQLMutation 方法
 6. 通过 http://localhost:${port}/playground 直接create方法
 7. 编写xxDgraph.xml实现query方法
+
+## Support
+
+We would like to thank [JetBrains](https://www.jetbrains.com/?from=Arc) for sharing free open-source licences of amazing tools.
+
+[![JetBrains](doc/jetbrains-variant-4.svg)](https://www.jetbrains.com/?from=Arc)
