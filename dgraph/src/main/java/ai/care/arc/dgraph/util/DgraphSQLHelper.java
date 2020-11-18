@@ -1,6 +1,7 @@
 package ai.care.arc.dgraph.util;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -12,46 +13,56 @@ import java.util.stream.Collectors;
  * @author junhao.chen
  * @date 2020/6/4
  */
+@Slf4j
 public class DgraphSQLHelper {
 
-    private static List<Class> BASIC_CLASS = Arrays.asList(String.class, Integer.class, Float.class, boolean.class,Boolean.class, Object.class, OffsetDateTime.class, Long.class, JSONObject.class);
+    private static List<Class> BASIC_CLASS = Arrays.asList(String.class, Integer.class, Float.class, boolean.class, Boolean.class, Object.class, OffsetDateTime.class, Long.class, JSONObject.class);
 
-    public static String getVar(List<Class> classes, List<Class> alreadyExistClass, boolean ifAdd2AlreadyExistClass) {
-        if(ifAdd2AlreadyExistClass) {
-            alreadyExistClass.addAll(classes);
-        }
-        StringBuilder var = new StringBuilder("{ \n uid \n expand(_all_)");
-        classes.forEach(clazz -> sqlHandle(clazz, alreadyExistClass, var));
-        var.append("\n}");
-        return var.toString();
+    public static String getVar(Class clazz) {
+        Integer maxLevel = flatClass(clazz, new ArrayList<>()).stream().mapToInt(it -> it.split("\\.").length).max().getAsInt() - 1;
+        return generateQueryByMaxLevel(maxLevel);
     }
 
-    private static void sqlHandle(Class clazz, List<Class> alreadyExistClass, StringBuilder var) {
+    private static String generateQueryByMaxLevel(Integer maxLevel) {
+        if (maxLevel == 0) {
+            return "";
+        }
+        return "{ \n uid \n expand(_all_)" + generateQueryByMaxLevel(maxLevel - 1) + "\n}";
+    }
+
+    public static Set<String> flatClass(Class clazz, List<Class> alreadyExistClass) {
+        List<Class> newAlreadyExistClass = new ArrayList<>(alreadyExistClass);
+        newAlreadyExistClass.add(clazz);
         Field[] fields = clazz.getDeclaredFields();
+        Set<String> flatFieldList = new HashSet<>();
         for (Field field : fields) {
-            String fieldName = field.getName();
-            UnionClasses unionClasses = field.getAnnotation(UnionClasses.class);
-            Class fieldType = Optional.of(field)
-                    .filter(f -> Objects.equals(List.class, f.getType()))
-                    .map(f -> (ParameterizedType) f.getGenericType())
-                    .map(ParameterizedType::getActualTypeArguments)
-                    .map(types -> (Class) types[0])
-                    .orElse(field.getType());
-            if (needExpand(fieldType, alreadyExistClass) || Objects.nonNull(unionClasses)) {
-                var.append("\n");
-                var.append(DgraphTypeUtil.getDgraphTypeValue(clazz));
-                var.append(".");
-                var.append(fieldName);
-                if (Objects.nonNull(unionClasses)) {
-                    var.append(getVar(Arrays.stream(unionClasses.value()).collect(Collectors.toList()), new ArrayList<>(alreadyExistClass),false));
+            if (Objects.isNull(field.getAnnotation(UnionClasses.class))) {
+                Class<?> fieldType;
+                if (Objects.equals(List.class, field.getType())) {
+                    fieldType = (Class) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
                 } else {
-                    var.append(getVar(Collections.singletonList(fieldType), new ArrayList<>(alreadyExistClass),true));
+                    fieldType = field.getType();
                 }
+
+                if (Objects.isNull(fieldType)) {
+                    log.error("flatClass error class: {} , field: {}", clazz.getSimpleName(), field.getName());
+                    continue;
+                }
+
+                if (newAlreadyExistClass.contains(fieldType)) {
+                    continue;
+                }
+
+                if (BASIC_CLASS.contains(fieldType) || fieldType.isEnum()) {
+                    flatFieldList.add(clazz.getSimpleName() + "." + field.getName());
+                } else {
+                    flatFieldList.addAll(flatClass(fieldType, newAlreadyExistClass).stream().map(it -> clazz.getSimpleName() + "." + it).collect(Collectors.toList()));
+                }
+            } else {
+                UnionClasses unionClasses = field.getAnnotation(UnionClasses.class);
+                flatFieldList.addAll(Arrays.stream(unionClasses.value()).flatMap(it -> flatClass(it, newAlreadyExistClass).stream()).map(it -> clazz.getSimpleName() + "." + it).collect(Collectors.toList()));
             }
         }
-    }
-
-    private static boolean needExpand(Class fieldType, List<Class> alreadyExistClass) {
-        return !BASIC_CLASS.contains(fieldType) && !alreadyExistClass.contains(fieldType) && !fieldType.isEnum();
+        return flatFieldList;
     }
 }

@@ -236,15 +236,40 @@
 
     <distributionManagement>
         <repository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/YituHealthcare/Arc</url>
+            <id>local_nexus_release</id>
+            <name>internal repository for releases</name>
+            <url>http://med-nexus.yitu-inc.com/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/YituHealthcare/Arc</url>
+            <id>nexus_snapshots</id>
+            <name>internal repository for snapshots</name>
+            <url>http://med-nexus.yitu-inc.com/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+
+            <id>nexus_snapshots</id>
+            <url>http://med-nexus.yitu-inc.com/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>nexus_releases</id>
+            <name>local_nexus_release</name>
+            <url>http://med-nexus.yitu-inc.com/repository/maven-releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 </project>
