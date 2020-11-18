@@ -2,7 +2,6 @@ package ai.care.arc.core.common;
 
 import ai.care.arc.core.dictionary.GraphqlFieldTypeEnum;
 
-import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
@@ -13,10 +12,10 @@ import java.util.Locale;
  *
  * @author yuheng.wang
  */
-public class GraphqlFieldType2JavaTypeConverter implements Converter<GraphqlFieldTypeEnum, Type> {
+public class GraphqlFieldType2JavaTypeConverter implements Converter<GraphqlFieldTypeEnum, Class<?>> {
 
     @Override
-    public Type convert(GraphqlFieldTypeEnum graphqlFieldTypeEnum) {
+    public Class<?> convert(GraphqlFieldTypeEnum graphqlFieldTypeEnum) {
         switch (graphqlFieldTypeEnum) {
             case ID:
             case STRING:
@@ -34,7 +33,7 @@ public class GraphqlFieldType2JavaTypeConverter implements Converter<GraphqlFiel
             case NEGATIVE_FLOAT:
             case NON_POSITIVE_FLOAT:
             case NON_NEGATIVE_FLOAT:
-                return Float.class;
+                return Double.class;
             case BOOLEAN:
                 return Boolean.class;
             case DATE_TIME:
@@ -57,32 +56,32 @@ public class GraphqlFieldType2JavaTypeConverter implements Converter<GraphqlFiel
      * 注意: 会丢失类型. 比如 {@link GraphqlFieldTypeEnum#ID} -convert-> {@link String} -reverse-> {@link GraphqlFieldTypeEnum#STRING}
      */
     @Override
-    public GraphqlFieldTypeEnum reverse(Type o) {
-        if (String.class.getSimpleName().equals(o.getTypeName())) {
+    public GraphqlFieldTypeEnum reverse(Class<?> o) {
+        if (String.class.equals(o)) {
             return GraphqlFieldTypeEnum.STRING;
         }
-        if (Integer.class.getSimpleName().equals(o.getTypeName())) {
+        if (Integer.class.equals(o)) {
             return GraphqlFieldTypeEnum.INT;
         }
-        if (Float.class.getSimpleName().equals(o.getTypeName())) {
+        if (Float.class.equals(o)) {
             return GraphqlFieldTypeEnum.FLOAT;
         }
-        if (Boolean.class.getSimpleName().equals(o.getTypeName())) {
+        if (Boolean.class.equals(o)) {
             return GraphqlFieldTypeEnum.BOOLEAN;
         }
-        if (OffsetDateTime.class.getSimpleName().equals(o.getTypeName())) {
+        if (OffsetDateTime.class.equals(o)) {
             return GraphqlFieldTypeEnum.DATE_TIME;
         }
-        if (LocalDate.class.getSimpleName().equals(o.getTypeName())) {
+        if (LocalDate.class.equals(o)) {
             return GraphqlFieldTypeEnum.DATE;
         }
-        if (OffsetTime.class.getSimpleName().equals(o.getTypeName())) {
+        if (OffsetTime.class.equals(o)) {
             return GraphqlFieldTypeEnum.TIME;
         }
-        if (Locale.class.getSimpleName().equals(o.getTypeName())) {
+        if (Locale.class.equals(o)) {
             return GraphqlFieldTypeEnum.LOCALE;
         }
-        if (Object.class.getSimpleName().equals(o.getTypeName())) {
+        if (Object.class.equals(o)) {
             return GraphqlFieldTypeEnum.TYPE;
         }
         return GraphqlFieldTypeEnum.OBJECT;

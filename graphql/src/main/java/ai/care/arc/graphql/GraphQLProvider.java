@@ -9,7 +9,7 @@ import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
@@ -18,9 +18,9 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 
-@Slf4j
 public class GraphQLProvider implements ApplicationListener<ContextRefreshedEvent> {
 
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(GraphQLProvider.class);
     @Value("${arc.graphql.define:graphql/schema.graphqls}")
     private ClassPathResource schema;
     @Autowired(required = false)

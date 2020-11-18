@@ -1,0 +1,13 @@
+interface Entity {
+    name: String!
+}
+
+type Milestone implements Entity {
+    id: String!
+    name: String!
+}
+
+type Project implements  Entity {
+    id: String!
+    name: String!
+}

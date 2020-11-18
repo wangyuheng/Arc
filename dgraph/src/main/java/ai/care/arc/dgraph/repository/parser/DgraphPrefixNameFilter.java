@@ -1,9 +1,8 @@
 package ai.care.arc.dgraph.repository.parser;
 
-import com.alibaba.fastjson.serializer.NameFilter;
 import ai.care.arc.core.util.DomainClassUtil;
 import ai.care.arc.dgraph.util.DgraphTypeUtil;
-import lombok.SneakyThrows;
+import com.alibaba.fastjson.serializer.NameFilter;
 
 /**
  * Bean -> DB 序列化添加前缀
@@ -16,7 +15,6 @@ public class DgraphPrefixNameFilter implements NameFilter {
         this.prefix = prefix;
     }
 
-    @SneakyThrows
     public String process(Object source, String name, Object value) {
         if (name == null || name.length() == 0 || DomainClassUtil.isDomainClassKey(name)) {
             return name;

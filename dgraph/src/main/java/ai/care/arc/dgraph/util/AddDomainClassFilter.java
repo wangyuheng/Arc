@@ -1,7 +1,7 @@
 package ai.care.arc.dgraph.util;
 
-import com.alibaba.fastjson.serializer.AfterFilter;
 import ai.care.arc.core.util.DomainClassUtil;
+import com.alibaba.fastjson.serializer.AfterFilter;
 
 /**
  * @author junhao.chen

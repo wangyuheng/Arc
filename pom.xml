@@ -12,7 +12,7 @@
     <groupId>ai.care</groupId>
     <artifactId>arc</artifactId>
     <packaging>pom</packaging>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.0</version>
 
     <modules>
         <module>dgraph</module>
@@ -27,7 +27,7 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
 
-        <fastjson.version>1.2.73</fastjson.version>
+        <fastjson.version>1.2.74</fastjson.version>
         <reflections.version>0.9.12</reflections.version>
         <powermock.version>2.0.7</powermock.version>
 
@@ -37,7 +37,6 @@
 
         <dgraph4j.version>20.03.0</dgraph4j.version>
         <jackson.version>2.9.8</jackson.version>
-        <lombok.version>1.18.12</lombok.version>
         <javapoet.version>1.13.0</javapoet.version>
     </properties>
 
@@ -61,13 +60,6 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <optional>true</optional>
-        </dependency>
-
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-module-junit4</artifactId>

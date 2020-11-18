@@ -1,0 +1,13 @@
+"""
+this is i1
+"""
+input i1 {
+    """
+    this is iv1
+    """
+    iv1: String
+    """
+    this is iv2
+    """
+    iv2: Int
+}

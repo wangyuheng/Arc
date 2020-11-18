@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Tests for {@link GraphqlFieldType2JavaTypeConverter}.
  *
@@ -20,6 +23,12 @@ public class GraphqlFieldType2JavaTypeConverterTest {
         Arrays.stream(GraphqlFieldTypeEnum.values())
                 .map(graphqlFieldTypeEnum -> converter.convert(graphqlFieldTypeEnum))
                 .forEach(Assert::assertNotNull);
+    }
+
+    @Test
+    public void mutual_convert() {
+        assertNotNull(converter.convert(GraphqlFieldTypeEnum.STRING));
+        assertEquals(String.class, converter.convert(GraphqlFieldTypeEnum.STRING));
     }
 
 }

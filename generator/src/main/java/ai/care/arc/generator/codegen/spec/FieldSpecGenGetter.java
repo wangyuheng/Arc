@@ -1,12 +1,11 @@
-package ai.care.arc.generator.codegen;
+package ai.care.arc.generator.codegen.spec;
 
-import com.squareup.javapoet.ClassName;
+import ai.care.arc.generator.codegen.util.GenSpecUtil;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import org.springframework.util.StringUtils;
 
 import javax.lang.model.element.Modifier;
-import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -16,22 +15,13 @@ import java.util.function.Function;
  */
 public class FieldSpecGenGetter implements Function<FieldSpec, MethodSpec> {
 
-    private static final ClassName BOOLEAN_CLASS_NAME = ClassName.get(Boolean.class);
-
     @Override
     public MethodSpec apply(FieldSpec fieldSpec) {
-        return MethodSpec.methodBuilder(getPrefix(fieldSpec) + StringUtils.capitalize(fieldSpec.name))
+        return MethodSpec.methodBuilder(GenSpecUtil.getGetterPrefix(fieldSpec) + StringUtils.capitalize(fieldSpec.name))
                 .addModifiers(Modifier.PUBLIC)
                 .addStatement("return $L", fieldSpec.name)
                 .returns(fieldSpec.type)
                 .build();
     }
 
-    private String getPrefix(FieldSpec fieldSpec) {
-        if (Objects.equals(fieldSpec.type, BOOLEAN_CLASS_NAME)) {
-            return "is";
-        } else {
-            return "get";
-        }
-    }
 }

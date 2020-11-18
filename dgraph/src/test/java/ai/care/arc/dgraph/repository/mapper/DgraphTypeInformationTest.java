@@ -3,7 +3,6 @@ package ai.care.arc.dgraph.repository.mapper;
 import ai.care.arc.dgraph.annotation.DgraphType;
 import ai.care.arc.dgraph.annotation.UidField;
 import ai.care.arc.dgraph.repository.DgraphTypeInformation;
-import lombok.Data;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,7 +49,6 @@ public class DgraphTypeInformationTest {
         assertEquals("_:m.id", information.getUidFieldDbWrapper());
     }
 
-    @Data
     @DgraphType("m")
     static class Mock {
 
@@ -58,6 +56,28 @@ public class DgraphTypeInformationTest {
         private String id;
         private String name;
 
+        public Mock() {
+        }
+
+        public String getId() {
+            return this.id;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String toString() {
+            return "DgraphTypeInformationTest.Mock(id=" + this.getId() + ", name=" + this.getName() + ")";
+        }
     }
 
 }

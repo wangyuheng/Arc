@@ -1,13 +1,11 @@
 package ai.care.arc.dgraph.repository.mapper.parser;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import ai.care.arc.dgraph.annotation.DgraphType;
 import ai.care.arc.dgraph.repository.parser.DgraphPostNameFilter;
 import ai.care.arc.dgraph.repository.parser.DgraphPrefixNameFilter;
 import ai.care.arc.dgraph.util.DgraphTypeHolder;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -54,24 +52,82 @@ public class DgraphPostNameFilterTest {
         return JSON.parseObject(jsonStr);
     }
 
-    @Data
     @DgraphType("abc")
     public static class Parent {
         String name;
         List<Child> children;
+
+        public Parent() {
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public List<Child> getChildren() {
+            return this.children;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setChildren(List<Child> children) {
+            this.children = children;
+        }
+
+        public String toString() {
+            return "DgraphPostNameFilterTest.Parent(name=" + this.getName() + ", children=" + this.getChildren() + ")";
+        }
     }
 
-    @Data
     @DgraphType("a")
     public static class Uncle {
         String name;
         List<Child> children;
+
+        public Uncle() {
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public List<Child> getChildren() {
+            return this.children;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setChildren(List<Child> children) {
+            this.children = children;
+        }
+
+        public String toString() {
+            return "DgraphPostNameFilterTest.Uncle(name=" + this.getName() + ", children=" + this.getChildren() + ")";
+        }
     }
 
-    @Data
-    @AllArgsConstructor
     public static class Child {
         String name;
+
+        public Child(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String toString() {
+            return "DgraphPostNameFilterTest.Child(name=" + this.getName() + ")";
+        }
     }
 
 }

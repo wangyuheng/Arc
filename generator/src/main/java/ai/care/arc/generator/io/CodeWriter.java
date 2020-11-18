@@ -1,7 +1,7 @@
 package ai.care.arc.generator.io;
 
 import com.squareup.javapoet.JavaFile;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -13,10 +13,10 @@ import java.nio.file.Paths;
  * @author yuheng.wang
  * @see JavaFile
  */
-@Slf4j
 public class CodeWriter {
 
-    private Path targetPath;
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(CodeWriter.class);
+    private final Path targetPath;
 
     public CodeWriter(Path targetPath) {
         this.targetPath = targetPath;

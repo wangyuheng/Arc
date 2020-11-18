@@ -47,7 +47,7 @@ type Project{
     createTime: DateTime!
     milestones(
         status: MilestoneStatus
-    ): [Milestone]
+    ): [Milestone]!
 }
 """
 里程碑

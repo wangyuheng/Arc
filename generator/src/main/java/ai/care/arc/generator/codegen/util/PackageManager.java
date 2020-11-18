@@ -1,6 +1,7 @@
-package ai.care.arc.generator.codegen;
+package ai.care.arc.generator.codegen.util;
 
 import ai.care.arc.generator.conf.CodeGenType;
+import ai.care.arc.graphql.util.GraphqlTypeUtils;
 import graphql.language.*;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
@@ -13,8 +14,8 @@ public class PackageManager {
 
     private static final String PACKAGE_SEPARATOR = ".";
 
-    private String basePackage;
-    private TypeDefinitionRegistry typeDefinitionRegistry;
+    private final String basePackage;
+    private final TypeDefinitionRegistry typeDefinitionRegistry;
 
     public PackageManager(String basePackage, TypeDefinitionRegistry typeDefinitionRegistry) {
         this.basePackage = basePackage;
@@ -45,16 +46,17 @@ public class PackageManager {
      * 根据graphqlType返回对应的包路径
      */
     public String getPackageByGraphqlType(Type<?> graphqlType) {
-        if (typeDefinitionRegistry.getType(graphqlType, EnumTypeDefinition.class).isPresent()) {
+        Type<?> unWrapperType = GraphqlTypeUtils.getUnWrapperType(graphqlType);
+        if (typeDefinitionRegistry.getType(unWrapperType, EnumTypeDefinition.class).isPresent()) {
             return this.getEnumPackage();
-        } else if (typeDefinitionRegistry.getType(graphqlType, InputObjectTypeDefinition.class).isPresent()) {
+        } else if (typeDefinitionRegistry.getType(unWrapperType, InputObjectTypeDefinition.class).isPresent()) {
             return this.getInputPackage();
-        } else if (typeDefinitionRegistry.getType(graphqlType, ObjectTypeDefinition.class).isPresent()
-                || typeDefinitionRegistry.getType(graphqlType, UnionTypeDefinition.class).isPresent()
-                || typeDefinitionRegistry.getType(graphqlType, InterfaceTypeDefinition.class).isPresent()) {
+        } else if (typeDefinitionRegistry.getType(unWrapperType, ObjectTypeDefinition.class).isPresent()
+                || typeDefinitionRegistry.getType(unWrapperType, UnionTypeDefinition.class).isPresent()
+                || typeDefinitionRegistry.getType(unWrapperType, InterfaceTypeDefinition.class).isPresent()) {
             return this.getTypePackage();
         } else {
-            throw new IllegalArgumentException("not support or type not existed graphqlType: " + graphqlType);
+            throw new IllegalArgumentException("not support or type not existed graphqlType: " + unWrapperType);
         }
     }
 }

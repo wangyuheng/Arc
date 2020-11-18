@@ -1,8 +1,6 @@
 package ai.care.arcgraphqlsample.domain;
 
 
-import ai.care.arcgraphqlsample.infrastructure.CommonRepository;
-import ai.care.arcgraphqlsample.input.ProjectInput;
 import ai.care.arc.graphql.annotation.DataFetcherService;
 import ai.care.arc.graphql.annotation.GraphqlMethod;
 import ai.care.arc.graphql.annotation.GraphqlMutation;
@@ -11,8 +9,10 @@ import ai.care.arc.graphql.event.DomainEvent;
 import ai.care.arc.graphql.util.GraphqlPayloadUtil;
 import ai.care.arc.mq.Message;
 import ai.care.arc.mq.consumer.Consumer;
+import ai.care.arcgraphqlsample.infrastructure.CommonRepository;
+import ai.care.arcgraphqlsample.input.ProjectInput;
 import graphql.schema.DataFetcher;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -20,10 +20,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-@Slf4j
 @DataFetcherService
 public class Project {
 
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(Project.class);
     private String id;
     private String name;
     private String description;

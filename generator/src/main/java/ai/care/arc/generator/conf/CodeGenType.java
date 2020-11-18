@@ -15,7 +15,7 @@ public enum CodeGenType {
     INPUT("input"),
     DICTIONARY("dictionary");
 
-    private String dirName;
+    private final String dirName;
 
     CodeGenType(String dirName) {
         this.dirName = dirName;

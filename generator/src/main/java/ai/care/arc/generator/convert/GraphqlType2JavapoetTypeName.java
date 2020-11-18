@@ -2,7 +2,7 @@ package ai.care.arc.generator.convert;
 
 import ai.care.arc.core.common.GraphqlFieldType2JavaTypeConverter;
 import ai.care.arc.core.dictionary.GraphqlFieldTypeEnum;
-import ai.care.arc.generator.codegen.PackageManager;
+import ai.care.arc.generator.codegen.util.PackageManager;
 import ai.care.arc.generator.dictionary.GeneratorGlobalConst;
 import ai.care.arc.graphql.util.GraphqlTypeUtils;
 import com.squareup.javapoet.ClassName;
@@ -24,7 +24,7 @@ public class GraphqlType2JavapoetTypeName implements Function<Type<?>, TypeName>
 
     private final GraphqlFieldType2JavaTypeConverter graphqlFieldType2JavaTypeConverter = new GraphqlFieldType2JavaTypeConverter();
 
-    private PackageManager packageManager;
+    private final PackageManager packageManager;
 
     public GraphqlType2JavapoetTypeName(PackageManager packageManager) {
         this.packageManager = packageManager;
@@ -33,7 +33,7 @@ public class GraphqlType2JavapoetTypeName implements Function<Type<?>, TypeName>
     @Override
     public TypeName apply(Type type) {
         final String graphqlTypeName = TypeInfo.typeInfo(type).getName();
-        final Optional<java.lang.reflect.Type> typeOptional = GraphqlFieldTypeEnum.parse(graphqlTypeName).map(graphqlFieldType2JavaTypeConverter::convert);
+        final Optional<Class<?>> typeOptional = GraphqlFieldTypeEnum.parse(graphqlTypeName).map(graphqlFieldType2JavaTypeConverter::convert);
 
         if (GraphqlTypeUtils.isListType(type)) {
             return typeOptional

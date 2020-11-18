@@ -1,14 +1,14 @@
 package ai.care.arc.dgraph.repository.parser;
 
+import ai.care.arc.core.util.DomainClassUtil;
+import ai.care.arc.dgraph.dictionary.DgraphConstant;
+import ai.care.arc.dgraph.util.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializeFilter;
-import ai.care.arc.core.util.DomainClassUtil;
-import ai.care.arc.dgraph.dictionary.DgraphConstant;
-import ai.care.arc.dgraph.util.*;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
@@ -24,9 +24,9 @@ import java.util.stream.Collectors;
  * <p>
  * dependent FastJson
  */
-@Slf4j
 public class DgraphParser {
 
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(DgraphParser.class);
     private static List<Class> BASIC_CLASS = Arrays.asList(String.class, Integer.class, Float.class, boolean.class, Boolean.class, OffsetDateTime.class, Long.class, JSONObject.class);
 
 

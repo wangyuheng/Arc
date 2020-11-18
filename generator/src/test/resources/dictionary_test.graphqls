@@ -1,0 +1,13 @@
+"""
+this is e1
+"""
+enum e1 {
+    """
+    this is ev1
+    """
+    ev1
+    """
+    this is ev2
+    """
+    ev2
+}

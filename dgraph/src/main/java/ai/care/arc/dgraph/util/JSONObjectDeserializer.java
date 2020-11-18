@@ -1,9 +1,9 @@
 package ai.care.arc.dgraph.util;
 
-import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import ai.care.arc.core.util.DomainClassUtil;
-import lombok.extern.slf4j.Slf4j;
+import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import org.reflections.ReflectionUtils;
+import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
@@ -14,8 +14,9 @@ import java.util.Objects;
  * @author junhao.chen
  * @date 2020/6/8
  */
-@Slf4j
 public class JSONObjectDeserializer implements ExtraProcessor {
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(JSONObjectDeserializer.class);
+
     @Override
     public void processExtra(Object o, String s, Object value) {
         if (Objects.equals(s, DomainClassUtil.DOMAIN_CLASS_KEY)) {
