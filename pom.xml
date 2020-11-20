@@ -17,6 +17,7 @@
     <modules>
         <module>dgraph</module>
         <module>graphql</module>
+        <module>graphql-client</module>
         <module>core</module>
         <module>mq</module>
         <module>generator</module>
