@@ -26,12 +26,12 @@
     <dependency>
         <groupId>ai.care</groupId>
         <artifactId>arc-graphql</artifactId>
-        <version>1.1.0</version>
+        <version>1.2.0-SNAPSHOT</version>
     </dependency>
     <dependency>
         <groupId>ai.care</groupId>
         <artifactId>arc-dgraph</artifactId>
-        <version>1.1.0</version>
+        <version>1.2.0-SNAPSHOT</version>
     </dependency>
 ```
 
