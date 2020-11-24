@@ -32,6 +32,9 @@ public class ArcGraphqlClientSampleApplication {
         return gitlabGraphqlClient.echo("Hello " + name).getData();
     }
 
+    /**
+     * For more information about gitlab graphql api see: https://gitlab.com/-/graphql-explorer
+     */
     @GraphqlClient(value = "gitlabGraphqlClient", url = "https://gitlab.com/api/graphql")
     interface GitlabGraphqlClient {
 
