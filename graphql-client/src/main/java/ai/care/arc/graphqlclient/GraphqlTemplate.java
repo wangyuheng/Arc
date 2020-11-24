@@ -45,7 +45,11 @@ public class GraphqlTemplate {
             if (!response.getStatusCode().is2xxSuccessful()) {
                 throw new GraphqlClientException("execute graphql is fail! status=" + response + " body:" + response.getBody());
             }
-            return new GraphqlResponse<>(objectMapper.readValue(response.getBody(), type));
+            if (type == String.class) {
+                return new GraphqlResponse(response.getBody());
+            } else {
+                return new GraphqlResponse<>(objectMapper.readValue(response.getBody(), type));
+            }
         } catch (RestClientException | IllegalArgumentException | GraphqlClientException e) {
             throw e;
         } catch (Exception e) {

@@ -36,6 +36,7 @@ public class GraphqlTemplateTest {
 
         MockResult mockResult = new MockResult();
         mockResult.setName("mock_name");
+        mockResult.setName("mock_age");
 
         MockRestServiceServer mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
         mockRestServiceServer.expect(MockRestRequestMatchers.anything())
@@ -43,6 +44,18 @@ public class GraphqlTemplateTest {
 
         GraphqlResponse<MockResult> response = new GraphqlTemplate(restTemplate).execute("http://mock-url", new GraphqlRequest("{}"), MockResult.class);
         assertEquals(mockResult, response.getData());
+    }
+
+    @Test
+    public void should_return_body_when_type_string() throws JsonProcessingException {
+        RestTemplate restTemplate = new RestTemplate();
+
+        MockRestServiceServer mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
+        mockRestServiceServer.expect(MockRestRequestMatchers.anything())
+                .andRespond(MockRestResponseCreators.withSuccess("abc", MediaType.APPLICATION_JSON));
+
+        GraphqlResponse<String> response = new GraphqlTemplate(restTemplate).execute("http://mock-url", new GraphqlRequest("{}"));
+        assertEquals("abc", response.getData());
     }
 
     @Test
