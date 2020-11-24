@@ -12,7 +12,7 @@
     <groupId>ai.care</groupId>
     <artifactId>arc</artifactId>
     <packaging>pom</packaging>
-    <version>1.1.0</version>
+    <version>${revision}</version>
 
     <modules>
         <module>dgraph</module>
@@ -27,6 +27,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+
+        <revision>1.2.0-SNAPSHOT</revision>
 
         <fastjson.version>1.2.74</fastjson.version>
         <reflections.version>0.9.12</reflections.version>
