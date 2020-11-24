@@ -3,11 +3,8 @@ package ai.care.arc.graphqlclient;
 import ai.care.arc.graphqlclient.annotation.GraphqlClient;
 import org.junit.Test;
 import org.powermock.core.classloader.MockClassLoader;
-import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.mock.env.MockEnvironment;
 
@@ -36,7 +33,7 @@ public class GraphqlClientScannerTest {
     }
 
     @Test
-    public void should_ignore_annotation_class(){
+    public void should_ignore_annotation_class() {
         GraphqlClientScanner scanner = new GraphqlClientScanner(MockClassLoader.getSystemClassLoader(), new MockEnvironment(), new DefaultResourceLoader());
 
         assertTrue(scanner.isCandidateComponent(new AnnotatedGenericBeanDefinition(B.class)));

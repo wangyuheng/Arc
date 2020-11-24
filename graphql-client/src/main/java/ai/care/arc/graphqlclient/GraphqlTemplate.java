@@ -3,10 +3,10 @@ package ai.care.arc.graphqlclient;
 import ai.care.arc.graphqlclient.exception.GraphqlClientException;
 import ai.care.arc.graphqlclient.model.GraphqlRequest;
 import ai.care.arc.graphqlclient.model.GraphqlResponse;
-import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -42,13 +42,15 @@ public class GraphqlTemplate {
         ResponseEntity<String> response;
         try {
             response = restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request, headers), String.class);
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                throw new GraphqlClientException("execute graphql is fail! status=" + response + " body:" + response.getBody());
+            }
+            return new GraphqlResponse<>(objectMapper.readValue(response.getBody(), type));
+        } catch (RestClientException | IllegalArgumentException | GraphqlClientException e) {
+            throw e;
         } catch (Exception e) {
             throw new GraphqlClientException(e);
         }
-        if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new GraphqlClientException("execute graphql is fail! status=" + response + " body:" + response.getBody());
-        }
-        return new GraphqlResponse<>(JSON.parseObject(response.getBody(), type));
     }
 
     public GraphqlResponse<String> execute(String url, GraphqlRequest request) {

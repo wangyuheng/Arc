@@ -48,7 +48,7 @@ public class GraphqlClientsRegistrar implements ImportBeanDefinitionRegistrar,
     }
 
     private void registerGraphqlClients(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
-        final GraphqlClientScanner scanner = new GraphqlClientScanner(classLoader,environment, resourceLoader);
+        final GraphqlClientScanner scanner = new GraphqlClientScanner(classLoader, environment, resourceLoader);
         final GraphqlTemplate graphqlTemplate = new GraphqlTemplate();
 
         getBasePackages(metadata).stream()
@@ -78,7 +78,7 @@ public class GraphqlClientsRegistrar implements ImportBeanDefinitionRegistrar,
 
     private String getUrl(Map<String, Object> attributes) {
         String url = resolve((String) attributes.get("url"));
-        Assert.notNull(url, "url must be not null!");
+        Assert.hasText(url, "url must be not empty!");
         if (!url.contains(URL_HTTP_SEG)) {
             url = "http" + URL_HTTP_SEG + url;
         }
@@ -102,14 +102,18 @@ public class GraphqlClientsRegistrar implements ImportBeanDefinitionRegistrar,
         AnnotationAttributes annotationAttributes = AnnotationAttributes.fromMap(importingClassMetadata.getAnnotationAttributes(EnableGraphqlClients.class.getCanonicalName()));
 
         if (null != annotationAttributes) {
-            for (String pkg : annotationAttributes.getStringArray(ENABLE_GRAPHQL_CLIENTS_BASE_PACKAGES)) {
-                if (StringUtils.hasText(pkg)) {
-                    basePackages.add(pkg);
+            if (annotationAttributes.containsKey(ENABLE_GRAPHQL_CLIENTS_BASE_PACKAGES)) {
+                for (String pkg : annotationAttributes.getStringArray(ENABLE_GRAPHQL_CLIENTS_BASE_PACKAGES)) {
+                    if (StringUtils.hasText(pkg)) {
+                        basePackages.add(pkg);
+                    }
                 }
             }
-            for (String pkg : annotationAttributes.getStringArray(ENABLE_GRAPHQL_CLIENTS_VALUE)) {
-                if (StringUtils.hasText(pkg)) {
-                    basePackages.add(pkg);
+            if (annotationAttributes.containsKey(ENABLE_GRAPHQL_CLIENTS_VALUE)) {
+                for (String pkg : annotationAttributes.getStringArray(ENABLE_GRAPHQL_CLIENTS_VALUE)) {
+                    if (StringUtils.hasText(pkg)) {
+                        basePackages.add(pkg);
+                    }
                 }
             }
         }
