@@ -1,7 +1,7 @@
 package ai.care.arc.dgraph.util;
 
 import com.alibaba.fastjson.JSONObject;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -13,8 +13,9 @@ import java.util.stream.Collectors;
  * @author junhao.chen
  * @date 2020/6/4
  */
-@Slf4j
 public class DgraphSQLHelper {
+
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(DgraphSQLHelper.class);
 
     private static List<Class> BASIC_CLASS = Arrays.asList(String.class, Integer.class, Float.class, boolean.class, Boolean.class, Object.class, OffsetDateTime.class, Long.class, JSONObject.class);
 
