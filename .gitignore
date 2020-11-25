@@ -2,6 +2,7 @@
 
 .github/
 .travis.yml
+.flattened-pom.xml
 
 # maven ignore
 target/
