@@ -37,30 +37,13 @@ public class DgraphSQLHelperTest {
     @Test
     public void  test_flat_class(){
         Set<String> result = DgraphSQLHelper.flatClass(ExampleParentClass.class,new ArrayList<>());
-        Assert.assertEquals(6,result.size());
+        Assert.assertEquals(7,result.size());
         Assert.assertTrue(result.contains("ExampleParentClass.uid"));
+        Assert.assertTrue(result.contains("ExampleParentClass.stringList"));
         Assert.assertTrue(result.contains("ExampleParentClass.ExampleBClass.uid"));
         Assert.assertTrue(result.contains("ExampleParentClass.ExampleBClass.stringList"));
         Assert.assertTrue(result.contains("ExampleParentClass.ExampleAClass.uid"));
         Assert.assertTrue(result.contains("ExampleParentClass.ExampleAClass.ExampleBClass.uid"));
         Assert.assertTrue(result.contains("ExampleParentClass.ExampleAClass.ExampleBClass.stringList"));
-    }
-
-    @Test
-    public void test_basic_class(){
-        Set<String> result = DgraphSQLHelper.flatClass(ExampleParentClass.class,new ArrayList<>());
-        Assert.assertTrue(result.contains("ExampleParentClass.uid"));
-    }
-
-    @Test
-    public void test_basic_class_in_list_and_nested(){
-        Set<String> result = DgraphSQLHelper.flatClass(ExampleParentClass.class,new ArrayList<>());
-        Assert.assertTrue(result.contains("ExampleParentClass.stringList"));
-        Assert.assertTrue(result.contains("ExampleParentClass.ExampleBClass.stringList"));
-    }
-
-    public void test_nested_basic_class(){
-        Set<String> result = DgraphSQLHelper.flatClass(ExampleParentClass.class,new ArrayList<>());
-        Assert.assertTrue(result.contains("ExampleParentClass.ExampleAClass.uid"));
     }
 }
