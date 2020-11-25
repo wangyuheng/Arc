@@ -8,13 +8,13 @@
 
 ### 1. 添加maven依赖
 
-最新版本为 **1.1.0**
+最新版本为 **1.2.0-SNAPSHOT**
 
 ```xml
 <dependency>
     <groupId>ai.care</groupId>
     <artifactId>arc-generator</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0-SNAPSHOT</version>
 </dependency>
 ```
 #### 2. 添加graphql schema文件 
