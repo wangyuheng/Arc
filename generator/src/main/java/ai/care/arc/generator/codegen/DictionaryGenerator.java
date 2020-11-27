@@ -44,7 +44,7 @@ public class DictionaryGenerator implements IGenerator {
             enumTypeDefinition.getEnumValueDefinitions()
                     .forEach(enumValueDefinition ->
                             typeSpecBuilder.addEnumConstant(enumValueDefinition.getName(), TypeSpec.anonymousClassBuilder("")
-                                    .addJavadoc(Optional.ofNullable(enumValueDefinition.getDescription()).map(Description::getContent).orElse(enumValueDefinition.getName()))
+                                    .addJavadoc(JavadocUtils.getFieldDocByDescription(enumValueDefinition.getDescription(), enumValueDefinition.getName()))
                                     .build()));
             return typeSpecBuilder;
         }

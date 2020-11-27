@@ -49,7 +49,7 @@ public interface JavadocUtils {
      */
     static CodeBlock getFieldDocByDescription(Description description, String defaultContent) {
         return CodeBlock.builder()
-                .add(Optional.ofNullable(description).map(Description::getContent).orElse(defaultContent))
+                .add(Optional.ofNullable(description).map(Description::getContent).map(String::trim).orElse(defaultContent))
                 .build();
     }
 
@@ -61,9 +61,10 @@ public interface JavadocUtils {
      */
     static CodeBlock getClassDocByDescription(Description description, String defaultContent) {
         return CodeBlock.builder()
-                .add(Optional.ofNullable(description).map(Description::getContent).orElse(defaultContent))
+                .add(Optional.ofNullable(description).map(Description::getContent).map(String::trim).orElse(defaultContent))
                 .add("\n")
                 .add(GeneratorGlobalConst.GENERAL_CODE_BLOCK)
                 .build();
     }
+
 }
