@@ -220,12 +220,13 @@ public abstract class SimpleDgraphRepository<T> implements DgraphRepository<T> {
     }
 
     /**
-     * 嵌套 type 未解决
+     *
+     * @param levelLimit 查询类型嵌套层数限制
      */
-    public <S extends T> Optional<S> getOne(String uid, String... vars) {
+    public <S extends T> Optional<S> getOne(String uid, Integer levelLimit,String... vars) {
         Class<T> tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         String sql = "query {\n" +
-                "getOne(func: uid(" + uid + ")) @filter( type(" + typeInformation.getTypeValue() + "))" + DgraphSQLHelper.getVar(tClass) +
+                "getOne(func: uid(" + uid + ")) @filter( type(" + typeInformation.getTypeValue() + "))" + DgraphSQLHelper.getVar(tClass,levelLimit) +
                 "}\n";
 
         log.info("execute sql for get one. sql:{}", sql);
@@ -243,6 +244,10 @@ public abstract class SimpleDgraphRepository<T> implements DgraphRepository<T> {
             log.error("execute getOne query error! jsonResult:{}", jsonResult, e);
         }
         return Optional.empty();
+    }
+
+    public <S extends T> Optional<S> getOne(String uid,String... vars) {
+        return getOne(uid,null,vars);
     }
 
     @Override

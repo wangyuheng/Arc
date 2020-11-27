@@ -17,21 +17,28 @@ public class DgraphSQLHelper {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(DgraphSQLHelper.class);
 
-    private static List<Class> BASIC_CLASS = Arrays.asList(String.class, Integer.class, Float.class, boolean.class, Boolean.class, Object.class, OffsetDateTime.class, Long.class, JSONObject.class);
+    private static final List<Class> BASIC_CLASS = Arrays.asList(String.class, Integer.class, Float.class, boolean.class, Boolean.class, Object.class, OffsetDateTime.class, Long.class, JSONObject.class);
 
-    public static String getVar(Class clazz) {
-        Integer maxLevel = flatClass(clazz, new ArrayList<>()).stream().mapToInt(it -> it.split("\\.").length).max().getAsInt() - 1;
-        return generateQueryByMaxLevel(maxLevel);
+    private static final Integer MAX_LEVEL_LIMIT = 10;
+
+    public static String getVar(Class clazz,Integer levelLimit) {
+        Integer maxLevel = flatClass(clazz, new ArrayList<>()).stream().mapToInt(it -> it.split("\\.").length).max().orElse(1) - 1;
+        levelLimit = Optional.ofNullable(levelLimit).filter(it -> it > 0 ).orElse(MAX_LEVEL_LIMIT);
+        if (maxLevel > levelLimit) {
+            return generateQueryByMaxLevel(levelLimit);
+        } else {
+            return generateQueryByMaxLevel(maxLevel);
+        }
     }
 
-    private static String generateQueryByMaxLevel(Integer maxLevel) {
+    static String generateQueryByMaxLevel(Integer maxLevel) {
         if (maxLevel == 0) {
             return "";
         }
         return "{ \n uid \n expand(_all_)" + generateQueryByMaxLevel(maxLevel - 1) + "\n}";
     }
 
-    public static Set<String> flatClass(Class clazz, List<Class> alreadyExistClass) {
+    static Set<String> flatClass(Class clazz, List<Class> alreadyExistClass) {
         List<Class> newAlreadyExistClass = new ArrayList<>(alreadyExistClass);
         newAlreadyExistClass.add(clazz);
         Field[] fields = clazz.getDeclaredFields();
