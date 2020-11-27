@@ -4,13 +4,11 @@ import ai.care.arc.generator.codegen.util.JavadocUtils;
 import ai.care.arc.generator.codegen.util.PackageManager;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
-import graphql.language.Description;
 import graphql.language.EnumTypeDefinition;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import org.springframework.util.StringUtils;
 
 import javax.lang.model.element.Modifier;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
