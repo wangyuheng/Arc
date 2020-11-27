@@ -2,21 +2,20 @@
 
 ## highlight
 
-- 新增generator模块，用于代码生成
+- 新增generator模块，用于代码生成 [#5](https://github.com/YituHealthcare/Arc/issues/5)
 
 ### Common
 
-1. 移除lombok依赖
+1. 移除lombok依赖 [#19](https://github.com/YituHealthcare/Arc/issues/19)
 
 ### Generator
 
-1. 根据GraphqlSchema生成DgraphSchema
-2. 根据GraphqlSchema生成Java代码
+1. 根据GraphqlSchema生成DgraphSchema [#10](https://github.com/YituHealthcare/Arc/issues/10)
+2. 根据GraphqlSchema生成Java代码 [#5](https://github.com/YituHealthcare/Arc/issues/5)
 
 ### Dgraph
 
-1. 通过配置初始化数据库Schema
-
+1. 通过配置初始化数据库Schema [#7](https://github.com/YituHealthcare/Arc/issues/7)
 
 
 # 1.0.0
