@@ -9,13 +9,7 @@ public class CustomDataFetcherExceptionHandler extends SimpleDataFetcherExceptio
     @Override
     public DataFetcherExceptionHandlerResult onException(DataFetcherExceptionHandlerParameters handlerParameters) {
         Throwable exception = handlerParameters.getException();
-        if (exception instanceof CustomException) {
-            return super.onException(DataFetcherExceptionHandlerParameters
-                    .newExceptionParameters()
-                    .exception(exception)
-                    .dataFetchingEnvironment(handlerParameters.getDataFetchingEnvironment())
-                    .build());
-        } else if (exception instanceof RuntimeException ) {
+        if (exception instanceof RuntimeException) {
             return super.onException(DataFetcherExceptionHandlerParameters
                     .newExceptionParameters()
                     .exception(exception)
