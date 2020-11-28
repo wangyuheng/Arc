@@ -4,8 +4,6 @@ import graphql.execution.DataFetcherExceptionHandlerParameters;
 import graphql.execution.DataFetcherExceptionHandlerResult;
 import graphql.execution.SimpleDataFetcherExceptionHandler;
 
-import java.util.concurrent.CompletionException;
-
 public class CustomDataFetcherExceptionHandler extends SimpleDataFetcherExceptionHandler {
 
     @Override
@@ -17,10 +15,10 @@ public class CustomDataFetcherExceptionHandler extends SimpleDataFetcherExceptio
                     .exception(exception)
                     .dataFetchingEnvironment(handlerParameters.getDataFetchingEnvironment())
                     .build());
-        } else if (exception instanceof RuntimeException && exception.getCause() instanceof CompletionException) {
+        } else if (exception instanceof RuntimeException ) {
             return super.onException(DataFetcherExceptionHandlerParameters
                     .newExceptionParameters()
-                    .exception(new RuntimeException("操作过于频繁，请稍后再试",exception.getCause()))
+                    .exception(exception)
                     .dataFetchingEnvironment(handlerParameters.getDataFetchingEnvironment())
                     .build());
         } else {
