@@ -7,7 +7,7 @@ import ai.care.arc.core.pageable.QueryBody;
 import ai.care.arc.core.util.BeanUtil;
 import ai.care.arc.dgraph.repository.mapper.DgraphMapperManager;
 import ai.care.arc.dgraph.repository.parser.DgraphParser;
-import ai.care.arc.dgraph.util.DgraphSQLHelper;
+import ai.care.arc.dgraph.util.DgraphSqlHelper;
 import ai.care.arc.dgraph.util.UidUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -225,7 +225,7 @@ public abstract class SimpleDgraphRepository<T> implements DgraphRepository<T> {
     public <S extends T> Optional<S> getOne(String uid, Integer levelLimit,String... vars) {
         Class<T> tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         String sql = "query {\n" +
-                "getOne(func: uid(" + uid + ")) @filter( type(" + typeInformation.getTypeValue() + "))" + DgraphSQLHelper.getVar(tClass,levelLimit) +
+                "getOne(func: uid(" + uid + ")) @filter( type(" + typeInformation.getTypeValue() + "))" + DgraphSqlHelper.getVar(tClass,levelLimit) +
                 "}\n";
 
         log.info("execute sql for get one. sql:{}", sql);

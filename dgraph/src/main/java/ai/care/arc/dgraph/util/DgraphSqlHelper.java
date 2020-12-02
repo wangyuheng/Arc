@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
  * @author junhao.chen
  * @date 2020/6/4
  */
-public class DgraphSQLHelper {
+public class DgraphSqlHelper {
 
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(DgraphSQLHelper.class);
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(DgraphSqlHelper.class);
 
     private static final List<Class> BASIC_CLASS = Arrays.asList(String.class, Integer.class, Float.class, boolean.class, Boolean.class, Object.class, OffsetDateTime.class, Long.class, JSONObject.class);
 

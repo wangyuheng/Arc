@@ -42,7 +42,7 @@ public class DgraphSQLHelperTest {
 
     @Test
     public void  test_flat_class(){
-        Set<String> result = DgraphSQLHelper.flatClass(ExampleParentClass.class,new ArrayList<>());
+        Set<String> result = DgraphSqlHelper.flatClass(ExampleParentClass.class,new ArrayList<>());
         Assert.assertEquals(7,result.size());
         Assert.assertTrue(result.contains("ExampleParentClass.uid"));
         Assert.assertTrue(result.contains("ExampleParentClass.stringList"));
@@ -55,7 +55,7 @@ public class DgraphSQLHelperTest {
 
     @Test
     public void test_flat_union_class(){
-        Set<String> result = DgraphSQLHelper.flatClass(ExampleParentWithUnionClass.class,new ArrayList<>());
+        Set<String> result = DgraphSqlHelper.flatClass(ExampleParentWithUnionClass.class,new ArrayList<>());
         Assert.assertEquals(6,result.size());
         Assert.assertTrue(result.contains("ExampleParentWithUnionClass.uid"));
         Assert.assertTrue(result.contains("ExampleParentWithUnionClass.ExampleAClass.uid"));
@@ -67,22 +67,22 @@ public class DgraphSQLHelperTest {
 
     @Test
     public void test_generate_query(){
-        String oneLevelResult = DgraphSQLHelper.generateQueryByMaxLevel(1);
+        String oneLevelResult = DgraphSqlHelper.generateQueryByMaxLevel(1);
         Assert.assertEquals("{ \n uid \n expand(_all_)\n}",oneLevelResult);
-        String twoLevelResult = DgraphSQLHelper.generateQueryByMaxLevel(2);
+        String twoLevelResult = DgraphSqlHelper.generateQueryByMaxLevel(2);
         Assert.assertEquals("{ \n uid \n expand(_all_){ \n uid \n expand(_all_)\n}\n}",twoLevelResult);
-        String threeLevelResult = DgraphSQLHelper.generateQueryByMaxLevel(3);
+        String threeLevelResult = DgraphSqlHelper.generateQueryByMaxLevel(3);
         Assert.assertEquals("{ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_)\n}\n}\n}",threeLevelResult);
-        String fourLevelResult = DgraphSQLHelper.generateQueryByMaxLevel(4);
+        String fourLevelResult = DgraphSqlHelper.generateQueryByMaxLevel(4);
         Assert.assertEquals("{ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_)\n}\n}\n}\n}",fourLevelResult);
-        String fiveLevelResult = DgraphSQLHelper.generateQueryByMaxLevel(5);
+        String fiveLevelResult = DgraphSqlHelper.generateQueryByMaxLevel(5);
         Assert.assertEquals("{ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_)\n}\n}\n}\n}\n}",fiveLevelResult);
     }
 
     @Test
     public void test_get_var_compare_different_level_limit(){
-        String twoLevelLimitResult = DgraphSQLHelper.getVar(ExampleParentClass.class,2);
-        String noLevelLimitResult = DgraphSQLHelper.getVar(ExampleParentClass.class,null);
+        String twoLevelLimitResult = DgraphSqlHelper.getVar(ExampleParentClass.class,2);
+        String noLevelLimitResult = DgraphSqlHelper.getVar(ExampleParentClass.class,null);
         Assert.assertNotEquals(twoLevelLimitResult,noLevelLimitResult);
     }
 }
