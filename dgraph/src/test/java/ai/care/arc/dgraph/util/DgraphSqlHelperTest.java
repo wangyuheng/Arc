@@ -11,7 +11,7 @@ import java.util.Set;
  * @author junhao.chen
  * @date 2020/11/27
  */
-public class DgraphSQLHelperTest {
+public class DgraphSqlHelperTest {
     private static class ExampleParentClass{
         private String uid;
         private ExampleBClass bClass;
