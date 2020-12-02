@@ -225,7 +225,7 @@ public abstract class SimpleDgraphRepository<T> implements DgraphRepository<T> {
     public <S extends T> Optional<S> getOne(String uid, Integer levelLimit,String... vars) {
         Class<T> tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         String sql = "query {\n" +
-                "getOne(func: uid(" + uid + ")) @filter( type(" + typeInformation.getTypeValue() + "))" + DgraphSqlHelper.getVar(tClass,levelLimit) +
+                "getOne(func: uid(" + uid + ")) " + DgraphSqlHelper.getVar(tClass,levelLimit) +
                 "}\n";
 
         log.info("execute sql for get one. sql:{}", sql);
