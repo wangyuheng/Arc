@@ -40,6 +40,11 @@ public class DgraphSqlHelperTest {
         private List<Object> unionListField;
     }
 
+    private static class ExampleParentWithObjectListAndNoGenericList{
+        private List noGenericList;
+        private List<Object> objectList;
+    }
+
     @Test
     public void  test_flat_class(){
         Set<String> result = DgraphSqlHelper.flatClass(ExampleParentClass.class,new ArrayList<>());
@@ -63,6 +68,14 @@ public class DgraphSqlHelperTest {
         Assert.assertTrue(result.contains("ExampleParentWithUnionClass.ExampleBClass.stringList"));
         Assert.assertTrue(result.contains("ExampleParentWithUnionClass.ExampleAClass.ExampleBClass.uid"));
         Assert.assertTrue(result.contains("ExampleParentWithUnionClass.ExampleAClass.ExampleBClass.stringList"));
+    }
+
+    @Test
+    public void test_flat_object_list_and_generic_list(){
+        Set<String> result = DgraphSqlHelper.flatClass(ExampleParentWithObjectListAndNoGenericList.class,new ArrayList<>());
+        Assert.assertEquals(2,result.size());
+        Assert.assertTrue(result.contains("ExampleParentWithObjectListAndNoGenericList.objectList"));
+        Assert.assertTrue(result.contains("ExampleParentWithObjectListAndNoGenericList.noGenericList"));
     }
 
     @Test

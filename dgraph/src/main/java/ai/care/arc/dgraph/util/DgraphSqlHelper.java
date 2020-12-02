@@ -47,7 +47,13 @@ public class DgraphSqlHelper {
             if (Objects.isNull(field.getAnnotation(UnionClasses.class))) {
                 Class<?> fieldType;
                 if (Objects.equals(List.class, field.getType())) {
-                    fieldType = (Class) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
+                    if(field.getGenericType() instanceof Class){
+                        //没有泛型的List当成Object处理
+                        fieldType = Object.class;
+                    }
+                    else {
+                        fieldType = (Class) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
+                    }
                 } else {
                     fieldType = field.getType();
                 }
