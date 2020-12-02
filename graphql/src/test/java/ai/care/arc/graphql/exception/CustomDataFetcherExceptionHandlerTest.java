@@ -76,7 +76,6 @@ public class CustomDataFetcherExceptionHandlerTest {
         ExecutionResult result = graphQL.execute(ExecutionInput.newExecutionInput("{ runtimeException }"));
         assertNotNull(result.getErrors());
         assertEquals(1,result.getErrors().size());
-        assertNotEquals("Exception while fetching data (/runtimeException) : runtime error",result.getErrors().get(0).getMessage());
         assertEquals("Exception while fetching data (/runtimeException) : general exception",result.getErrors().get(0).getMessage());
     }
 }
