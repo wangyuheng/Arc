@@ -12,13 +12,17 @@ import graphql.schema.idl.TypeDefinitionRegistry;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 
-public class GraphQLProvider implements ApplicationListener<ContextRefreshedEvent> {
+/**
+ * 解析schema并提供graphql服务
+ *
+ * @author yuheng.wang
+ * @see GraphQL
+ */
+public class GraphQLProvider {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(GraphQLProvider.class);
     @Value("${arc.graphql.define:graphql/schema.graphqls}")
@@ -26,12 +30,6 @@ public class GraphQLProvider implements ApplicationListener<ContextRefreshedEven
     @Autowired(required = false)
     private DataFetcherInterceptorRegistry dataFetcherInterceptorRegistry;
     private GraphQL graphQL;
-
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-        log.info("receive event:{}", event);
-        refresh();
-    }
 
     public GraphQL getGraphQL() {
         if (null == graphQL) {
