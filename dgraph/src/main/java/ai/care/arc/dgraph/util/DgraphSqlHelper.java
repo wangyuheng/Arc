@@ -21,9 +21,9 @@ public class DgraphSqlHelper {
 
     private static final Integer MAX_LEVEL_LIMIT = 10;
 
-    public static String getVar(Class clazz,Integer levelLimit) {
+    public static String getVar(Class clazz, Integer levelLimit) {
         Integer maxLevel = flatClass(clazz, new ArrayList<>()).stream().mapToInt(it -> it.split("\\.").length).max().orElse(1) - 1;
-        levelLimit = Optional.ofNullable(levelLimit).filter(it -> it > 0 ).orElse(MAX_LEVEL_LIMIT);
+        levelLimit = Optional.ofNullable(levelLimit).filter(it -> it > 0).orElse(MAX_LEVEL_LIMIT);
         if (maxLevel > levelLimit) {
             return generateQueryByMaxLevel(levelLimit);
         } else {
@@ -44,14 +44,16 @@ public class DgraphSqlHelper {
         Field[] fields = clazz.getDeclaredFields();
         Set<String> flatFieldList = new HashSet<>();
         for (Field field : fields) {
-            if (Objects.isNull(field.getAnnotation(UnionClasses.class))) {
+            if (field.isAnnotationPresent(UnionClasses.class)) {
+                UnionClasses unionClasses = field.getAnnotation(UnionClasses.class);
+                flatFieldList.addAll(Arrays.stream(unionClasses.value()).flatMap(it -> flatClass(it, newAlreadyExistClass).stream()).map(it -> clazz.getSimpleName() + "." + it).collect(Collectors.toList()));
+            } else {
                 Class<?> fieldType;
-                if (Objects.equals(List.class, field.getType())) {
-                    if(field.getGenericType() instanceof Class){
+                if (List.class.isAssignableFrom(field.getType())) {
+                    if (field.getGenericType() instanceof Class) {
                         //没有泛型的List当成Object处理
                         fieldType = Object.class;
-                    }
-                    else {
+                    } else {
                         fieldType = (Class) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
                     }
                 } else {
@@ -69,9 +71,6 @@ public class DgraphSqlHelper {
                 } else {
                     flatFieldList.addAll(flatClass(fieldType, newAlreadyExistClass).stream().map(it -> clazz.getSimpleName() + "." + it).collect(Collectors.toList()));
                 }
-            } else {
-                UnionClasses unionClasses = field.getAnnotation(UnionClasses.class);
-                flatFieldList.addAll(Arrays.stream(unionClasses.value()).flatMap(it -> flatClass(it, newAlreadyExistClass).stream()).map(it -> clazz.getSimpleName() + "." + it).collect(Collectors.toList()));
             }
         }
         return flatFieldList;
