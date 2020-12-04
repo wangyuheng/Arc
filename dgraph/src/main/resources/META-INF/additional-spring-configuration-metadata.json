@@ -14,7 +14,7 @@
     {
       "name": "arc.dgraph.init",
       "type": "java.lang.Boolean",
-      "description": "init dgraph schema by dgraph define.",
+      "description": "init dgraph schema by dgraph define after drop all.",
       "defaultValue": "false"
     },
     {
