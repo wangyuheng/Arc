@@ -1,21 +1,42 @@
+# 1.2.0
+
+## HIGHLIGHT
+
+- 新增graphql-client，方便作为客户端调用其他Graphql服务 [#28](https://github.com/YituHealthcare/Arc/issues/28)
+
+### Generator
+
+- BUGFIX: Windows系统下javadoc多生成一个换行 [#31](https://github.com/YituHealthcare/Arc/issues/31)
+
+### Graphql
+
+- ENHANCEMENT: 完善统一的异常处理 [#33](https://github.com/YituHealthcare/Arc/issues/33)
+- BUGFIX: 项目中使用@EnableFeignClients后Graphql方法注册失败，无法调用 [#27](https://github.com/YituHealthcare/Arc/issues/27)
+
+### Dgraph 
+
+- BUGFIX: Dgraph结果解析不支持一个List内包含多种类型 [#22](https://github.com/YituHealthcare/Arc/issues/22)
+- BUGFIX: Dgraph的SimpleDgraphRepository提供的getOne无法使用 [#23](https://github.com/YituHealthcare/Arc/issues/23)
+
+
 # 1.1.0
 
-## highlight
+## HIGHLIGHT
 
 - 新增generator模块，用于代码生成 [#5](https://github.com/YituHealthcare/Arc/issues/5)
 
 ### Common
 
-1. 移除lombok依赖 [#19](https://github.com/YituHealthcare/Arc/issues/19)
+- 移除lombok依赖 [#19](https://github.com/YituHealthcare/Arc/issues/19)
 
 ### Generator
 
-1. 根据GraphqlSchema生成DgraphSchema [#10](https://github.com/YituHealthcare/Arc/issues/10)
-2. 根据GraphqlSchema生成Java代码 [#5](https://github.com/YituHealthcare/Arc/issues/5)
+- 根据GraphqlSchema生成DgraphSchema [#10](https://github.com/YituHealthcare/Arc/issues/10)
+- 根据GraphqlSchema生成Java代码 [#5](https://github.com/YituHealthcare/Arc/issues/5)
 
 ### Dgraph
 
-1. 通过配置初始化数据库Schema [#7](https://github.com/YituHealthcare/Arc/issues/7)
+- 通过配置初始化数据库Schema [#7](https://github.com/YituHealthcare/Arc/issues/7)
 
 
 # 1.0.0
