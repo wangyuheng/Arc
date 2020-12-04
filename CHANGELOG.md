@@ -10,11 +10,12 @@
 
 ### Graphql
 
-- ENHANCEMENT: 完善统一的异常处理 [#33](https://github.com/YituHealthcare/Arc/issues/33)
 - BUGFIX: 项目中使用@EnableFeignClients后Graphql方法注册失败，无法调用 [#27](https://github.com/YituHealthcare/Arc/issues/27)
+- ENHANCEMENT: 完善统一的异常处理 [#33](https://github.com/YituHealthcare/Arc/issues/33)
 
 ### Dgraph 
 
+- BUGFIX: Dgraph初始化并且drop-all时表结构丢失 [#13](https://github.com/YituHealthcare/Arc/issues/13)
 - BUGFIX: Dgraph结果解析不支持一个List内包含多种类型 [#22](https://github.com/YituHealthcare/Arc/issues/22)
 - BUGFIX: Dgraph的SimpleDgraphRepository提供的getOne无法使用 [#23](https://github.com/YituHealthcare/Arc/issues/23)
 
