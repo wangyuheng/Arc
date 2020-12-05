@@ -12,11 +12,12 @@
     <groupId>ai.care</groupId>
     <artifactId>arc</artifactId>
     <packaging>pom</packaging>
-    <version>1.1.0</version>
+    <version>${revision}</version>
 
     <modules>
         <module>dgraph</module>
         <module>graphql</module>
+        <module>graphql-client</module>
         <module>core</module>
         <module>mq</module>
         <module>generator</module>
@@ -27,6 +28,10 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
 
+        <revision>1.2.0</revision>
+
+        <spring-cloud-starter-zipkin.version>2.2.4.RELEASE</spring-cloud-starter-zipkin.version>
+
         <fastjson.version>1.2.74</fastjson.version>
         <reflections.version>0.9.12</reflections.version>
         <powermock.version>2.0.7</powermock.version>
@@ -36,29 +41,19 @@
         <kickstart.version>7.0.1</kickstart.version>
 
         <dgraph4j.version>20.03.0</dgraph4j.version>
-        <jackson.version>2.9.8</jackson.version>
         <javapoet.version>1.13.0</javapoet.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>${reflections.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zipkin</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
@@ -67,12 +62,8 @@
             <scope>test</scope>
             <exclusions>
                 <exclusion>
-                    <artifactId>javassist</artifactId>
-                    <groupId>org.javassist</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>powermock-reflect</artifactId>
-                    <groupId>org.powermock</groupId>
+                    <artifactId>objenesis</artifactId>
+                    <groupId>org.objenesis</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -81,12 +72,6 @@
             <artifactId>powermock-api-mockito2</artifactId>
             <version>${powermock.version}</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>objenesis</artifactId>
-                    <groupId>org.objenesis</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 
@@ -98,6 +83,26 @@
                 <version>Hoxton.SR7</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-xml</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflections.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-zipkin</artifactId>
+                <version>${spring-cloud-starter-zipkin.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -197,6 +202,31 @@
                     <artifactId>coveralls-maven-plugin</artifactId>
                     <version>4.3.0</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>flatten-maven-plugin</artifactId>
+                    <version>1.1.0</version>
+                    <configuration>
+                        <updatePomFile>true</updatePomFile>
+                        <flattenMode>oss</flattenMode>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>flatten</id>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>flatten</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>flatten.clean</id>
+                            <phase>clean</phase>
+                            <goals>
+                                <goal>clean</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -222,6 +252,14 @@
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

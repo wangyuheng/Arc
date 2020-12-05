@@ -7,7 +7,7 @@ import ai.care.arc.core.pageable.QueryBody;
 import ai.care.arc.core.util.BeanUtil;
 import ai.care.arc.dgraph.repository.mapper.DgraphMapperManager;
 import ai.care.arc.dgraph.repository.parser.DgraphParser;
-import ai.care.arc.dgraph.util.DgraphSQLHelper;
+import ai.care.arc.dgraph.util.DgraphSqlHelper;
 import ai.care.arc.dgraph.util.UidUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -220,12 +220,12 @@ public abstract class SimpleDgraphRepository<T> implements DgraphRepository<T> {
     }
 
     /**
-     * 嵌套 type 未解决
+     * @param levelLimit 查询类型嵌套层数限制
      */
-    public <S extends T> Optional<S> getOne(String uid, String... vars) {
+    public <S extends T> Optional<S> getOne(String uid, Integer levelLimit,String... vars) {
         Class<T> tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         String sql = "query {\n" +
-                "getOne(func: uid(" + uid + ")) @filter( type(" + typeInformation.getTypeValue() + "))" + DgraphSQLHelper.getVar(Collections.singletonList(tClass), new ArrayList<>(), true) +
+                "getOne(func: uid(" + uid + ")) " + DgraphSqlHelper.getVar(tClass,levelLimit) +
                 "}\n";
 
         log.info("execute sql for get one. sql:{}", sql);
@@ -243,6 +243,10 @@ public abstract class SimpleDgraphRepository<T> implements DgraphRepository<T> {
             log.error("execute getOne query error! jsonResult:{}", jsonResult, e);
         }
         return Optional.empty();
+    }
+
+    public <S extends T> Optional<S> getOne(String uid,String... vars) {
+        return getOne(uid,null,vars);
     }
 
     @Override

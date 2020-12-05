@@ -119,9 +119,8 @@ public class DgraphParser {
                     Class fieldClazz = value.getClass();
                     if (Objects.nonNull(unionClasses)) {
                         if (value instanceof java.util.List) {
-                            JSONArray fieldValue = (JSONArray) value;
-                            fieldClazz = Class.forName(fieldValue.getJSONObject(0).getString(DomainClassUtil.DOMAIN_CLASS_KEY));
-                            field.set(domain, jsonArrayHandle(fieldValue, fieldClazz));
+                            JSONArray fieldValue = JSON.parseArray(JSON.toJSONString(value));
+                            field.set(domain, jsonArrayHandle(fieldValue));
                         } else {
                             JSONObject fieldValue = (JSONObject) value;
                             fieldClazz = Class.forName(fieldValue.getString(DomainClassUtil.DOMAIN_CLASS_KEY));
@@ -145,10 +144,11 @@ public class DgraphParser {
         }
     }
 
-    private <T> List<T> jsonArrayHandle(JSONArray jsonArray, Class<T> clazz) {
-        List<T> results = new ArrayList<>();
+    private List<Object> jsonArrayHandle(JSONArray jsonArray) {
+        List<Object> results = new ArrayList<>();
         for (Object object : jsonArray) {
-            results.add(JSON.parseObject(JSON.toJSONString(object), clazz, new JSONObjectDeserializer()));
+            Class fieldClazz = DomainClassUtil.getDomainClass(object);
+            results.add(JSON.parseObject(JSON.toJSONString(object), fieldClazz, new JSONObjectDeserializer()));
         }
         return results;
     }

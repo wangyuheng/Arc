@@ -1,6 +1,8 @@
-# Arc
+<p align="center">
+    <img src="doc/arc-logo.png">
+</p>
 
-![Maven Package](https://github.com/YituHealthcare/Arc/workflows/Maven%20Package/badge.svg?branch=master) [![Coverage Status](https://coveralls.io/repos/github/YituHealthcare/Arc/badge.svg?branch=master)](https://coveralls.io/github/YituHealthcare/Arc?branch=master) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=alert_status)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=bugs)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc)
+![Java CI Task - master](https://github.com/YituHealthcare/Arc/workflows/Java%20CI%20Task%20-%20master/badge.svg) ![Maven Package](https://github.com/YituHealthcare/Arc/workflows/Maven%20Package/badge.svg?branch=master) [![Coverage Status](https://coveralls.io/repos/github/YituHealthcare/Arc/badge.svg?branch=master)](https://coveralls.io/github/YituHealthcare/Arc?branch=master) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=alert_status)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=bugs)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc)
 
 通过`GraphQL Schema`描述业务领域，并提供一套基于`GraphQL`+`Dgraph`的开发框架，快速落地**DDD**。
 
@@ -26,12 +28,12 @@
     <dependency>
         <groupId>ai.care</groupId>
         <artifactId>arc-graphql</artifactId>
-        <version>1.1.0</version>
+        <version>1.2.0</version>
     </dependency>
     <dependency>
         <groupId>ai.care</groupId>
         <artifactId>arc-dgraph</artifactId>
-        <version>1.1.0</version>
+        <version>1.2.0</version>
     </dependency>
 ```
 

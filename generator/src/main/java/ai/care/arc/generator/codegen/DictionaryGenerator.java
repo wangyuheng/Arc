@@ -4,13 +4,11 @@ import ai.care.arc.generator.codegen.util.JavadocUtils;
 import ai.care.arc.generator.codegen.util.PackageManager;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
-import graphql.language.Description;
 import graphql.language.EnumTypeDefinition;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import org.springframework.util.StringUtils;
 
 import javax.lang.model.element.Modifier;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -44,7 +42,7 @@ public class DictionaryGenerator implements IGenerator {
             enumTypeDefinition.getEnumValueDefinitions()
                     .forEach(enumValueDefinition ->
                             typeSpecBuilder.addEnumConstant(enumValueDefinition.getName(), TypeSpec.anonymousClassBuilder("")
-                                    .addJavadoc(Optional.ofNullable(enumValueDefinition.getDescription()).map(Description::getContent).orElse(enumValueDefinition.getName()))
+                                    .addJavadoc(JavadocUtils.getFieldDocByDescription(enumValueDefinition.getDescription(), enumValueDefinition.getName()))
                                     .build()));
             return typeSpecBuilder;
         }

@@ -1,6 +1,5 @@
 package ai.care.arc.graphql;
 
-import ai.care.arc.graphql.client.GraphqlClient;
 import ai.care.arc.graphql.interceptor.DataFetcherInterceptorRegistry;
 import ai.care.arc.graphql.rest.GraphQLController;
 import ai.care.arc.graphql.support.DataFetcherServicePostProcessor;
@@ -24,12 +23,6 @@ public class GraphqlAutoConfiguration {
     @ConditionalOnMissingBean
     public GraphQLProvider graphQLProvider() {
         return new GraphQLProvider();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public GraphqlClient graphqlClient(GraphQLProvider graphQLProvider) {
-        return new GraphqlClient(graphQLProvider);
     }
 
     @Bean

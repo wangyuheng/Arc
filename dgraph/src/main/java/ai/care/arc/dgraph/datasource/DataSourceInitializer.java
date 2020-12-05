@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 
 import java.nio.file.Files;
-import java.util.List;
 
 /**
  * 根据配置初始化Dgraph schema
@@ -30,13 +29,13 @@ public class DataSourceInitializer implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         if (schemaPath.exists()) {
-            List<String> list = Files.readAllLines(schemaPath.getFile().toPath());
-            DgraphProto.Operation operation = DgraphProto.Operation.newBuilder()
-                    .setSchema(String.join("\n", list))
-                    .setDropAll(dropAll)
-                    .build();
-            log.debug("init dgraph by schema:{}", String.join("\n", list));
-            dgraphClient.alter(operation);
+            final String schema = String.join("\n", Files.readAllLines(schemaPath.getFile().toPath()));
+            if (dropAll) {
+                log.debug("drop all data and schema");
+                dgraphClient.alter(DgraphProto.Operation.newBuilder().setDropAll(true).build());
+            }
+            log.debug("init dgraph by schema:{}", schema);
+            dgraphClient.alter(DgraphProto.Operation.newBuilder().setSchema(schema).build());
             log.info("init dgraph by schemaPath:{}, dropAll:{}", schemaPath, dropAll);
         } else {
             log.warn("dgraph schema is not found! path:{} ", schemaPath);
