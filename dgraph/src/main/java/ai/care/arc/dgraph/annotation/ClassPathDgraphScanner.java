@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 /**
  * 扫描 {@link DgraphType} bean
  * 并通过 {@link DgraphTypeHolder} 持有
+ *
+ * @author yuheng.wang
  */
 public class ClassPathDgraphScanner extends ClassPathBeanDefinitionScanner {
 
@@ -67,7 +69,6 @@ public class ClassPathDgraphScanner extends ClassPathBeanDefinitionScanner {
         }
         return beanDefinitions;
     }
-
 
     public void registerFilters() {
         addIncludeFilter(new AnnotationTypeFilter(DgraphType.class));
