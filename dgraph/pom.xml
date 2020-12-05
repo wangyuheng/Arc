@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>arc-dgraph</artifactId>
+    <name>arc-dgraph</name>
 
     <dependencies>
         <dependency>

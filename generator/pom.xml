@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>arc-generator</artifactId>
+    <name>arc-generator</name>
 
     <dependencies>
         <dependency>

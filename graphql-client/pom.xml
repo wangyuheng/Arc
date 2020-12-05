@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>arc-graphql-client</artifactId>
+    <name>arc-graphql-client</name>
 
     <dependencies>
         <dependency>
