@@ -1,101 +1,138 @@
 package ai.care.arc.dgraph.util;
 
+import ai.care.arc.dgraph.annotation.DgraphType;
+import javafx.util.Pair;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author junhao.chen
  * @date 2020/11/27
  */
 public class DgraphSqlHelperTest {
-    private static class ExampleParentClass{
-        private String uid;
-        private ExampleBClass bClass;
-        private ExampleAClass aClass;
-        private List<ExampleAClass> aList;
-        private List<ExampleBClass> bList;
-        private List<String> stringList;
+
+    @DgraphType
+    private static class ExampleClassWithDgraphTypeFieldClass {
+        private ExampleClassWithNotDgraphTypeFieldClass dgraphTypeListField;
     }
 
-    private static class ExampleAClass{
+    @DgraphType
+    private static class ExampleClassWithNotDgraphTypeFieldClass {
         private String uid;
-        private ExampleBClass bClass;
-        private ExampleAClass aClass;
     }
 
-    private static class ExampleBClass{
-        private String uid;
-        private List<String> stringList;
-    }
-
-    private static class ExampleParentWithUnionClass{
-        private String uid;
-        @UnionClasses({ExampleAClass.class,ExampleBClass.class})
+    private static class ExampleClassWithUnionClass {
+        @UnionClasses({ExampleClassWithDgraphTypeFieldClass.class, ExampleClassWithNotDgraphTypeFieldClass.class})
         private Object unionField;
-        @UnionClasses({ExampleAClass.class,ExampleBClass.class})
+        @UnionClasses({ExampleClassWithDgraphTypeFieldClass.class, ExampleClassWithNotDgraphTypeFieldClass.class})
         private List<Object> unionListField;
     }
 
-    private static class ExampleParentWithObjectListAndNoGenericList{
+    private static class ExampleClassWithNoGenericListField {
         private List noGenericList;
-        private List<Object> objectList;
+    }
+
+    private static class ExampleClassWithHasGenericListField {
+        private List<String> stringList;
+    }
+
+
+    private static class ExampleClassWithSameNestedClass {
+        private ExampleClassWithSameNestedClass sameNestedClassField;
+    }
+
+    private static class ExampleParentClass {
+        private String uid;
+        private ExampleClassWithNotDgraphTypeFieldClass bClass;
+        private List<ExampleClassWithNotDgraphTypeFieldClass> bList;
+    }
+
+    private Set<String> classWithUnionClassFieldFlatResult;
+    private Set<String> classWithNoGenericListFieldFlatResult;
+    private Set<String> classWithHasGenericListFieldFlatResult;
+    private Set<String> classWithNotDgraphTypeFieldFlatResult;
+    private Set<String> classWithDgraphTypeFieldFlatResult;
+
+    @BeforeEach
+    public void init() {
+        classWithUnionClassFieldFlatResult = Stream.of(
+                "ExampleClassWithUnionClass.ExampleClassWithNotDgraphTypeFieldClass.uid",
+                "ExampleClassWithUnionClass.ExampleClassWithDgraphTypeFieldClass.ExampleClassWithNotDgraphTypeFieldClass.uid").collect(Collectors.toSet());
+
+        classWithNoGenericListFieldFlatResult = Stream.of(
+                "ExampleClassWithNoGenericListField.noGenericList").collect(Collectors.toSet());
+
+        classWithHasGenericListFieldFlatResult = Stream.of(
+                "ExampleClassWithHasGenericListField.stringList").collect(Collectors.toSet());
+
+        classWithNotDgraphTypeFieldFlatResult = Stream.of(
+                "ExampleClassWithNotDgraphTypeFieldClass.uid").collect(Collectors.toSet());
+
+        classWithDgraphTypeFieldFlatResult = Stream.of(
+                "ExampleClassWithDgraphTypeFieldClass.ExampleClassWithNotDgraphTypeFieldClass.uid").collect(Collectors.toSet());
     }
 
     @Test
-    public void  test_flat_class(){
-        Set<String> result = DgraphSqlHelper.flatClass(ExampleParentClass.class,new ArrayList<>());
-        Assert.assertEquals(7,result.size());
-        Assert.assertTrue(result.contains("ExampleParentClass.uid"));
-        Assert.assertTrue(result.contains("ExampleParentClass.stringList"));
-        Assert.assertTrue(result.contains("ExampleParentClass.ExampleBClass.uid"));
-        Assert.assertTrue(result.contains("ExampleParentClass.ExampleBClass.stringList"));
-        Assert.assertTrue(result.contains("ExampleParentClass.ExampleAClass.uid"));
-        Assert.assertTrue(result.contains("ExampleParentClass.ExampleAClass.ExampleBClass.uid"));
-        Assert.assertTrue(result.contains("ExampleParentClass.ExampleAClass.ExampleBClass.stringList"));
+    public void test_flat_union_class_field() {
+        Set<String> result = DgraphSqlHelper.flatClass(ExampleClassWithUnionClass.class, new ArrayList<>());
+        Assert.assertEquals(classWithUnionClassFieldFlatResult, result);
     }
 
     @Test
-    public void test_flat_union_class(){
-        Set<String> result = DgraphSqlHelper.flatClass(ExampleParentWithUnionClass.class,new ArrayList<>());
-        Assert.assertEquals(6,result.size());
-        Assert.assertTrue(result.contains("ExampleParentWithUnionClass.uid"));
-        Assert.assertTrue(result.contains("ExampleParentWithUnionClass.ExampleAClass.uid"));
-        Assert.assertTrue(result.contains("ExampleParentWithUnionClass.ExampleBClass.uid"));
-        Assert.assertTrue(result.contains("ExampleParentWithUnionClass.ExampleBClass.stringList"));
-        Assert.assertTrue(result.contains("ExampleParentWithUnionClass.ExampleAClass.ExampleBClass.uid"));
-        Assert.assertTrue(result.contains("ExampleParentWithUnionClass.ExampleAClass.ExampleBClass.stringList"));
+    public void test_flat_no_generics_list_field() {
+        Set<String> result = DgraphSqlHelper.flatClass(ExampleClassWithNoGenericListField.class, new ArrayList<>());
+        Assert.assertEquals(classWithNoGenericListFieldFlatResult, result);
     }
 
     @Test
-    public void test_flat_object_list_and_generic_list(){
-        Set<String> result = DgraphSqlHelper.flatClass(ExampleParentWithObjectListAndNoGenericList.class,new ArrayList<>());
-        Assert.assertEquals(2,result.size());
-        Assert.assertTrue(result.contains("ExampleParentWithObjectListAndNoGenericList.objectList"));
-        Assert.assertTrue(result.contains("ExampleParentWithObjectListAndNoGenericList.noGenericList"));
+    public void test_flat_has_generics_list_field() {
+        Set<String> result = DgraphSqlHelper.flatClass(ExampleClassWithHasGenericListField.class, new ArrayList<>());
+        Assert.assertEquals(classWithHasGenericListFieldFlatResult, result);
     }
 
     @Test
-    public void test_generate_query(){
-        String oneLevelResult = DgraphSqlHelper.generateQueryByMaxLevel(1);
-        Assert.assertEquals("{ \n uid \n expand(_all_)\n}",oneLevelResult);
-        String twoLevelResult = DgraphSqlHelper.generateQueryByMaxLevel(2);
-        Assert.assertEquals("{ \n uid \n expand(_all_){ \n uid \n expand(_all_)\n}\n}",twoLevelResult);
-        String threeLevelResult = DgraphSqlHelper.generateQueryByMaxLevel(3);
-        Assert.assertEquals("{ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_)\n}\n}\n}",threeLevelResult);
-        String fourLevelResult = DgraphSqlHelper.generateQueryByMaxLevel(4);
-        Assert.assertEquals("{ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_)\n}\n}\n}\n}",fourLevelResult);
-        String fiveLevelResult = DgraphSqlHelper.generateQueryByMaxLevel(5);
-        Assert.assertEquals("{ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_)\n}\n}\n}\n}\n}",fiveLevelResult);
+    public void test_flat_not_dgraph_type_field() {
+        Set<String> result = DgraphSqlHelper.flatClass(ExampleClassWithNotDgraphTypeFieldClass.class, new ArrayList<>());
+        Assert.assertEquals(classWithNotDgraphTypeFieldFlatResult, result);
     }
 
     @Test
-    public void test_get_var_compare_different_level_limit(){
-        String twoLevelLimitResult = DgraphSqlHelper.getVar(ExampleParentClass.class,2);
-        String noLevelLimitResult = DgraphSqlHelper.getVar(ExampleParentClass.class,null);
-        Assert.assertNotEquals(twoLevelLimitResult,noLevelLimitResult);
+    public void test_flat_with_dgraph_type_field() {
+        Set<String> result = DgraphSqlHelper.flatClass(ExampleClassWithDgraphTypeFieldClass.class, new ArrayList<>());
+        Assert.assertEquals(classWithDgraphTypeFieldFlatResult, result);
+    }
+
+    @Test
+    public void test_flat_with_same_nested_class_field(){
+        Set<String> result = DgraphSqlHelper.flatClass(ExampleClassWithSameNestedClass.class, new ArrayList<>());
+        Assert.assertEquals(Collections.EMPTY_SET,result);
+    }
+
+    @ParameterizedTest
+    @MethodSource("ai.care.arc.dgraph.util.DgraphSqlHelperTest#test_generate_query_parameters")
+    public void test_generate_query(Pair<Integer,String> levelResultPair){
+        Assert.assertEquals(levelResultPair.getValue(),DgraphSqlHelper.generateQueryByMaxLevel(levelResultPair.getKey()));
+    }
+
+    private static Stream<Pair<Integer, String>> test_generate_query_parameters() {
+        return Stream.of(new Pair(1, "{ \n uid \n expand(_all_)\n}"),
+                new Pair(2, "{ \n uid \n expand(_all_){ \n uid \n expand(_all_)\n}\n}"),
+                new Pair(3, "{ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_)\n}\n}\n}"),
+                new Pair(4, "{ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_)\n}\n}\n}\n}"),
+                new Pair(5, "{ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_){ \n uid \n expand(_all_)\n}\n}\n}\n}\n}"));
+    }
+
+    @Test
+    public void test_get_var_compare_different_level_limit() {
+        String oneLevelLimitResult = DgraphSqlHelper.getVar(ExampleParentClass.class, 1);
+        String noLevelLimitResult = DgraphSqlHelper.getVar(ExampleParentClass.class, null);
+        Assert.assertNotEquals(oneLevelLimitResult, noLevelLimitResult);
     }
 }
