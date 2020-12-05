@@ -1,6 +1,8 @@
 package ai.care.arc.dgraph.util;
 
 
+import org.reflections.ReflectionUtils;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.*;
@@ -38,7 +40,7 @@ public class DgraphSqlHelper {
     static Set<String> flatClass(Class clazz, List<Class> alreadyExistClass) {
         List<Class> newAlreadyExistClass = new ArrayList<>(alreadyExistClass);
         newAlreadyExistClass.add(clazz);
-        Field[] fields = clazz.getDeclaredFields();
+        Set<Field> fields = ReflectionUtils.getFields(clazz,field -> Objects.nonNull(field) && !field.isSynthetic());
         Set<String> flatFieldList = new HashSet<>();
         for (Field field : fields) {
             if (field.isAnnotationPresent(UnionClasses.class)) {
