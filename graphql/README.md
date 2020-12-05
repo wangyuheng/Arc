@@ -8,13 +8,13 @@
 
 ### 1. 添加maven依赖
 
-最新版本为 **1.3.0-SNAPSHOT**
+最新版本为 **1.3.0**
 
 ```xml
 <dependency>
     <groupId>com.github.yituhealthcare</groupId>
     <artifactId>arc-graphql</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 #### 2. 添加graphql schema文件 
@@ -72,13 +72,13 @@ input ProjectInput{
 
 #### 3. 编写代码
 
-1. class bean 需要声明 `@DataFetcherService` 
+1. class bean 需要声明 `@Graphql` 
 2. 相关方法需要根据类型声明`@GraphqlMutation`或者`@GraphqlQuery`. 如果是自定义type, 可以使用`GraphqlMethod`
 
 Example
 
 ```java
-@DataFetcherService
+@Graphql
 public class ProjectDataFetcher {
 
     @Autowired

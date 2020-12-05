@@ -28,12 +28,12 @@
     <dependency>
         <groupId>com.github.yituhealthcare</groupId>
         <artifactId>arc-graphql</artifactId>
-        <version>1.3.0-SNAPSHOT</version>
+        <version>1.3.0</version>
     </dependency>
     <dependency>
         <groupId>com.github.yituhealthcare</groupId>
         <artifactId>arc-dgraph</artifactId>
-        <version>1.3.0-SNAPSHOT</version>
+        <version>1.3.0</version>
     </dependency>
 ```
 
@@ -96,7 +96,7 @@ arc.graphql.event.enable=true
 2. 定义dgraph schema，修改类型并定义type。
 3. 创建javaBean并指定@DgraphType、@UidField、@RelationshipField
 4. 创建 SimpleDgraphRepository 的子类声明为@Repository
-5. 创建 @DataFetcherService类及@GraphQLQuery、@GraphQLMutation 方法
+5. 创建 @Graphql类及@GraphQLQuery、@GraphQLMutation 方法
 6. 通过 http://localhost:${port}/playground 直接create方法
 7. 编写xxDgraph.xml实现query方法
 
