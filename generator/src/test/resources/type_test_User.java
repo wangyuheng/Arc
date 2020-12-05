@@ -2,14 +2,14 @@ package a.b.c.type;
 
 import com.github.yituhealthcare.arc.dgraph.annotation.DgraphType;
 import com.github.yituhealthcare.arc.dgraph.dictionary.IDgraphType;
-import com.github.yituhealthcare.arc.graphql.annotation.DataFetcherService;
+import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
 import java.lang.String;
 
 /**
  * User
  * Generate with GraphQL Schema By Arc
  */
-@DataFetcherService
+@Graphql
 @DgraphType("USER")
 public class User implements IDgraphType {
   /**

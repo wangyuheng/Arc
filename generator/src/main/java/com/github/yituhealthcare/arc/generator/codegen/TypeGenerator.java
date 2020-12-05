@@ -13,7 +13,7 @@ import com.github.yituhealthcare.arc.generator.convert.GraphqlType2JavapoetTypeN
 import com.github.yituhealthcare.arc.generator.convert.IsContainsGraphqlMethodField;
 import com.github.yituhealthcare.arc.generator.convert.IsGraphqlMethodField;
 import com.github.yituhealthcare.arc.generator.convert.IsOperator;
-import com.github.yituhealthcare.arc.graphql.annotation.DataFetcherService;
+import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
 import com.github.yituhealthcare.arc.graphql.annotation.GraphqlMethod;
 import com.github.yituhealthcare.arc.graphql.util.GraphqlTypeUtils;
 import com.squareup.javapoet.*;
@@ -203,7 +203,7 @@ public class TypeGenerator implements IGenerator {
         public TypeSpec.Builder apply(ObjectTypeDefinition objectTypeDefinition) {
             return TypeSpec.classBuilder(StringUtils.capitalize(objectTypeDefinition.getName()))
                     .addModifiers(Modifier.PUBLIC)
-                    .addAnnotation(DataFetcherService.class)
+                    .addAnnotation(Graphql.class)
                     .addSuperinterface(IDgraphType.class)
                     .addSuperinterfaces(objectTypeDefinition.getImplements().stream()
                             .map(it -> toJavapoetTypeName.apply(GraphqlTypeUtils.getUnWrapperType(it)))

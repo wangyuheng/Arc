@@ -1,6 +1,6 @@
 package com.github.yituhealthcare.arc.graphql.support;
 
-import com.github.yituhealthcare.arc.graphql.annotation.DataFetcherService;
+import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
 import com.github.yituhealthcare.arc.graphql.annotation.GraphqlMethod;
 import com.github.yituhealthcare.arc.graphql.annotation.GraphqlMutation;
 import com.github.yituhealthcare.arc.graphql.annotation.GraphqlQuery;
@@ -17,17 +17,18 @@ import java.util.Optional;
 /**
  * 扫描注册DataFetcher方法
  *
- * @see DataFetcherService
+ * @author yuheng.wang
+ * @see Graphql
  * @see GraphqlMutation
  * @see GraphqlQuery
  * @see RuntimeWiringRegistry
  */
-public class DataFetcherServicePostProcessor implements BeanPostProcessor {
+public class GraphqlPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         Class<?> targetClass = AopProxyUtils.ultimateTargetClass(bean);
-        if (targetClass.isAnnotationPresent(DataFetcherService.class)) {
+        if (targetClass.isAnnotationPresent(Graphql.class)) {
             Method[] methods = ReflectionUtils.getAllDeclaredMethods(targetClass);
             for (Method method : methods) {
                 Optional.ofNullable(method.getAnnotation(GraphqlQuery.class))

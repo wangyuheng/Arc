@@ -5,7 +5,7 @@ import a.b.c.dictionary.ProjectCategory;
 import com.github.yituhealthcare.arc.dgraph.annotation.DgraphType;
 import com.github.yituhealthcare.arc.dgraph.annotation.UidField;
 import com.github.yituhealthcare.arc.dgraph.dictionary.IDgraphType;
-import com.github.yituhealthcare.arc.graphql.annotation.DataFetcherService;
+import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
 import com.github.yituhealthcare.arc.graphql.annotation.GraphqlMethod;
 import graphql.schema.DataFetcher;
 import java.lang.String;
@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 为了达到某个产品迭代、产品模块开发、或者科研调研等目的所做的工作.
  * Generate with GraphQL Schema By Arc
  */
-@DataFetcherService
+@Graphql
 @DgraphType("PROJECT")
 public class Project implements IDgraphType {
   /**

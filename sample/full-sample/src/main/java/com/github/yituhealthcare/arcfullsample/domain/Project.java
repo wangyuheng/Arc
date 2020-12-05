@@ -5,7 +5,7 @@ import com.github.yituhealthcare.arc.dgraph.annotation.DgraphType;
 import com.github.yituhealthcare.arc.dgraph.annotation.RelationshipField;
 import com.github.yituhealthcare.arc.dgraph.annotation.UidField;
 import com.github.yituhealthcare.arc.dgraph.repository.RelationshipInformation;
-import com.github.yituhealthcare.arc.graphql.annotation.DataFetcherService;
+import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
 import com.github.yituhealthcare.arc.graphql.annotation.GraphqlMutation;
 import com.github.yituhealthcare.arc.graphql.annotation.GraphqlQuery;
 import com.github.yituhealthcare.arc.graphql.event.DomainEvent;
@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@DataFetcherService
+@Graphql
 @DgraphType("PROJECT")
 public class Project {
 

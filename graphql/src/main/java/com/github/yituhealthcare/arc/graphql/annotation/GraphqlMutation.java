@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * 声明Graphql修改方法
  *
- * @see DataFetcherService
+ * @see Graphql
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

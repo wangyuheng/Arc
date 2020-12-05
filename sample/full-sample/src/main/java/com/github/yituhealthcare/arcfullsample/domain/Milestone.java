@@ -2,10 +2,10 @@ package com.github.yituhealthcare.arcfullsample.domain;
 
 import com.github.yituhealthcare.arc.dgraph.annotation.DgraphType;
 import com.github.yituhealthcare.arc.dgraph.annotation.UidField;
-import com.github.yituhealthcare.arc.graphql.annotation.DataFetcherService;
+import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
 import com.github.yituhealthcare.arcfullsample.dictionary.MilestoneStatus;
 
-@DataFetcherService
+@Graphql
 @DgraphType("MILESTONE")
 public class Milestone  {
 

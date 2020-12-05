@@ -4,7 +4,7 @@ import a.b.c.dictionary.MilestoneStatus;
 import com.github.yituhealthcare.arc.dgraph.annotation.DgraphType;
 import com.github.yituhealthcare.arc.dgraph.annotation.UidField;
 import com.github.yituhealthcare.arc.dgraph.dictionary.IDgraphType;
-import com.github.yituhealthcare.arc.graphql.annotation.DataFetcherService;
+import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
 import java.lang.String;
 
 /**
@@ -12,7 +12,7 @@ import java.lang.String;
  * 表述一个Project的某个时间阶段及阶段性目标. 一个Project可以同时拥有多个处于相同或者不同阶段的Milestone.
  * Generate with GraphQL Schema By Arc
  */
-@DataFetcherService
+@Graphql
 @DgraphType("MILESTONE")
 public class Milestone implements IDgraphType {
   /**

@@ -2,7 +2,7 @@ package com.github.yituhealthcare.arc.graphql;
 
 import com.github.yituhealthcare.arc.graphql.interceptor.DataFetcherInterceptorRegistry;
 import com.github.yituhealthcare.arc.graphql.rest.GraphQLController;
-import com.github.yituhealthcare.arc.graphql.support.DataFetcherServicePostProcessor;
+import com.github.yituhealthcare.arc.graphql.support.GraphqlPostProcessor;
 import com.github.yituhealthcare.arc.graphql.trace.GraphqlSleuthHttpServerResponseParser;
 import brave.http.HttpResponseParser;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -15,8 +15,8 @@ public class GraphqlAutoConfiguration {
 
     @Bean
     @Primary
-    public DataFetcherServicePostProcessor dataFetcherServicePostProcessor() {
-        return new DataFetcherServicePostProcessor();
+    public GraphqlPostProcessor GraphqlPostProcessor() {
+        return new GraphqlPostProcessor();
     }
 
     @Bean

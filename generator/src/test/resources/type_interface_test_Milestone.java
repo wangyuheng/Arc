@@ -3,14 +3,14 @@ package a.b.c.type;
 import com.github.yituhealthcare.arc.dgraph.annotation.DgraphType;
 import com.github.yituhealthcare.arc.dgraph.annotation.UidField;
 import com.github.yituhealthcare.arc.dgraph.dictionary.IDgraphType;
-import com.github.yituhealthcare.arc.graphql.annotation.DataFetcherService;
+import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
 import java.lang.String;
 
 /**
  * Milestone
  * Generate with GraphQL Schema By Arc
  */
-@DataFetcherService
+@Graphql
 @DgraphType("MILESTONE")
 public class Milestone implements IDgraphType, Entity {
   /**

@@ -6,7 +6,7 @@ import java.lang.annotation.*;
  * 声明Graphql方法
  *  必须指定type类型
  *
- * @see DataFetcherService
+ * @see Graphql
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

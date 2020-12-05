@@ -1,7 +1,7 @@
 package com.github.yituhealthcare.arcgraphqlsample.domain;
 
 
-import com.github.yituhealthcare.arc.graphql.annotation.DataFetcherService;
+import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
 import com.github.yituhealthcare.arc.graphql.annotation.GraphqlMethod;
 import com.github.yituhealthcare.arc.graphql.annotation.GraphqlMutation;
 import com.github.yituhealthcare.arc.graphql.annotation.GraphqlQuery;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-@DataFetcherService
+@Graphql
 public class Project {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(Project.class);
