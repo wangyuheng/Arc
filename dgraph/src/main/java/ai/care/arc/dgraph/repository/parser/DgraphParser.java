@@ -144,10 +144,10 @@ public class DgraphParser {
         }
     }
 
-    private List<Object> jsonArrayHandle(JSONArray jsonArray) throws ClassNotFoundException {
+    private List<Object> jsonArrayHandle(JSONArray jsonArray) {
         List<Object> results = new ArrayList<>();
         for (Object object : jsonArray) {
-            Class fieldClazz = Class.forName(JSON.parseObject(JSON.toJSONString(object)).getString(DomainClassUtil.DOMAIN_CLASS_KEY));
+            Class fieldClazz = DomainClassUtil.getDomainClass(object);
             results.add(JSON.parseObject(JSON.toJSONString(object), fieldClazz, new JSONObjectDeserializer()));
         }
         return results;
