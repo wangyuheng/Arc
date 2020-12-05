@@ -22,6 +22,7 @@ import java.util.List;
  * 如果未指定 {@link DgraphScan} 时自动直接注入
  * 优先级低于 DgraphScan
  *
+ * @author yuheng.wang
  * @see ClassPathDgraphScanner
  */
 public class AutoConfiguredDgraphScannerRegistrar implements BeanFactoryAware, BeanDefinitionRegistryPostProcessor, ResourceLoaderAware {
@@ -65,4 +66,5 @@ public class AutoConfiguredDgraphScannerRegistrar implements BeanFactoryAware, B
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
     }
+
 }
