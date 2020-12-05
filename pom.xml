@@ -183,7 +183,7 @@
                     <version>0.8.5</version>
                     <configuration>
                         <excludes>
-                            <exclude>*.*Test.*</exclude>
+                            <exclude>**/*Test.*</exclude>
                         </excludes>
                     </configuration>
                     <executions>
