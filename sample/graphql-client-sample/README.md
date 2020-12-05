@@ -6,7 +6,7 @@ Sample For `arc-graphql-client`
 
 ```shell script
 mvn clean install
-java -jar target/arc-graphql-client-sample-1.2.0.jar 
+java -jar target/arc-graphql-client-sample-1.3.0-SNAPSHOT.jar 
 ```
 
 访问 http://localhost:8080/rest?name=Arc

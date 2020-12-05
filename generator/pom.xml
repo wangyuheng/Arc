@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>ai.care</groupId>
+        <groupId>com.github.yituhealthcare</groupId>
         <artifactId>arc</artifactId>
         <version>${revision}</version>
     </parent>
@@ -14,12 +14,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>ai.care</groupId>
+            <groupId>com.github.yituhealthcare</groupId>
             <artifactId>arc-graphql</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>ai.care</groupId>
+            <groupId>com.github.yituhealthcare</groupId>
             <artifactId>arc-dgraph</artifactId>
             <version>${project.version}</version>
         </dependency>

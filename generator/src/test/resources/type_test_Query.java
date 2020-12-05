@@ -1,9 +1,9 @@
 package a.b.c.type;
 
 import a.b.c.api.QueryService;
-import ai.care.arc.dgraph.dictionary.IDgraphType;
-import ai.care.arc.graphql.annotation.DataFetcherService;
-import ai.care.arc.graphql.annotation.GraphqlMethod;
+import com.github.yituhealthcare.arc.dgraph.dictionary.IDgraphType;
+import com.github.yituhealthcare.arc.graphql.annotation.DataFetcherService;
+import com.github.yituhealthcare.arc.graphql.annotation.GraphqlMethod;
 import graphql.schema.DataFetcher;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

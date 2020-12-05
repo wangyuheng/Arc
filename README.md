@@ -26,14 +26,14 @@
 
 ```xml
     <dependency>
-        <groupId>ai.care</groupId>
+        <groupId>com.github.yituhealthcare</groupId>
         <artifactId>arc-graphql</artifactId>
-        <version>1.2.0</version>
+        <version>1.3.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-        <groupId>ai.care</groupId>
+        <groupId>com.github.yituhealthcare</groupId>
         <artifactId>arc-dgraph</artifactId>
-        <version>1.2.0</version>
+        <version>1.3.0-SNAPSHOT</version>
     </dependency>
 ```
 

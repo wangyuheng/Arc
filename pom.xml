@@ -9,7 +9,7 @@
         <version>2.2.9.RELEASE</version>
     </parent>
 
-    <groupId>ai.care</groupId>
+    <groupId>com.github.yituhealthcare</groupId>
     <artifactId>arc</artifactId>
     <packaging>pom</packaging>
     <version>${revision}</version>
@@ -28,7 +28,7 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
 
-        <revision>1.2.0</revision>
+        <revision>1.3.0-SNAPSHOT</revision>
 
         <spring-cloud-starter-zipkin.version>2.2.4.RELEASE</spring-cloud-starter-zipkin.version>
 

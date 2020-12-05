@@ -1,10 +1,10 @@
 package a.b.c.type;
 
 import a.b.c.dictionary.MilestoneStatus;
-import ai.care.arc.dgraph.annotation.DgraphType;
-import ai.care.arc.dgraph.annotation.UidField;
-import ai.care.arc.dgraph.dictionary.IDgraphType;
-import ai.care.arc.graphql.annotation.DataFetcherService;
+import com.github.yituhealthcare.arc.dgraph.annotation.DgraphType;
+import com.github.yituhealthcare.arc.dgraph.annotation.UidField;
+import com.github.yituhealthcare.arc.dgraph.dictionary.IDgraphType;
+import com.github.yituhealthcare.arc.graphql.annotation.DataFetcherService;
 import java.lang.String;
 
 /**

@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=ai.care.arc.graphql.GraphqlAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.github.yituhealthcare.arc.graphql.GraphqlAutoConfiguration

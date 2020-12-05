@@ -8,13 +8,13 @@
 
 ### 1. 添加maven依赖
 
-最新版本为 **1.2.0**
+最新版本为 **1.3.0-SNAPSHOT**
 
 ```xml
 <dependency>
-    <groupId>ai.care</groupId>
+    <groupId>com.github.yituhealthcare</groupId>
     <artifactId>arc-graphql-client</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0-SNAPSHOT</version>
 </dependency>
 ```
 #### 2. 在resources目录下添加graphql 查询语句 
@@ -38,7 +38,7 @@ query hello($echoText: String!) {
 Example
 
 ```java
-@EnableGraphqlClients(basePackages = "ai.care.arcgraphqlclientsample")
+@EnableGraphqlClients(basePackages = "com.github.yituhealthcare.arcgraphqlclientsample")
 @RestController
 @SpringBootApplication
 public class ArcGraphqlClientSampleApplication {
