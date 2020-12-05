@@ -1,7 +1,7 @@
 package com.github.yituhealthcare.arc.core.common;
 
 /**
- * 类型转换 I <-> O
+ * 类型转换 I - O
  *
  * @author yuheng.wang
  */
