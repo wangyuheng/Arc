@@ -1,3 +1,14 @@
+# 1.3.0
+
+## HIGHLIGHT
+
+- group修改为`com.github.yituhealthcare`发布至Maven中央仓库 [#38](https://github.com/YituHealthcare/Arc/issues/38)
+
+### Generator
+
+- @DataFetcherService 重命名为 @Graphql
+
+
 # 1.2.0
 
 ## HIGHLIGHT

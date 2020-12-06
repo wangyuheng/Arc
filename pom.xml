@@ -7,12 +7,16 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.9.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>ai.care</groupId>
+    <groupId>com.github.yituhealthcare</groupId>
     <artifactId>arc</artifactId>
     <packaging>pom</packaging>
     <version>${revision}</version>
+
+    <name>Arc</name>
+    <description>A DDD Framework by GraphQL Schema based on GraphQL+Dgraph</description>
 
     <modules>
         <module>dgraph</module>
@@ -28,7 +32,7 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
 
-        <revision>1.2.0</revision>
+        <revision>1.3.0</revision>
 
         <spring-cloud-starter-zipkin.version>2.2.4.RELEASE</spring-cloud-starter-zipkin.version>
 
@@ -133,6 +137,23 @@
                     <executions>
                         <execution>
                             <phase>compile</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <configuration>
+                        <additionalJOptions>
+                            <additionalJOption>-Xdoclint:none</additionalJOption>
+                        </additionalJOptions>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
                             <goals>
                                 <goal>jar</goal>
                             </goals>
@@ -258,6 +279,10 @@
                 <artifactId>maven-source-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
             </plugin>
@@ -265,16 +290,56 @@
     </build>
 
     <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/YituHealthcare/Arc</url>
-        </repository>
         <snapshotRepository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/YituHealthcare/Arc</url>
+            <id>oss</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+        <repository>
+            <id>oss</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
     </distributionManagement>
+
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>https://github.com/YituHealthcare/Arc</connection>
+        <url>https://github.com/YituHealthcare/Arc.git</url>
+        <developerConnection>https://github.com/wangyuheng</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>wangyuheng</name>
+            <email>wangyuheng@outlook.com</email>
+            <url>https://github.com/wangyuheng</url>
+        </developer>
+    </developers>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>oss</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
