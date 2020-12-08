@@ -22,7 +22,7 @@ public class Mutation implements IDgraphType {
   public DataFetcher<Project> createProject() {
     return dataFetchingEnvironment ->  {
       return mutationService.handleCreateProject(dataFetchingEnvironment);
-    };
+    }
   }
   
   @GraphqlMethod(
@@ -31,6 +31,6 @@ public class Mutation implements IDgraphType {
   public DataFetcher<Milestone> createMilestone() {
     return dataFetchingEnvironment ->  {
       return mutationService.handleCreateMilestone(dataFetchingEnvironment);
-    };
+    }
   }
 }

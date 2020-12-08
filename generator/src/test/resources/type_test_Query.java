@@ -23,7 +23,7 @@ public class Query implements IDgraphType {
   public DataFetcher<Project> project() {
     return dataFetchingEnvironment ->  {
       return queryService.handleProject(dataFetchingEnvironment);
-    };
+    }
   }
 
   @GraphqlMethod(
@@ -32,7 +32,7 @@ public class Query implements IDgraphType {
   public DataFetcher<List<User>> users() {
     return dataFetchingEnvironment ->  {
       return queryService.handleUsers(dataFetchingEnvironment);
-    };
+    }
   }
 
 }

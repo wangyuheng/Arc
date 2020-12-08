@@ -56,7 +56,7 @@ public class Project implements IDgraphType {
   public DataFetcher<List<Milestone>> milestones() {
     return dataFetchingEnvironment ->  {
       return projectService.handleMilestones(dataFetchingEnvironment);
-    };
+    }
   }
 
   public void setId(String id) {
