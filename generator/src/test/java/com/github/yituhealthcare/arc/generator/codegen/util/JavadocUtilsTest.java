@@ -19,17 +19,18 @@ public class JavadocUtilsTest {
     @Test
     public void all_type_should_get_description() {
         final String classInstanceName = "random";
-        Stream.of(ObjectTypeDefinition.newObjectTypeDefinition().name(classInstanceName).build(),
+        Stream<TypeDefinition<?>> items = Stream.of(ObjectTypeDefinition.newObjectTypeDefinition().name(classInstanceName).build(),
                 InterfaceTypeDefinition.newInterfaceTypeDefinition().name(classInstanceName).build(),
                 UnionTypeDefinition.newUnionTypeDefinition().name(classInstanceName).build(),
                 ScalarTypeDefinition.newScalarTypeDefinition().name(classInstanceName).build(),
                 EnumTypeDefinition.newEnumTypeDefinition().name(classInstanceName).build(),
-                InputObjectTypeDefinition.newInputObjectDefinition().name(classInstanceName).build())
-                .forEach(it -> {
-                    if (JavadocUtils.getDocForType(it).isEmpty()) {
-                        Assert.fail(it + "could not get description!");
-                    }
-                });
+                InputObjectTypeDefinition.newInputObjectDefinition().name(classInstanceName).build());
+        // fix 无法使用以下不同的参数继承graphql.language.Node: <? extends graphql.lactNode<?>&graphql.language.TypeDefinition<?>> 和 <?>
+        items.forEach(it -> {
+            if (JavadocUtils.getDocForType(it).isEmpty()) {
+                Assert.fail(it + "could not get description!");
+            }
+        });
     }
 
     @Test
