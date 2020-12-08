@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 public class CodeWriter {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(CodeWriter.class);
+    private static final String INDENT_4 =  "    ";
     private final Path targetPath;
 
     public CodeWriter(Path targetPath) {
@@ -36,7 +37,7 @@ public class CodeWriter {
 
     public void write(JavaFile javaFile) {
         try {
-            javaFile.writeToPath(targetPath);
+            javaFile.toBuilder().indent(INDENT_4).build().writeToPath(targetPath);
         } catch (IOException e) {
             log.error("write java file error! javaFile:{}", javaFile, e);
         }
