@@ -1,10 +1,11 @@
 package com.github.yituhealthcare.arc.generator.codegen.util;
 
 import com.github.yituhealthcare.arc.generator.dictionary.GeneratorGlobalConst;
-import graphql.language.Description;
-import graphql.language.ObjectTypeDefinition;
-import graphql.language.TypeDefinition;
+import graphql.language.*;
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,13 +17,29 @@ import static org.junit.Assert.assertEquals;
 public class JavadocUtilsTest {
 
     @Test
+    public void all_type_should_get_description() {
+        final String classInstanceName = "random";
+        Stream.of(ObjectTypeDefinition.newObjectTypeDefinition().name(classInstanceName).build(),
+                InterfaceTypeDefinition.newInterfaceTypeDefinition().name(classInstanceName).build(),
+                UnionTypeDefinition.newUnionTypeDefinition().name(classInstanceName).build(),
+                ScalarTypeDefinition.newScalarTypeDefinition().name(classInstanceName).build(),
+                EnumTypeDefinition.newEnumTypeDefinition().name(classInstanceName).build(),
+                InputObjectTypeDefinition.newInputObjectDefinition().name(classInstanceName).build())
+                .forEach(it -> {
+                    if (JavadocUtils.getDocForType(it).isEmpty()) {
+                        Assert.fail(it + "could not get description!");
+                    }
+                });
+    }
+
+    @Test
     public void should_get_description() {
         TypeDefinition<?> typeDefinition = ObjectTypeDefinition.newObjectTypeDefinition()
                 .name("o1")
                 .description(new Description("This is A Object Type", null, false))
                 .build();
 
-        assertEquals("This is A Object Type\n" + GeneratorGlobalConst.GENERAL_CODE_BLOCK,
+        assertEquals("This is A Object Type" + System.lineSeparator() + GeneratorGlobalConst.GENERAL_CODE_BLOCK,
                 JavadocUtils.getDocForType(typeDefinition).toString());
     }
 
@@ -33,7 +50,7 @@ public class JavadocUtilsTest {
                 .description(new Description(null, null, false))
                 .build();
 
-        assertEquals("o1\n" + GeneratorGlobalConst.GENERAL_CODE_BLOCK,
+        assertEquals("o1" + System.lineSeparator() + GeneratorGlobalConst.GENERAL_CODE_BLOCK,
                 JavadocUtils.getDocForType(typeDefinition).toString());
     }
 
@@ -41,7 +58,7 @@ public class JavadocUtilsTest {
     public void should_get_default_value_if_description_content_is_null() {
         Description description = new Description(null, null, false);
 
-        assertEquals("d1\n" + GeneratorGlobalConst.GENERAL_CODE_BLOCK,
+        assertEquals("d1" + System.lineSeparator() + GeneratorGlobalConst.GENERAL_CODE_BLOCK,
                 JavadocUtils.getClassDocByDescription(description, "d1").toString());
     }
 

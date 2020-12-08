@@ -2,6 +2,7 @@ package com.github.yituhealthcare.arc.generator.codegen.util;
 
 import com.github.yituhealthcare.arc.generator.dictionary.GeneratorGlobalConst;
 import com.squareup.javapoet.CodeBlock;
+import graphql.Assert;
 import graphql.language.*;
 
 import java.util.Optional;
@@ -33,11 +34,7 @@ public interface JavadocUtils {
                 return getClassDocByDescription(((InputObjectTypeDefinition) typeDefinition).getDescription(), typeDefinition.getName());
             case Operation:
             default:
-                return CodeBlock.builder()
-                        .add(typeDefinition.getName())
-                        .add("\n")
-                        .add(GeneratorGlobalConst.GENERAL_CODE_BLOCK)
-                        .build();
+                return Assert.assertShouldNeverHappen();
         }
     }
 
@@ -62,7 +59,7 @@ public interface JavadocUtils {
     static CodeBlock getClassDocByDescription(Description description, String defaultContent) {
         return CodeBlock.builder()
                 .add(Optional.ofNullable(description).map(Description::getContent).map(String::trim).orElse(defaultContent))
-                .add("\n")
+                .add("\r\n")
                 .add(GeneratorGlobalConst.GENERAL_CODE_BLOCK)
                 .build();
     }
