@@ -184,9 +184,7 @@ public class TypeGenerator implements IGenerator {
             return MethodSpec.methodBuilder(fieldDefinition.getName())
                     .addModifiers(Modifier.PUBLIC)
                     .addAnnotation(AnnotationSpec.builder(GraphqlMethod.class).addMember("type", "$S", objectTypeDefinition.getName()).build())
-                    .beginControlFlow("return dataFetchingEnvironment -> ")
-                    .addStatement(" return $L.handle$L(dataFetchingEnvironment)", SpecNameManager.getUnCapitalizeApiName(objectTypeDefinition), StringUtils.capitalize(fieldDefinition.getName()))
-                    .endControlFlow()
+                    .addStatement("return dataFetchingEnvironment -> $L.handle$L(dataFetchingEnvironment)", SpecNameManager.getUnCapitalizeApiName(objectTypeDefinition), StringUtils.capitalize(fieldDefinition.getName()))
                     .returns(ParameterizedTypeName.get(ClassName.get(DataFetcher.class), toJavapoetTypeName.apply(fieldDefinition.getType())))
                     .build();
         }

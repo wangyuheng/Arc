@@ -21,18 +21,14 @@ public class Query implements IDgraphType {
       type = "Query"
   )
   public DataFetcher<Project> project() {
-    return dataFetchingEnvironment ->  {
-      return queryService.handleProject(dataFetchingEnvironment);
-    }
+    return dataFetchingEnvironment -> queryService.handleProject(dataFetchingEnvironment);
   }
 
   @GraphqlMethod(
       type = "Query"
   )
   public DataFetcher<List<User>> users() {
-    return dataFetchingEnvironment ->  {
-      return queryService.handleUsers(dataFetchingEnvironment);
-    }
+    return dataFetchingEnvironment -> queryService.handleUsers(dataFetchingEnvironment);
   }
 
 }
