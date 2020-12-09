@@ -255,23 +255,69 @@ public class ArcGraphqlClientSampleApplication {
 
 ### 4. 通过Generator生成代码
 
-See [Generator](./generator/README.md)
+4.1 依赖中添加Maven插件
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>com.github.yituhealthcare</groupId>
+            <artifactId>arc-maven-plugin</artifactId>
+            <version>1.4.0-SNAPSHOT</version>
+        </plugin>
+    </plugins>
+</build>
+```
+
+4.2 新建配置文件， 默认路径为 `resources:arc-generator.json` 可以通过plugin配置修改
+
+```json
+{
+  "basePackage": "com.github.yituhealthcare.arcgeneratorsample",
+  "dropAll": false,
+  "genStrategies": [
+    {
+      "codeGenOperation": "OVERRIDE",
+      "codeGenType": "TYPE"
+    },
+    {
+      "codeGenOperation": "OVERRIDE",
+      "codeGenType": "API"
+    }
+  ],
+  "ignoreJavaFileNames": [
+    "User"
+  ],
+  "dgraphPath": "dgraph/schema.dgraph"
+}
+```
+
+4.3 执行maven命令
+
+```shell script
+mvn arc:generate
+```
+
+## Manual
+
+- [arc-graphql](./graphql/README.md)
+- [arc-maven-plugin](./maven-plugin/README.md)
+- [arc-graphql-client](./graphql-client/README.md)
+- [arc-generator](./generator/README.md)
+
+## Sample
+
+- [full-sample](./sample/full-sample)
+- [graphql-sample](./sample/graphql-sample)
+- [mq-sample](./sample/mq-sample)
+- [generator-sample](./sample/generator-sample)
 
 ## 背景知识
 
 - [GraphQL](./doc/GraphQL.md)
 - [Dgraph](./doc/Dgraph.md)
 
-## Manual
-
-- [Generator](./generator/README.md)
-- [arc-graphql](./graphql/README.md)
-
-## Sample
-
-- [full-sample](./sample/full-sample)
-- [GraphQL-sample](./sample/GraphQL-sample)
-- [mq-sample](./sample/mq-sample)
+## 示例
 
 ![voyager](./doc/voyager.jpeg)
 
