@@ -39,8 +39,8 @@ public class JavaCodeGenerator {
         this(codeWriter, new CodeGenConfig());
     }
 
-    public void generate(InputStream inputStream, String basePackage) {
-        this.parseJavaFileStream(inputStream, basePackage)
+    public void generate(InputStream inputStream) {
+        this.parseJavaFileStream(inputStream, codeGenConfigHandler.getBasePackage())
                 .filter(codeGenConfigHandler.canExec())
                 .forEach(codeWriter::write);
     }

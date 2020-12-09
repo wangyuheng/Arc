@@ -20,7 +20,7 @@ public class CodeGenConfigHandler {
         this.config = config;
     }
 
-    public final Predicate<JavaFile> canExec(){
+    public final Predicate<JavaFile> canExec() {
         return javaFile -> {
             if (config.getIgnoreJavaFileNames().contains(javaFile.typeSpec.name)) {
                 return false;
@@ -38,5 +38,9 @@ public class CodeGenConfigHandler {
                 }
             }
         };
+    }
+
+    public final String getBasePackage() {
+        return config.getBasePackage();
     }
 }

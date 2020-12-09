@@ -1,6 +1,6 @@
 package com.github.yituhealthcare.arc.generator.conf;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,34 +14,24 @@ public class CodeGenConfig {
     /**
      * 生成策略
      */
-    private final List<CodeGenStrategy> genStrategies;
+    private List<CodeGenStrategy> genStrategies = new ArrayList<>();
+    /**
+     * 基本包路径
+     */
+    private String basePackage = "com.github.yituhealthcare.arc.generated";
     /**
      * 是否删除上次生成的代码
      * 会清空指定包下全部代码
      */
-    private final boolean dropAll;
+    private boolean dropAll = false;
     /**
      * 全局忽略，不会覆盖相关代码文件
      */
-    private final List<String> ignoreJavaFileNames;
-
-    public CodeGenConfig(List<CodeGenStrategy> genStrategies) {
-        this(genStrategies, false);
-    }
-
-    public CodeGenConfig() {
-        this(Collections.emptyList(), false);
-    }
-
-    public CodeGenConfig(List<CodeGenStrategy> genStrategies, boolean dropAll) {
-        this(genStrategies, dropAll, Collections.emptyList());
-    }
-
-    public CodeGenConfig(List<CodeGenStrategy> genStrategies, boolean dropAll, List<String> ignoreJavaFileNames) {
-        this.genStrategies = genStrategies;
-        this.dropAll = dropAll;
-        this.ignoreJavaFileNames = ignoreJavaFileNames;
-    }
+    private List<String> ignoreJavaFileNames = new ArrayList<>();
+    /**
+     * dgraph schema 生成路径
+     */
+    private String dgraphPath = "dgraph/schema.dgraph";
 
     public CodeGenOperation getOperationByType(CodeGenType codeGenType) {
         return genStrategies.stream()
@@ -57,5 +47,37 @@ public class CodeGenConfig {
 
     public List<String> getIgnoreJavaFileNames() {
         return ignoreJavaFileNames;
+    }
+
+    public String getBasePackage() {
+        return basePackage;
+    }
+
+    public List<CodeGenStrategy> getGenStrategies() {
+        return genStrategies;
+    }
+
+    public void setGenStrategies(List<CodeGenStrategy> genStrategies) {
+        this.genStrategies = genStrategies;
+    }
+
+    public void setDropAll(boolean dropAll) {
+        this.dropAll = dropAll;
+    }
+
+    public void setIgnoreJavaFileNames(List<String> ignoreJavaFileNames) {
+        this.ignoreJavaFileNames = ignoreJavaFileNames;
+    }
+
+    public void setBasePackage(String basePackage) {
+        this.basePackage = basePackage;
+    }
+
+    public String getDgraphPath() {
+        return dgraphPath;
+    }
+
+    public void setDgraphPath(String dgraphPath) {
+        this.dgraphPath = dgraphPath;
     }
 }
