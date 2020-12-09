@@ -2,6 +2,7 @@ package com.github.yituhealthcare.arc.generator.conf;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 代码生成器配置
@@ -79,5 +80,26 @@ public class CodeGenConfig {
 
     public void setDgraphPath(String dgraphPath) {
         this.dgraphPath = dgraphPath;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        CodeGenConfig config = (CodeGenConfig) o;
+        return dropAll == config.dropAll &&
+                genStrategies.equals(config.genStrategies) &&
+                basePackage.equals(config.basePackage) &&
+                ignoreJavaFileNames.equals(config.ignoreJavaFileNames) &&
+                dgraphPath.equals(config.dgraphPath);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(genStrategies, basePackage, dropAll, ignoreJavaFileNames, dgraphPath);
     }
 }

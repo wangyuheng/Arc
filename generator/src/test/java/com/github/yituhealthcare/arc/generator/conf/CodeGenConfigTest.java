@@ -36,4 +36,9 @@ public class CodeGenConfigTest {
         assertEquals(2, config.getGenStrategies().size());
     }
 
+    @Test
+    public void should_get_default_if_json_is_empty() {
+        assertEquals(JSON.parseObject("{}", CodeGenConfig.class), new CodeGenConfig());
+    }
+
 }
