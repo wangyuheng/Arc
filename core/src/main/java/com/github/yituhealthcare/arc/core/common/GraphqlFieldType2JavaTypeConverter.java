@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * GraphqlField与Java类型互相转换
@@ -19,9 +20,10 @@ public class GraphqlFieldType2JavaTypeConverter implements Converter<GraphqlFiel
         switch (graphqlFieldTypeEnum) {
             case ID:
             case STRING:
-            case JSON:
             case URL:
                 return String.class;
+            case JSON:
+                return Map.class;
             case INT:
             case POSITIVE_INT:
             case NEGATIVE_INT:
