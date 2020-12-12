@@ -25,6 +25,7 @@
         <module>core</module>
         <module>mq</module>
         <module>generator</module>
+        <module>maven-plugin</module>
     </modules>
 
     <properties>
