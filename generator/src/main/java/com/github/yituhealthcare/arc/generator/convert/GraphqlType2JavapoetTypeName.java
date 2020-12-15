@@ -12,6 +12,7 @@ import graphql.language.Type;
 import graphql.schema.idl.TypeInfo;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -37,11 +38,23 @@ public class GraphqlType2JavapoetTypeName implements Function<Type<?>, TypeName>
 
         if (GraphqlTypeUtils.isListType(type)) {
             return typeOptional
-                    .map(value -> ParameterizedTypeName.get(List.class, value))
+                    .map(it -> {
+                        if (Map.class.equals(it)) {
+                            return ParameterizedTypeName.get(GeneratorGlobalConst.DEFAULT_LIST_CLASS_NAME, GeneratorGlobalConst.DEFAULT_MAP_TYPE);
+                        } else {
+                            return ParameterizedTypeName.get(List.class, it);
+                        }
+                    })
                     .orElseGet(() -> ParameterizedTypeName.get(GeneratorGlobalConst.DEFAULT_LIST_CLASS_NAME, ClassName.get(packageManager.getPackageByGraphqlType(type), graphqlTypeName)));
         } else {
             return typeOptional
-                    .map(TypeName::get)
+                    .map(it -> {
+                        if (Map.class.equals(it)) {
+                            return GeneratorGlobalConst.DEFAULT_MAP_TYPE;
+                        } else {
+                            return TypeName.get(it);
+                        }
+                    })
                     .orElseGet(() -> ClassName.get(packageManager.getPackageByGraphqlType(type), graphqlTypeName));
         }
     }
