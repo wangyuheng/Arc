@@ -4,10 +4,13 @@ import com.github.yituhealthcare.arc.graphqlclient.annotation.GraphqlMapping;
 import com.github.yituhealthcare.arc.graphqlclient.annotation.GraphqlParam;
 import com.github.yituhealthcare.arc.graphqlclient.model.GraphqlResponse;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.powermock.api.mockito.PowerMockito;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
@@ -20,6 +23,9 @@ import static org.powermock.api.mockito.PowerMockito.when;
  * @author yuheng.wang
  */
 public class GraphqlClientInvocationHandlerTest {
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     private GraphqlClientInvocationHandler handler;
     private Subject subject;
@@ -60,9 +66,31 @@ public class GraphqlClientInvocationHandlerTest {
     }
 
     @Test
+    public void should_exception_when_generic_nested() throws Throwable {
+        String url = "mock_url";
+        GraphqlTemplate templateGeneric = PowerMockito.mock(GraphqlTemplate.class);
+        GraphqlClientInvocationHandler handlerGeneric = new GraphqlClientInvocationHandler(url, templateGeneric);
+        Method method = Subject.class.getMethod("graphqlMethodWithListGeneric");
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("GraphqlResponse generic must be not nested!");
+        handlerGeneric.invoke(new Subject(), method, new Object[]{});
+    }
+
+    @Test
+    public void should_exception_when_return_not_graphql_response() throws Throwable {
+        String url = "mock_url";
+        GraphqlTemplate templateGeneric = PowerMockito.mock(GraphqlTemplate.class);
+        GraphqlClientInvocationHandler handlerGeneric = new GraphqlClientInvocationHandler(url, templateGeneric);
+        Method method = Subject.class.getMethod("graphqlMethodReturnString");
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("GraphqlClient method must return GraphqlResponse!");
+        handlerGeneric.invoke(new Subject(), method, new Object[]{});
+    }
+
+    @Test
     public void should_put_vars_by_param() throws Throwable {
         Method method = Subject.class.getMethod("graphqlMethodWithParam", String.class, String.class);
-        GraphqlResponse<String> result = (GraphqlResponse<String>) handler.invoke(subject, method, new Object[]{"mock_id", "mock_name"});
+        GraphqlResponse result = (GraphqlResponse) handler.invoke(subject, method, new Object[]{"mock_id", "mock_name"});
         verify(template).execute(anyString(), argThat(r ->
                 2 == r.getVariables().size() &&
                         "mock_id".equals(r.getVariables().get("id")) &&
@@ -78,18 +106,27 @@ public class GraphqlClientInvocationHandlerTest {
         }
 
         @GraphqlMapping(path = "echo.graphql")
-        public String graphqlMethodWithoutParam() {
-            return "ok";
+        public GraphqlResponse graphqlMethodWithoutParam() {
+            return null;
         }
 
         @GraphqlMapping(path = "echo.graphql")
-        public String graphqlMethodWithParam(String id, @GraphqlParam("nickname") String name) {
-            return "ok";
+        public GraphqlResponse graphqlMethodWithParam(String id, @GraphqlParam("nickname") String name) {
+            return null;
         }
 
         @GraphqlMapping(path = "echo.graphql")
         public GraphqlResponse<MockType> graphqlMethodWithGeneric() {
             return new GraphqlResponse<>(new MockType("mockId"));
+        }
+
+        @GraphqlMapping(path = "echo.graphql")
+        public GraphqlResponse<List<MockType>> graphqlMethodWithListGeneric() {
+            return null;
+        }
+        @GraphqlMapping(path = "echo.graphql")
+        public String graphqlMethodReturnString() {
+            return null;
         }
     }
 
