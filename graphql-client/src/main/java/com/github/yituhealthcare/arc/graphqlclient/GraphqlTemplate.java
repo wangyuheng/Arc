@@ -9,6 +9,8 @@ import org.springframework.http.*;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
+
 /**
  * 发送http请求graphql接口
  *
@@ -37,6 +39,7 @@ public class GraphqlTemplate {
     public <T> GraphqlResponse<T> execute(String url, GraphqlRequest request, Class<T> type) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         // 部分api服务会对 User-Agent 进行校验，通过默认配置模拟浏览器请求
         headers.add(HttpHeaders.USER_AGENT, DEFAULT_USER_AGENT);
         ResponseEntity<String> response;
