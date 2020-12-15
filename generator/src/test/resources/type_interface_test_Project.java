@@ -23,9 +23,9 @@ public class Project implements IDgraphType, Entity {
   private String id;
 
   /**
-   * name
+   * names
    */
-  private String name;
+  private List<String> names;
 
   /**
    * json
@@ -45,12 +45,12 @@ public class Project implements IDgraphType, Entity {
     return id;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setNames(List<String> names) {
+    this.names = names;
   }
 
-  public String getName() {
-    return name;
+  public List<String> getNames() {
+    return names;
   }
 
   public void setJson(Map<String, Object> json) {
