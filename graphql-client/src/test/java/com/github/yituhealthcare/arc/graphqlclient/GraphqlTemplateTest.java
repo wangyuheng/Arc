@@ -1,10 +1,10 @@
 package com.github.yituhealthcare.arc.graphqlclient;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.yituhealthcare.arc.graphqlclient.exception.GraphqlClientException;
 import com.github.yituhealthcare.arc.graphqlclient.model.GraphqlRequest;
 import com.github.yituhealthcare.arc.graphqlclient.model.GraphqlResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -40,10 +40,20 @@ public class GraphqlTemplateTest {
 
         MockRestServiceServer mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
         mockRestServiceServer.expect(MockRestRequestMatchers.anything())
-                .andRespond(MockRestResponseCreators.withSuccess(new ObjectMapper().writeValueAsString(mockResult), MediaType.APPLICATION_JSON));
+                .andRespond(MockRestResponseCreators.withSuccess(new ObjectMapper().writeValueAsString(new GraphqlResponse<>(mockResult)), MediaType.APPLICATION_JSON));
 
         GraphqlResponse<MockResult> response = new GraphqlTemplate(restTemplate).execute("http://mock-url", new GraphqlRequest("{}"), MockResult.class);
         assertEquals(mockResult, response.getData());
+    }
+
+    @Test
+    public void should_throw_exception_when_response_not_json() {
+        RestTemplate restTemplate = new RestTemplate();
+        MockRestServiceServer mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
+        mockRestServiceServer.expect(MockRestRequestMatchers.anything())
+                .andRespond(MockRestResponseCreators.withSuccess("<NotFound>404</NotFound>", MediaType.APPLICATION_JSON));
+        thrown.expect(GraphqlClientException.class);
+        new GraphqlTemplate(restTemplate).execute("http://mock-url", new GraphqlRequest("{}"), MockResult.class);
     }
 
     @Test
@@ -52,7 +62,7 @@ public class GraphqlTemplateTest {
 
         MockRestServiceServer mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
         mockRestServiceServer.expect(MockRestRequestMatchers.anything())
-                .andRespond(MockRestResponseCreators.withSuccess("abc", MediaType.APPLICATION_JSON));
+                .andRespond(MockRestResponseCreators.withSuccess(new ObjectMapper().writeValueAsString(new GraphqlResponse<>("abc")), MediaType.APPLICATION_JSON));
 
         GraphqlResponse<String> response = new GraphqlTemplate(restTemplate).execute("http://mock-url", new GraphqlRequest("{}"));
         assertEquals("abc", response.getData());

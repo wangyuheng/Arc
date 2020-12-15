@@ -49,6 +49,17 @@ public class GraphqlClientInvocationHandlerTest {
     }
 
     @Test
+    public void should_get_response_and_deserialize_generic() throws Throwable {
+        String url = "mock_url";
+        GraphqlTemplate templateGeneric = PowerMockito.mock(GraphqlTemplate.class);
+        when(templateGeneric.execute(anyString(), any(), any())).thenReturn(new GraphqlResponse<>(new MockType("m1")));
+        GraphqlClientInvocationHandler handlerGeneric = new GraphqlClientInvocationHandler(url, templateGeneric);
+        Method method = Subject.class.getMethod("graphqlMethodWithGeneric");
+        GraphqlResponse<MockType> result = (GraphqlResponse<MockType>) handlerGeneric.invoke(new Subject(), method, new Object[]{});
+        assertEquals("m1", result.getData().getId());
+    }
+
+    @Test
     public void should_put_vars_by_param() throws Throwable {
         Method method = Subject.class.getMethod("graphqlMethodWithParam", String.class, String.class);
         GraphqlResponse<String> result = (GraphqlResponse<String>) handler.invoke(subject, method, new Object[]{"mock_id", "mock_name"});
@@ -76,6 +87,26 @@ public class GraphqlClientInvocationHandlerTest {
             return "ok";
         }
 
+        @GraphqlMapping(path = "echo.graphql")
+        public GraphqlResponse<MockType> graphqlMethodWithGeneric() {
+            return new GraphqlResponse<>(new MockType("mockId"));
+        }
+    }
+
+    static class MockType {
+        private String id;
+
+        public MockType(String id) {
+            this.id = id;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
     }
 
 }

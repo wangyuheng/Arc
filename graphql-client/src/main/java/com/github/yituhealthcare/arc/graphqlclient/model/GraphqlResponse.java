@@ -12,6 +12,9 @@ public class GraphqlResponse<T> {
     private T data;
     private List<GraphqlError> errors;
 
+    public GraphqlResponse() {
+    }
+
     public GraphqlResponse(T data) {
         this.data = data;
     }

@@ -1,9 +1,10 @@
 package com.github.yituhealthcare.arc.graphqlclient;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.yituhealthcare.arc.graphqlclient.exception.GraphqlClientException;
 import com.github.yituhealthcare.arc.graphqlclient.model.GraphqlRequest;
 import com.github.yituhealthcare.arc.graphqlclient.model.GraphqlResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.web.client.RestClientException;
@@ -29,6 +30,7 @@ public class GraphqlTemplate {
 
     public GraphqlTemplate(RestTemplate restTemplate) {
         this(restTemplate, new ObjectMapper());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     public GraphqlTemplate(RestTemplate restTemplate, ObjectMapper objectMapper) {
@@ -36,7 +38,7 @@ public class GraphqlTemplate {
         this.objectMapper = objectMapper;
     }
 
-    public <T> GraphqlResponse<T> execute(String url, GraphqlRequest request, Class<T> type) {
+    public <T> GraphqlResponse<T> execute(String url, GraphqlRequest request, Class<?> type) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -48,11 +50,7 @@ public class GraphqlTemplate {
             if (!response.getStatusCode().is2xxSuccessful()) {
                 throw new GraphqlClientException("execute graphql is fail! status=" + response + " body:" + response.getBody());
             }
-            if (type == String.class) {
-                return new GraphqlResponse(response.getBody());
-            } else {
-                return new GraphqlResponse<>(objectMapper.readValue(response.getBody(), type));
-            }
+            return objectMapper.readValue(response.getBody(), objectMapper.getTypeFactory().constructParametricType(GraphqlResponse.class, type));
         } catch (RestClientException | IllegalArgumentException | GraphqlClientException e) {
             throw e;
         } catch (Exception e) {

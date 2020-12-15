@@ -5,9 +5,7 @@ import com.github.yituhealthcare.arc.graphqlclient.annotation.GraphqlParam;
 import com.github.yituhealthcare.arc.graphqlclient.model.GraphqlRequest;
 import org.springframework.core.io.ClassPathResource;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
+import java.lang.reflect.*;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +41,15 @@ class GraphqlClientInvocationHandler implements InvocationHandler {
                 }
             }
             GraphqlRequest request = new GraphqlRequest(ql, vars);
+
+            Type returnType = method.getGenericReturnType();
+            if (returnType instanceof ParameterizedType) {
+                ParameterizedType pType = (ParameterizedType) returnType;
+                Type[] actualTypeArguments = pType.getActualTypeArguments();
+                if (null != actualTypeArguments && actualTypeArguments.length > 0) {
+                    return graphqlTemplate.execute(this.url, request, (Class<?>) actualTypeArguments[0]);
+                }
+            }
             return graphqlTemplate.execute(this.url, request);
         } else {
             return method.invoke(proxy, args);
