@@ -3,11 +3,11 @@ package com.github.yituhealthcare.arc.graphqlclient;
 import com.github.yituhealthcare.arc.graphqlclient.annotation.GraphqlMapping;
 import com.github.yituhealthcare.arc.graphqlclient.annotation.GraphqlParam;
 import com.github.yituhealthcare.arc.graphqlclient.model.GraphqlRequest;
+import com.github.yituhealthcare.arc.graphqlclient.model.GraphqlResponse;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.Assert;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
+import java.lang.reflect.*;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +43,22 @@ class GraphqlClientInvocationHandler implements InvocationHandler {
                 }
             }
             GraphqlRequest request = new GraphqlRequest(ql, vars);
-            return graphqlTemplate.execute(this.url, request);
+
+            Type returnType = method.getGenericReturnType();
+            if (returnType instanceof ParameterizedType) {
+                ParameterizedType pType = (ParameterizedType) returnType;
+                Assert.isAssignable(GraphqlResponse.class, (Class<?>) pType.getRawType(), "GraphqlClient method must return GraphqlResponse!");
+                Type[] actualTypeArguments = pType.getActualTypeArguments();
+                Type genericType = actualTypeArguments[0];
+                if (genericType instanceof ParameterizedType) {
+                    throw new IllegalArgumentException("GraphqlResponse generic must be not nested!");
+                } else {
+                    return graphqlTemplate.execute(this.url, request, (Class<?>) actualTypeArguments[0]);
+                }
+            } else {
+                Assert.isAssignable(GraphqlResponse.class, (Class<?>) returnType, "GraphqlClient method must return GraphqlResponse!");
+                return graphqlTemplate.execute(this.url, request);
+            }
         } else {
             return method.invoke(proxy, args);
         }

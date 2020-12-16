@@ -28,7 +28,7 @@ public class ArcGraphqlClientSampleApplication {
     private GitlabGraphqlClient gitlabGraphqlClient;
 
     @RequestMapping("rest")
-    public String rest(@RequestParam(required = false, defaultValue = "Arc") String name) {
+    public EchoData rest(@RequestParam(required = false, defaultValue = "Arc") String name) {
         return gitlabGraphqlClient.echo("Hello " + name).getData();
     }
 
@@ -39,9 +39,20 @@ public class ArcGraphqlClientSampleApplication {
     interface GitlabGraphqlClient {
 
         @GraphqlMapping(path = "ql/echo.graphql")
-        GraphqlResponse<String> echo(@GraphqlParam("echoText") String text);
+        GraphqlResponse<EchoData> echo(@GraphqlParam("echoText") String text);
 
     }
 
-}
+    static class EchoData {
+        private String echo;
 
+        public String getEcho() {
+            return echo;
+        }
+
+        public void setEcho(String echo) {
+            this.echo = echo;
+        }
+    }
+
+}
