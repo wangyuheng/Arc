@@ -1,7 +1,9 @@
 package com.github.yituhealthcare.arc.generator.convert;
 
 import com.github.yituhealthcare.arc.core.dictionary.GraphqlFieldTypeEnum;
+import com.github.yituhealthcare.arc.graphql.util.GraphqlTypeUtils;
 import graphql.language.FieldDefinition;
+import graphql.schema.idl.TypeDefinitionRegistry;
 import graphql.schema.idl.TypeInfo;
 import org.springframework.util.CollectionUtils;
 
@@ -17,10 +19,29 @@ import java.util.function.Predicate;
  */
 public class IsGraphqlMethodField implements Predicate<FieldDefinition> {
 
+    private final TypeDefinitionRegistry typeDefinitionRegistry;
+
+    public IsGraphqlMethodField(TypeDefinitionRegistry typeDefinitionRegistry) {
+        this.typeDefinitionRegistry = typeDefinitionRegistry;
+    }
+
     @Override
     public boolean test(FieldDefinition fieldDefinition) {
-        return !CollectionUtils.isEmpty(fieldDefinition.getInputValueDefinitions())
-                && !GraphqlFieldTypeEnum.exist(TypeInfo.typeInfo(fieldDefinition.getType()).getName());
+        return hasInput()
+                .or(isNotGraphqlFieldType().and(isNotEnum()))
+                .test(fieldDefinition);
+    }
+
+    private Predicate<FieldDefinition> hasInput() {
+        return f -> !CollectionUtils.isEmpty(f.getInputValueDefinitions());
+    }
+
+    private Predicate<FieldDefinition> isNotGraphqlFieldType() {
+        return f -> !GraphqlFieldTypeEnum.exist(TypeInfo.typeInfo(f.getType()).getName());
+    }
+
+    private Predicate<FieldDefinition> isNotEnum() {
+        return f -> !GraphqlTypeUtils.isEnumType(typeDefinitionRegistry, f.getType());
     }
 
 }

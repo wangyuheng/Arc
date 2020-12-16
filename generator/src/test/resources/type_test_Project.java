@@ -51,10 +51,24 @@ public class Project implements IDgraphType {
   private ProjectService projectService;
 
   @GraphqlMethod(
-      type = "Project"
+          type = "Project"
   )
   public DataFetcher<List<Milestone>> milestones() {
     return dataFetchingEnvironment -> projectService.handleMilestones(dataFetchingEnvironment);
+  }
+
+  @GraphqlMethod(
+          type = "Project"
+  )
+  public DataFetcher<User> owner() {
+    return dataFetchingEnvironment -> projectService.handleOwner(dataFetchingEnvironment);
+  }
+
+  @GraphqlMethod(
+          type = "Project"
+  )
+  public DataFetcher<List<User>> members() {
+    return dataFetchingEnvironment -> projectService.handleMembers(dataFetchingEnvironment);
   }
 
   public void setId(String id) {
@@ -96,5 +110,4 @@ public class Project implements IDgraphType {
   public OffsetDateTime getCreateTime() {
     return createTime;
   }
-
 }
