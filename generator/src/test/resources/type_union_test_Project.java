@@ -2,17 +2,19 @@ package a.b.c.type;
 
 import com.github.yituhealthcare.arc.dgraph.annotation.DgraphType;
 import com.github.yituhealthcare.arc.dgraph.annotation.UidField;
-import com.github.yituhealthcare.arc.dgraph.dictionary.IDgraphType;
+import com.github.yituhealthcare.arc.dgraph.dictionary.IDomainClass;
 import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
 import java.lang.String;
 
 /**
  * Project
- * Generate with GraphQL Schema By Arc
+ * Generate with GraphQL Schema
+ *
+ * @author Arc
  */
 @Graphql
 @DgraphType("PROJECT")
-public class Project implements IDgraphType {
+public class Project implements IDomainClass {
   /**
    * id
    */

@@ -23,15 +23,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * {@link com.github.yituhealthcare.arc.generator.conf.CodeGenType#API} 代码生成
+ * {@link com.github.yituhealthcare.arc.generator.conf.CodeGenType#DATA_FETCHER} 代码生成
  *
  * @author yuheng.wang
  */
-public class ApiGenerator implements IGenerator {
+public class DataFetcherGenerator implements IGenerator {
 
     private final PackageManager packageManager;
 
-    public ApiGenerator(PackageManager packageManager) {
+    public DataFetcherGenerator(PackageManager packageManager) {
         this.packageManager = packageManager;
     }
 

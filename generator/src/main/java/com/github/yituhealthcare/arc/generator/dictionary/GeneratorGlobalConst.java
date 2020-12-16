@@ -15,13 +15,18 @@ import java.util.Map;
  */
 public class GeneratorGlobalConst {
 
-    public static final CodeBlock GENERAL_CODE_BLOCK = CodeBlock.builder().add("Generate with GraphQL Schema By Arc").build();
+    public static final CodeBlock GENERAL_CODE_BLOCK = CodeBlock.builder()
+            .add("Generate with GraphQL Schema")
+            .add("\r\n")
+            .add("\r\n")
+            .add("@author Arc")
+            .build();
 
     public static final ClassName DEFAULT_LIST_CLASS_NAME = ClassName.get("java.util", "List");
 
     public static final TypeName DEFAULT_MAP_TYPE = ParameterizedTypeName.get(Map.class, String.class, Object.class);
 
-    public static final String INTERFACE_SUFFIX = "Service";
+    public static final String INTERFACE_SUFFIX = "DataFetcher";
 
     public static final String REPOSITORY_SUFFIX = "Repository";
 

@@ -4,7 +4,9 @@ import java.lang.String;
 
 /**
  * Entity
- * Generate with GraphQL Schema By Arc
+ * Generate with GraphQL Schema
+ *
+ * @author Arc
  */
 public interface Entity {
     String getName();
