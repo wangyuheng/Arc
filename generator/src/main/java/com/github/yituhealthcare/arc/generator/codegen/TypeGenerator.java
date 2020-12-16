@@ -55,26 +55,29 @@ public class TypeGenerator implements IGenerator {
         final Predicate<ObjectTypeDefinition> isOperator = new IsOperator(GraphqlTypeUtils.getOperationTypeNames(typeDefinitionRegistry));
         final GraphqlType2JavapoetTypeName toJavapoetTypeName = new GraphqlType2JavapoetTypeName(packageManager);
         final MethodSpecBuilder toMethodSpec = new MethodSpecBuilder(toJavapoetTypeName);
-        final DgraphTypeFiller dgraphTypeFiller = new DgraphTypeFiller(toJavapoetTypeName);
-        final AutowiredFieldFiller autowiredFieldFiller = new AutowiredFieldFiller(packageManager);
+        final IsGraphqlMethodField isGraphqlMethodField = new IsGraphqlMethodField(typeDefinitionRegistry);
+        final DgraphTypeFiller dgraphTypeFiller = new DgraphTypeFiller(toJavapoetTypeName, isGraphqlMethodField);
+        final IsContainsGraphqlMethodField isContainGraphqlMethodField = new IsContainsGraphqlMethodField(isGraphqlMethodField);
+        final AutowiredFieldFiller autowiredFieldFiller = new AutowiredFieldFiller(isContainGraphqlMethodField, packageManager);
         final TypeSpecConvert typeSpecConvert = new TypeSpecConvert(toJavapoetTypeName);
+
 
         return typeDefinitionRegistry.types().values().stream()
                 .filter(it -> Arrays.stream(SUPPORT_TYPES).anyMatch(t -> t.isInstance(it)))
                 .map(typeDefinition -> {
                     switch (TypeKind.getTypeKind(typeDefinition)) {
                         case Operation:
-                            return new OperatorGenerator(typeSpecConvert, autowiredFieldFiller, toMethodSpec).apply((ObjectTypeDefinition)typeDefinition);
+                            return new OperatorGenerator(typeSpecConvert, autowiredFieldFiller, toMethodSpec).apply((ObjectTypeDefinition) typeDefinition);
                         case Object:
-                            if (isOperator.test((ObjectTypeDefinition)typeDefinition)) {
-                                return new OperatorGenerator(typeSpecConvert, autowiredFieldFiller, toMethodSpec).apply((ObjectTypeDefinition)typeDefinition);
+                            if (isOperator.test((ObjectTypeDefinition) typeDefinition)) {
+                                return new OperatorGenerator(typeSpecConvert, autowiredFieldFiller, toMethodSpec).apply((ObjectTypeDefinition) typeDefinition);
                             } else {
-                                return new ObjectGenerator(typeSpecConvert, dgraphTypeFiller, autowiredFieldFiller, toMethodSpec).apply((ObjectTypeDefinition)typeDefinition);
+                                return new ObjectGenerator(typeSpecConvert, dgraphTypeFiller, autowiredFieldFiller, toMethodSpec, isGraphqlMethodField).apply((ObjectTypeDefinition) typeDefinition);
                             }
                         case Interface:
                             return new InterfaceGenerator(toJavapoetTypeName).apply((InterfaceTypeDefinition) typeDefinition);
                         case Union:
-                            return new UnionGenerator().apply((UnionTypeDefinition)typeDefinition);
+                            return new UnionGenerator().apply((UnionTypeDefinition) typeDefinition);
                         case Enum:
                         case Scalar:
                         case InputObject:
@@ -90,20 +93,22 @@ public class TypeGenerator implements IGenerator {
         private final DgraphTypeFiller dgraphTypeFiller;
         private final AutowiredFieldFiller autowiredFieldFiller;
         private final MethodSpecBuilder toMethodSpec;
+        private final IsGraphqlMethodField isGraphqlMethodField;
 
         public ObjectGenerator(TypeSpecConvert typeSpecConvert,
                                DgraphTypeFiller dgraphTypeFiller,
                                AutowiredFieldFiller autowiredFieldFiller,
-                               MethodSpecBuilder toMethodSpec) {
+                               MethodSpecBuilder toMethodSpec, IsGraphqlMethodField isGraphqlMethodField) {
             this.typeSpecConvert = typeSpecConvert;
             this.dgraphTypeFiller = dgraphTypeFiller;
             this.autowiredFieldFiller = autowiredFieldFiller;
             this.toMethodSpec = toMethodSpec;
+            this.isGraphqlMethodField = isGraphqlMethodField;
         }
 
         @Override
         public TypeSpec.Builder apply(ObjectTypeDefinition objectTypeDefinition) {
-            return new MethodsFiller(toMethodSpec, new IsGraphqlMethodField())
+            return new MethodsFiller(toMethodSpec, isGraphqlMethodField)
                     .andThen(dgraphTypeFiller)
                     .andThen(autowiredFieldFiller)
                     .apply(typeSpecConvert.apply(objectTypeDefinition), objectTypeDefinition);
@@ -213,12 +218,13 @@ public class TypeGenerator implements IGenerator {
     static class DgraphTypeFiller implements Filler<TypeSpec.Builder, ObjectTypeDefinition> {
 
         private final GraphqlType2JavapoetTypeName toJavapoetTypeName;
-        private final IsGraphqlMethodField isGraphqlMethodField = new IsGraphqlMethodField();
+        private final IsGraphqlMethodField isGraphqlMethodField;
         private final FieldSpecGenGetter fieldSpecGenGetter = new FieldSpecGenGetter();
         private final FieldSpecGenSetter fieldSpecGenSetter = new FieldSpecGenSetter();
 
-        public DgraphTypeFiller(GraphqlType2JavapoetTypeName toJavapoetTypeName) {
+        public DgraphTypeFiller(GraphqlType2JavapoetTypeName toJavapoetTypeName, IsGraphqlMethodField isGraphqlMethodField) {
             this.toJavapoetTypeName = toJavapoetTypeName;
+            this.isGraphqlMethodField = isGraphqlMethodField;
         }
 
         @Override
@@ -249,10 +255,11 @@ public class TypeGenerator implements IGenerator {
 
     static class AutowiredFieldFiller implements Filler<TypeSpec.Builder, ObjectTypeDefinition> {
 
-        private final Predicate<ObjectTypeDefinition> isContainGraphqlMethodField = new IsContainsGraphqlMethodField();
+        private final Predicate<ObjectTypeDefinition> isContainGraphqlMethodField;
         private final PackageManager packageManager;
 
-        public AutowiredFieldFiller(PackageManager packageManager) {
+        public AutowiredFieldFiller(Predicate<ObjectTypeDefinition> isContainGraphqlMethodField, PackageManager packageManager) {
+            this.isContainGraphqlMethodField = isContainGraphqlMethodField;
             this.packageManager = packageManager;
         }
 

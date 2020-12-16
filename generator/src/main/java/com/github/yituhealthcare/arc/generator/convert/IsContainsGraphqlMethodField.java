@@ -11,7 +11,11 @@ import java.util.function.Predicate;
  */
 public class IsContainsGraphqlMethodField implements Predicate<ObjectTypeDefinition> {
 
-    private final IsGraphqlMethodField isGraphqlMethodField = new IsGraphqlMethodField();
+    private final IsGraphqlMethodField isGraphqlMethodField;
+
+    public IsContainsGraphqlMethodField(IsGraphqlMethodField isGraphqlMethodField) {
+        this.isGraphqlMethodField = isGraphqlMethodField;
+    }
 
     @Override
     public boolean test(ObjectTypeDefinition typeDefinition) {

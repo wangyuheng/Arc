@@ -3,6 +3,7 @@ package com.github.yituhealthcare.arc.generator.codegen;
 import com.github.yituhealthcare.arc.dgraph.repository.SimpleDgraphRepository;
 import com.github.yituhealthcare.arc.generator.codegen.util.PackageManager;
 import com.github.yituhealthcare.arc.generator.convert.IsContainsGraphqlMethodField;
+import com.github.yituhealthcare.arc.generator.convert.IsGraphqlMethodField;
 import com.github.yituhealthcare.arc.generator.convert.IsOperator;
 import com.github.yituhealthcare.arc.generator.dictionary.GeneratorGlobalConst;
 import com.github.yituhealthcare.arc.graphql.util.GraphqlTypeUtils;
@@ -17,7 +18,6 @@ import org.springframework.util.StringUtils;
 
 import javax.lang.model.element.Modifier;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -36,8 +36,9 @@ public class RepositoryGenerator implements IGenerator {
 
     @Override
     public Stream<JavaFile> apply(TypeDefinitionRegistry typeDefinitionRegistry) {
-        final Predicate<ObjectTypeDefinition> isOperator = new IsOperator(GraphqlTypeUtils.getOperationTypeNames(typeDefinitionRegistry));
-        final Predicate<ObjectTypeDefinition> isContainGraphqlMethodField = new IsContainsGraphqlMethodField();
+        final IsOperator isOperator = new IsOperator(GraphqlTypeUtils.getOperationTypeNames(typeDefinitionRegistry));
+        final IsGraphqlMethodField isGraphqlMethodField = new IsGraphqlMethodField(typeDefinitionRegistry);
+        final IsContainsGraphqlMethodField isContainGraphqlMethodField = new IsContainsGraphqlMethodField(isGraphqlMethodField);
 
         return typeDefinitionRegistry.getTypes(ObjectTypeDefinition.class).stream()
                 .filter(isOperator.negate().and(isContainGraphqlMethodField))
