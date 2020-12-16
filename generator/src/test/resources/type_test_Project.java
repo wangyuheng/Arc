@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * 名称
  * 为了达到某个产品迭代、产品模块开发、或者科研调研等目的所做的工作.
- * Generate with GraphQL Schema By Arc
+ * Generate with GraphQL Schema
+ *
+ * @author Arc
  */
 @Graphql
 @DgraphType("PROJECT")

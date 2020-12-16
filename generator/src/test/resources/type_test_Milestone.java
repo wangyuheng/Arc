@@ -10,7 +10,9 @@ import java.lang.String;
 /**
  * 里程碑
  * 表述一个Project的某个时间阶段及阶段性目标. 一个Project可以同时拥有多个处于相同或者不同阶段的Milestone.
- * Generate with GraphQL Schema By Arc
+ * Generate with GraphQL Schema
+ *
+ * @author Arc
  */
 @Graphql
 @DgraphType("MILESTONE")

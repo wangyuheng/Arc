@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Query
- * Generate with GraphQL Schema By Arc
+ * Generate with GraphQL Schema
+ *
+ * @author Arc
  */
 @Graphql
 public class Query implements IDomainClass {

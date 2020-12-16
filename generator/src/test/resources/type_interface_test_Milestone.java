@@ -8,7 +8,9 @@ import java.lang.String;
 
 /**
  * Milestone
- * Generate with GraphQL Schema By Arc
+ * Generate with GraphQL Schema
+ *
+ * @author Arc
  */
 @Graphql
 @DgraphType("MILESTONE")

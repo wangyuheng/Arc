@@ -15,7 +15,12 @@ import java.util.Map;
  */
 public class GeneratorGlobalConst {
 
-    public static final CodeBlock GENERAL_CODE_BLOCK = CodeBlock.builder().add("Generate with GraphQL Schema By Arc").build();
+    public static final CodeBlock GENERAL_CODE_BLOCK = CodeBlock.builder()
+            .add("Generate with GraphQL Schema")
+            .add("\r\n")
+            .add("\r\n")
+            .add("@author Arc")
+            .build();
 
     public static final ClassName DEFAULT_LIST_CLASS_NAME = ClassName.get("java.util", "List");
 

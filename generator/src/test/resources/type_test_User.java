@@ -7,7 +7,9 @@ import java.lang.String;
 
 /**
  * User
- * Generate with GraphQL Schema By Arc
+ * Generate with GraphQL Schema
+ *
+ * @author Arc
  */
 @Graphql
 @DgraphType("USER")

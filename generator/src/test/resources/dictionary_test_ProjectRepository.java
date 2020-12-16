@@ -5,7 +5,9 @@ import java.lang.String;
 
 /**
  * this is i1
- * Generate with GraphQL Schema By Arc
+ * Generate with GraphQL Schema
+ *
+ * @author Arc
  */
 public class I1 {
   /**

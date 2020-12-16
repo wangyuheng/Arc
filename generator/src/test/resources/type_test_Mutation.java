@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Mutation
- * Generate with GraphQL Schema By Arc
+ * Generate with GraphQL Schema
+ *
+ * @author Arc
  */
 @Graphql
 public class Mutation implements IDomainClass {
