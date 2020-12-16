@@ -1,7 +1,7 @@
 package a.b.c.type;
 
-import a.b.c.api.QueryService;
-import com.github.yituhealthcare.arc.dgraph.dictionary.IDgraphType;
+import a.b.c.datafetcher.QueryDataFetcher;
+import com.github.yituhealthcare.arc.dgraph.dictionary.IDomainClass;
 import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
 import com.github.yituhealthcare.arc.graphql.annotation.GraphqlMethod;
 import graphql.schema.DataFetcher;
@@ -13,22 +13,22 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Generate with GraphQL Schema By Arc
  */
 @Graphql
-public class Query implements IDgraphType {
+public class Query implements IDomainClass {
   @Autowired
-  private QueryService queryService;
+  private QueryDataFetcher queryDataFetcher;
 
   @GraphqlMethod(
       type = "Query"
   )
   public DataFetcher<Project> project() {
-    return dataFetchingEnvironment -> queryService.handleProject(dataFetchingEnvironment);
+    return dataFetchingEnvironment -> queryDataFetcher.handleProject(dataFetchingEnvironment);
   }
 
   @GraphqlMethod(
       type = "Query"
   )
   public DataFetcher<List<User>> users() {
-    return dataFetchingEnvironment -> queryService.handleUsers(dataFetchingEnvironment);
+    return dataFetchingEnvironment -> queryDataFetcher.handleUsers(dataFetchingEnvironment);
   }
 
 }

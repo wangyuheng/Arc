@@ -1,10 +1,10 @@
 package a.b.c.type;
 
-import a.b.c.api.ProjectService;
+import a.b.c.datafetcher.ProjectDataFetcher;
 import a.b.c.dictionary.ProjectCategory;
 import com.github.yituhealthcare.arc.dgraph.annotation.DgraphType;
 import com.github.yituhealthcare.arc.dgraph.annotation.UidField;
-import com.github.yituhealthcare.arc.dgraph.dictionary.IDgraphType;
+import com.github.yituhealthcare.arc.dgraph.dictionary.IDomainClass;
 import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
 import com.github.yituhealthcare.arc.graphql.annotation.GraphqlMethod;
 import graphql.schema.DataFetcher;
@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Graphql
 @DgraphType("PROJECT")
-public class Project implements IDgraphType {
+public class Project implements IDomainClass {
   /**
    * id
    */
@@ -48,27 +48,27 @@ public class Project implements IDgraphType {
   private OffsetDateTime createTime;
 
   @Autowired
-  private ProjectService projectService;
+  private ProjectDataFetcher projectDataFetcher;
 
   @GraphqlMethod(
           type = "Project"
   )
   public DataFetcher<List<Milestone>> milestones() {
-    return dataFetchingEnvironment -> projectService.handleMilestones(dataFetchingEnvironment);
+    return dataFetchingEnvironment -> projectDataFetcher.handleMilestones(dataFetchingEnvironment);
   }
 
   @GraphqlMethod(
           type = "Project"
   )
   public DataFetcher<User> owner() {
-    return dataFetchingEnvironment -> projectService.handleOwner(dataFetchingEnvironment);
+    return dataFetchingEnvironment -> projectDataFetcher.handleOwner(dataFetchingEnvironment);
   }
 
   @GraphqlMethod(
           type = "Project"
   )
   public DataFetcher<List<User>> members() {
-    return dataFetchingEnvironment -> projectService.handleMembers(dataFetchingEnvironment);
+    return dataFetchingEnvironment -> projectDataFetcher.handleMembers(dataFetchingEnvironment);
   }
 
   public void setId(String id) {

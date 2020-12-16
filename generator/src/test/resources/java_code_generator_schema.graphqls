@@ -1,0 +1,99 @@
+scalar DateTime
+
+schema{
+    query: Query,
+    mutation: Mutation
+}
+
+type Query{
+    project(
+        id: String
+    ): Project
+    users: [User]
+}
+
+type Mutation{
+    createProject(
+        payload: ProjectInput
+    ): Project
+    createMilestone(
+        payload: MilestoneInput
+    ): Milestone
+}
+
+"""
+项目分类
+"""
+enum ProjectCategory {
+    """
+    示例项目
+    """
+    DEMO
+    """
+    生产项目
+    """
+    PRODUCTION
+}
+
+"""
+名称
+为了达到某个产品迭代、产品模块开发、或者科研调研等目的所做的工作.
+"""
+type Project{
+    id: ID!
+    name: String!
+    description: String!
+    category: [ProjectCategory]
+    createTime: DateTime!
+    milestones(
+        status: MilestoneStatus
+    ): [Milestone]!
+}
+"""
+里程碑
+表述一个Project的某个时间阶段及阶段性目标. 一个Project可以同时拥有多个处于相同或者不同阶段的Milestone.
+"""
+type Milestone{
+    id: String!
+    name: String!
+    status: MilestoneStatus
+}
+
+type User {
+    name: String!
+}
+
+"""
+里程碑状态
+"""
+enum MilestoneStatus{
+    """
+    未开始
+    """
+    NOT_STARTED,
+    """
+    进行中
+    """
+    DOING,
+    """
+    发布
+    """
+    RELEASE,
+    """
+    关闭
+    """
+    CLOSE
+}
+
+input ProjectInput{
+    name: String!
+    description: String!
+    vendorBranches: [String!]!
+    category: ProjectCategory!
+}
+
+
+input MilestoneInput{
+    projectId: String!
+    name: String!
+}

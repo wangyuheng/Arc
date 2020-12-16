@@ -2,7 +2,7 @@ package com.github.yituhealthcare.arc.generator.codegen;
 
 import com.github.yituhealthcare.arc.dgraph.annotation.DgraphType;
 import com.github.yituhealthcare.arc.dgraph.annotation.UidField;
-import com.github.yituhealthcare.arc.dgraph.dictionary.IDgraphType;
+import com.github.yituhealthcare.arc.dgraph.dictionary.IDomainClass;
 import com.github.yituhealthcare.arc.generator.codegen.spec.FieldSpecGenAbstractGetter;
 import com.github.yituhealthcare.arc.generator.codegen.spec.FieldSpecGenGetter;
 import com.github.yituhealthcare.arc.generator.codegen.spec.FieldSpecGenSetter;
@@ -207,7 +207,7 @@ public class TypeGenerator implements IGenerator {
             return TypeSpec.classBuilder(StringUtils.capitalize(objectTypeDefinition.getName()))
                     .addModifiers(Modifier.PUBLIC)
                     .addAnnotation(Graphql.class)
-                    .addSuperinterface(IDgraphType.class)
+                    .addSuperinterface(IDomainClass.class)
                     .addSuperinterfaces(objectTypeDefinition.getImplements().stream()
                             .map(it -> toJavapoetTypeName.apply(GraphqlTypeUtils.getUnWrapperType(it)))
                             .collect(Collectors.toList()))

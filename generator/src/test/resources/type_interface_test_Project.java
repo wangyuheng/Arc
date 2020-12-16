@@ -2,7 +2,7 @@ package a.b.c.type;
 
 import com.github.yituhealthcare.arc.dgraph.annotation.DgraphType;
 import com.github.yituhealthcare.arc.dgraph.annotation.UidField;
-import com.github.yituhealthcare.arc.dgraph.dictionary.IDgraphType;
+import com.github.yituhealthcare.arc.dgraph.dictionary.IDomainClass;
 import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
 import java.lang.Object;
 import java.lang.String;
@@ -15,7 +15,7 @@ import java.util.Map;
  */
 @Graphql
 @DgraphType("PROJECT")
-public class Project implements IDgraphType, Entity {
+public class Project implements IDomainClass, Entity {
   /**
    * id
    */

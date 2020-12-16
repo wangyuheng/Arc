@@ -11,7 +11,7 @@ public enum CodeGenType {
 
     TYPE("type"),
     REPO("repo"),
-    API("api"),
+    DATA_FETCHER("datafetcher"),
     INPUT("input"),
     DICTIONARY("dictionary");
 

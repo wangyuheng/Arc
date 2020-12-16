@@ -21,7 +21,7 @@ public class GeneratorGlobalConst {
 
     public static final TypeName DEFAULT_MAP_TYPE = ParameterizedTypeName.get(Map.class, String.class, Object.class);
 
-    public static final String INTERFACE_SUFFIX = "Service";
+    public static final String INTERFACE_SUFFIX = "DataFetcher";
 
     public static final String REPOSITORY_SUFFIX = "Repository";
 
