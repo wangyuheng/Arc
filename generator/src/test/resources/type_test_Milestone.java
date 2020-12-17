@@ -33,6 +33,15 @@ public class Milestone implements IDomainClass {
    */
   private MilestoneStatus status;
 
+  public Milestone(String id, String name, MilestoneStatus status) {
+    this.id = id;
+    this.name = name;
+    this.status = status;
+  }
+
+  public Milestone() {
+  }
+
   public void setId(String id) {
     this.id = id;
   }
@@ -57,4 +66,37 @@ public class Milestone implements IDomainClass {
     return status;
   }
 
+  public static MilestoneBuilder builder() {
+    return new MilestoneBuilder();
+  }
+
+  public static class MilestoneBuilder {
+    private String id;
+
+    private String name;
+
+    private MilestoneStatus status;
+
+    private MilestoneBuilder() {
+    }
+
+    public MilestoneBuilder id(String id) {
+      this.id = id;
+      return this;
+    }
+
+    public MilestoneBuilder name(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public MilestoneBuilder status(MilestoneStatus status) {
+      this.status = status;
+      return this;
+    }
+
+    public Milestone build() {
+      return new Milestone(id,name,status);
+    }
+  }
 }

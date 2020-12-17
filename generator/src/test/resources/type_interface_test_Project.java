@@ -39,6 +39,17 @@ public class Project implements IDomainClass, Entity {
    */
   private List<Map<String, Object>> jsonArray;
 
+  public Project(String id, List<String> names, Map<String, Object> json,
+                 List<Map<String, Object>> jsonArray) {
+    this.id = id;
+    this.names = names;
+    this.json = json;
+    this.jsonArray = jsonArray;
+  }
+
+  public Project() {
+  }
+
   public void setId(String id) {
     this.id = id;
   }
@@ -69,5 +80,46 @@ public class Project implements IDomainClass, Entity {
 
   public List<Map<String, Object>> getJsonArray() {
     return jsonArray;
+  }
+
+  public static ProjectBuilder builder() {
+    return new ProjectBuilder();
+  }
+
+  public static class ProjectBuilder {
+    private String id;
+
+    private List<String> names;
+
+    private Map<String, Object> json;
+
+    private List<Map<String, Object>> jsonArray;
+
+    private ProjectBuilder() {
+    }
+
+    public ProjectBuilder id(String id) {
+      this.id = id;
+      return this;
+    }
+
+    public ProjectBuilder names(List<String> names) {
+      this.names = names;
+      return this;
+    }
+
+    public ProjectBuilder json(Map<String, Object> json) {
+      this.json = json;
+      return this;
+    }
+
+    public ProjectBuilder jsonArray(List<Map<String, Object>> jsonArray) {
+      this.jsonArray = jsonArray;
+      return this;
+    }
+
+    public Project build() {
+      return new Project(id,names,json,jsonArray);
+    }
   }
 }

@@ -26,6 +26,14 @@ public class Project implements IDomainClass {
    */
   private String name;
 
+  public Project(String id, String name) {
+    this.id = id;
+    this.name = name;
+  }
+
+  public Project() {
+  }
+
   public void setId(String id) {
     this.id = id;
   }
@@ -40,5 +48,32 @@ public class Project implements IDomainClass {
 
   public String getName() {
     return name;
+  }
+
+  public static ProjectBuilder builder() {
+    return new ProjectBuilder();
+  }
+
+  public static class ProjectBuilder {
+    private String id;
+
+    private String name;
+
+    private ProjectBuilder() {
+    }
+
+    public ProjectBuilder id(String id) {
+      this.id = id;
+      return this;
+    }
+
+    public ProjectBuilder name(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public Project build() {
+      return new Project(id,name);
+    }
   }
 }
