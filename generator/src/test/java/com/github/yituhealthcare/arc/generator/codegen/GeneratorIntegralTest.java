@@ -30,7 +30,7 @@ public class GeneratorIntegralTest {
 
     @ParameterizedTest
     @CodeGenResources({
-            @CodeGenResource(generatorClazz = ApiGenerator.class, sourceGraphqlSchemaPath = "api_test.graphqls", generatedJavaCodePaths = {"api_test_ProjectService.java", "api_test_MutationService.java", "api_test_QueryService.java"}),
+            @CodeGenResource(generatorClazz = DataFetcherGenerator.class, sourceGraphqlSchemaPath = "data_fetcher_test.graphqls", generatedJavaCodePaths = {"data_fetcher_test_ProjectDataFetcher.java", "data_fetcher_test_MutationDataFetcher.java", "data_fetcher_test_QueryDataFetcher.java"}),
             @CodeGenResource(generatorClazz = DictionaryGenerator.class, sourceGraphqlSchemaPath = "dictionary_test.graphqls", generatedJavaCodePaths = {"dictionary_test_E1.java"}),
             @CodeGenResource(generatorClazz = InputGenerator.class, sourceGraphqlSchemaPath = "input_test.graphqls", generatedJavaCodePaths = {"input_test_I1.java"}),
             @CodeGenResource(generatorClazz = RepositoryGenerator.class, sourceGraphqlSchemaPath = "repository_test.graphqls", generatedJavaCodePaths = {"repository_test_ProjectRepository.java"}),

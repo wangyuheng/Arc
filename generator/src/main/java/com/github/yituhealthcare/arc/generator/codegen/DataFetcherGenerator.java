@@ -23,23 +23,23 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * {@link com.github.yituhealthcare.arc.generator.conf.CodeGenType#API} 代码生成
+ * {@link com.github.yituhealthcare.arc.generator.conf.CodeGenType#DATA_FETCHER} 代码生成
  *
  * @author yuheng.wang
  */
-public class ApiGenerator implements IGenerator {
+public class DataFetcherGenerator implements IGenerator {
 
     private final PackageManager packageManager;
 
-    public ApiGenerator(PackageManager packageManager) {
+    public DataFetcherGenerator(PackageManager packageManager) {
         this.packageManager = packageManager;
     }
 
     @Override
     public Stream<JavaFile> apply(TypeDefinitionRegistry typeDefinitionRegistry) {
-        final Predicate<ObjectTypeDefinition> isOperator = new IsOperator(GraphqlTypeUtils.getOperationTypeNames(typeDefinitionRegistry));
-        final Predicate<ObjectTypeDefinition> isContainGraphqlMethodField = new IsContainsGraphqlMethodField();
-        final Predicate<FieldDefinition> isGraphqlMethodField = new IsGraphqlMethodField();
+        final IsOperator isOperator = new IsOperator(GraphqlTypeUtils.getOperationTypeNames(typeDefinitionRegistry));
+        final IsGraphqlMethodField isGraphqlMethodField = new IsGraphqlMethodField(typeDefinitionRegistry);
+        final IsContainsGraphqlMethodField isContainGraphqlMethodField = new IsContainsGraphqlMethodField(isGraphqlMethodField);
         final FieldDefinition2MethodSpec fieldDefinition2MethodSpec = new FieldDefinition2MethodSpec(new GraphqlType2JavapoetTypeName(packageManager));
 
         return Stream.concat(

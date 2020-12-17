@@ -31,7 +31,7 @@ public class PackageManager {
     }
 
     public String getInterfacePackage() {
-        return this.basePackage + PACKAGE_SEPARATOR + CodeGenType.API.getDirName();
+        return this.basePackage + PACKAGE_SEPARATOR + CodeGenType.DATA_FETCHER.getDirName();
     }
 
     public String getInputPackage() {

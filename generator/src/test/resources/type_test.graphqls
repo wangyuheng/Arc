@@ -48,6 +48,8 @@ type Project{
     milestones(
         status: MilestoneStatus
     ): [Milestone]
+    owner: User
+    members: [User]
 }
 """
 里程碑

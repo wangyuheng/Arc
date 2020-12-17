@@ -39,3 +39,17 @@ type Milestone{
     id: String!
     name: String!
 }
+
+"""
+项目分类
+"""
+enum ProjectCategory {
+    """
+    示例项目
+    """
+    DEMO
+    """
+    生产项目
+    """
+    PRODUCTION
+}

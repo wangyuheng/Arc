@@ -1,3 +1,22 @@
+# 1.4.0
+
+## HIGHLIGHT
+
+- 新增graphql-plugin模块，通过Maven插件封装代码生成功能 [51](https://github.com/YituHealthcare/Arc/issues/51)
+
+### Generator
+
+- ENHANCEMENT: 代码生成时type model 提供builder模式 [49](https://github.com/YituHealthcare/Arc/issues/49)
+- BUGFIX: 代码生成器无参数方法不会生成graphqlMethod [61](https://github.com/YituHealthcare/Arc/issues/61)
+- BUGFIX: 生成代码在不同系统下格式不同 [46](https://github.com/YituHealthcare/Arc/issues/46)
+- BUGFIX: 代码生成器把Graphql Json生成为java String [54](https://github.com/YituHealthcare/Arc/issues/54)
+
+### Graphql Client
+
+- ENHANCEMENT: 根据泛型type自动反序列化 [57](https://github.com/YituHealthcare/Arc/issues/57)
+- BUGFIX: 请求时服务端返回xml [56](https://github.com/YituHealthcare/Arc/issues/56)
+
+
 # 1.3.0
 
 ## HIGHLIGHT
@@ -13,7 +32,7 @@
 
 ## HIGHLIGHT
 
-- 新增graphql-client，方便作为客户端调用其他Graphql服务 [#28](https://github.com/YituHealthcare/Arc/issues/28)
+- 新增graphql-client模块，方便作为客户端调用其他Graphql服务 [#28](https://github.com/YituHealthcare/Arc/issues/28)
 
 ### Generator
 

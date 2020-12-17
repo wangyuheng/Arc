@@ -19,7 +19,7 @@ import java.util.stream.Stream;
  * 2. input type {@link InputGenerator}
  * 3. type {@link TypeGenerator}
  * 4. repository {@link RepositoryGenerator}
- * 5. interface {@link ApiGenerator} 此interface为java接口类, graphql interface归类为type
+ * 5. interface {@link DataFetcherGenerator} 此interface为java接口类, graphql interface归类为type
  * <p>
  * 开发者只需编写interface的实现类
  *
@@ -39,8 +39,8 @@ public class JavaCodeGenerator {
         this(codeWriter, new CodeGenConfig());
     }
 
-    public void generate(InputStream inputStream, String basePackage) {
-        this.parseJavaFileStream(inputStream, basePackage)
+    public void generate(InputStream inputStream) {
+        this.parseJavaFileStream(inputStream, codeGenConfigHandler.getBasePackage())
                 .filter(codeGenConfigHandler.canExec())
                 .forEach(codeWriter::write);
     }
@@ -53,7 +53,7 @@ public class JavaCodeGenerator {
                 new InputGenerator(packageManager),
                 new TypeGenerator(packageManager),
                 new RepositoryGenerator(packageManager),
-                new ApiGenerator(packageManager))
+                new DataFetcherGenerator(packageManager))
                 .flatMap(it -> it.apply(typeDefinitionRegistry));
     }
 }

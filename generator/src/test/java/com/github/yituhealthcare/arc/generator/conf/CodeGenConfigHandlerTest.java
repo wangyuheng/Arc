@@ -23,7 +23,8 @@ public class CodeGenConfigHandlerTest {
     @Test
     public void can_exec_should_return_false_when_config_ignore_java_file_by_name() {
         CodeWriter codeWriter = new CodeWriter();
-        CodeGenConfig config = new CodeGenConfig(Collections.emptyList(), false, Collections.singletonList("IgnoreJavaFile"));
+        CodeGenConfig config = new CodeGenConfig();
+        config.setIgnoreJavaFileNames(Collections.singletonList("IgnoreJavaFile"));
         JavaFile javaFile = JavaFile.builder("a.b.c", TypeSpec.classBuilder("IgnoreJavaFile").build()).build();
         assertFalse(new CodeGenConfigHandler(codeWriter, config).canExec().test(javaFile));
     }
@@ -61,7 +62,8 @@ public class CodeGenConfigHandlerTest {
     }
 
     private boolean buildRandomJavaFileCanExec(CodeGenOperation codeGenOperation, CodeWriter codeWriter) {
-        CodeGenConfig config = new CodeGenConfig(Collections.singletonList(new CodeGenStrategy(CodeGenType.TYPE, codeGenOperation)));
+        CodeGenConfig config = new CodeGenConfig();
+        config.setGenStrategies(Collections.singletonList(new CodeGenStrategy(CodeGenType.TYPE, codeGenOperation)));
         JavaFile javaFile = JavaFile.builder("type", TypeSpec.classBuilder("RandomJavaFile").build()).build();
         return new CodeGenConfigHandler(codeWriter, config).canExec().test(javaFile);
     }

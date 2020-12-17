@@ -1,3 +1,5 @@
+scalar JSON
+
 interface Entity {
     name: String!
 }
@@ -9,5 +11,7 @@ type Milestone implements Entity {
 
 type Project implements  Entity {
     id: String!
-    name: String!
+    names: [String!]!
+    json: JSON
+    jsonArray: [JSON]
 }

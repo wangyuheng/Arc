@@ -1,10 +1,10 @@
 package a.b.c.type;
 
-import a.b.c.api.ProjectService;
+import a.b.c.datafetcher.ProjectDataFetcher;
 import a.b.c.dictionary.ProjectCategory;
 import com.github.yituhealthcare.arc.dgraph.annotation.DgraphType;
 import com.github.yituhealthcare.arc.dgraph.annotation.UidField;
-import com.github.yituhealthcare.arc.dgraph.dictionary.IDgraphType;
+import com.github.yituhealthcare.arc.dgraph.dictionary.IDomainClass;
 import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
 import com.github.yituhealthcare.arc.graphql.annotation.GraphqlMethod;
 import graphql.schema.DataFetcher;
@@ -16,11 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * 名称
  * 为了达到某个产品迭代、产品模块开发、或者科研调研等目的所做的工作.
- * Generate with GraphQL Schema By Arc
+ * Generate with GraphQL Schema
+ *
+ * @author Arc
  */
 @Graphql
 @DgraphType("PROJECT")
-public class Project implements IDgraphType {
+public class Project implements IDomainClass {
   /**
    * id
    */
@@ -48,15 +50,40 @@ public class Project implements IDgraphType {
   private OffsetDateTime createTime;
 
   @Autowired
-  private ProjectService projectService;
+  private ProjectDataFetcher projectDataFetcher;
+
+  public Project(String id, String name, String description, List<ProjectCategory> category,
+                 OffsetDateTime createTime, ProjectDataFetcher projectDataFetcher) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.category = category;
+    this.createTime = createTime;
+    this.projectDataFetcher = projectDataFetcher;
+  }
+
+  public Project() {
+  }
 
   @GraphqlMethod(
-      type = "Project"
+          type = "Project"
   )
   public DataFetcher<List<Milestone>> milestones() {
-    return dataFetchingEnvironment ->  {
-      return projectService.handleMilestones(dataFetchingEnvironment);
-    };
+    return dataFetchingEnvironment -> projectDataFetcher.handleMilestones(dataFetchingEnvironment);
+  }
+
+  @GraphqlMethod(
+          type = "Project"
+  )
+  public DataFetcher<User> owner() {
+    return dataFetchingEnvironment -> projectDataFetcher.handleOwner(dataFetchingEnvironment);
+  }
+
+  @GraphqlMethod(
+          type = "Project"
+  )
+  public DataFetcher<List<User>> members() {
+    return dataFetchingEnvironment -> projectDataFetcher.handleMembers(dataFetchingEnvironment);
   }
 
   public void setId(String id) {
@@ -99,4 +126,58 @@ public class Project implements IDgraphType {
     return createTime;
   }
 
+  public static ProjectBuilder builder() {
+    return new ProjectBuilder();
+  }
+
+  public static class ProjectBuilder {
+    private String id;
+
+    private String name;
+
+    private String description;
+
+    private List<ProjectCategory> category;
+
+    private OffsetDateTime createTime;
+
+    private ProjectDataFetcher projectDataFetcher;
+
+    private ProjectBuilder() {
+    }
+
+    public ProjectBuilder id(String id) {
+      this.id = id;
+      return this;
+    }
+
+    public ProjectBuilder name(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public ProjectBuilder description(String description) {
+      this.description = description;
+      return this;
+    }
+
+    public ProjectBuilder category(List<ProjectCategory> category) {
+      this.category = category;
+      return this;
+    }
+
+    public ProjectBuilder createTime(OffsetDateTime createTime) {
+      this.createTime = createTime;
+      return this;
+    }
+
+    public ProjectBuilder projectDataFetcher(ProjectDataFetcher projectDataFetcher) {
+      this.projectDataFetcher = projectDataFetcher;
+      return this;
+    }
+
+    public Project build() {
+      return new Project(id,name,description,category,createTime,projectDataFetcher);
+    }
+  }
 }
