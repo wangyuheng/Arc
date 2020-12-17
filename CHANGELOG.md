@@ -7,6 +7,7 @@
 ### Generator
 
 - ENHANCEMENT: 代码生成时type model 提供builder模式 [49](https://github.com/YituHealthcare/Arc/issues/49)
+- ENHANCEMENT: GraphqlMethod同时生成field & setter & getter [65](https://github.com/YituHealthcare/Arc/issues/65)
 - BUGFIX: 代码生成器无参数方法不会生成graphqlMethod [61](https://github.com/YituHealthcare/Arc/issues/61)
 - BUGFIX: 生成代码在不同系统下格式不同 [46](https://github.com/YituHealthcare/Arc/issues/46)
 - BUGFIX: 代码生成器把Graphql Json生成为java String [54](https://github.com/YituHealthcare/Arc/issues/54)

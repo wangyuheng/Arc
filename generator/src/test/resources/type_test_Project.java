@@ -49,16 +49,35 @@ public class Project implements IDomainClass {
    */
   private OffsetDateTime createTime;
 
+  /**
+   * milestones
+   */
+  private List<Milestone> milestones;
+
+  /**
+   * owner
+   */
+  private User owner;
+
+  /**
+   * members
+   */
+  private List<User> members;
+
   @Autowired
   private ProjectDataFetcher projectDataFetcher;
 
   public Project(String id, String name, String description, List<ProjectCategory> category,
-                 OffsetDateTime createTime, ProjectDataFetcher projectDataFetcher) {
+                 OffsetDateTime createTime, List<Milestone> milestones, User owner, List<User> members,
+                 ProjectDataFetcher projectDataFetcher) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.category = category;
     this.createTime = createTime;
+    this.milestones = milestones;
+    this.owner = owner;
+    this.members = members;
     this.projectDataFetcher = projectDataFetcher;
   }
 
@@ -126,6 +145,30 @@ public class Project implements IDomainClass {
     return createTime;
   }
 
+  public void setMilestones(List<Milestone> milestones) {
+    this.milestones = milestones;
+  }
+
+  public List<Milestone> getMilestones() {
+    return milestones;
+  }
+
+  public void setOwner(User owner) {
+    this.owner = owner;
+  }
+
+  public User getOwner() {
+    return owner;
+  }
+
+  public void setMembers(List<User> members) {
+    this.members = members;
+  }
+
+  public List<User> getMembers() {
+    return members;
+  }
+
   public static ProjectBuilder builder() {
     return new ProjectBuilder();
   }
@@ -140,6 +183,12 @@ public class Project implements IDomainClass {
     private List<ProjectCategory> category;
 
     private OffsetDateTime createTime;
+
+    private List<Milestone> milestones;
+
+    private User owner;
+
+    private List<User> members;
 
     private ProjectDataFetcher projectDataFetcher;
 
@@ -171,13 +220,28 @@ public class Project implements IDomainClass {
       return this;
     }
 
+    public ProjectBuilder milestones(List<Milestone> milestones) {
+      this.milestones = milestones;
+      return this;
+    }
+
+    public ProjectBuilder owner(User owner) {
+      this.owner = owner;
+      return this;
+    }
+
+    public ProjectBuilder members(List<User> members) {
+      this.members = members;
+      return this;
+    }
+
     public ProjectBuilder projectDataFetcher(ProjectDataFetcher projectDataFetcher) {
       this.projectDataFetcher = projectDataFetcher;
       return this;
     }
 
     public Project build() {
-      return new Project(id,name,description,category,createTime,projectDataFetcher);
+      return new Project(id,name,description,category,createTime,milestones,owner,members,projectDataFetcher);
     }
   }
 }

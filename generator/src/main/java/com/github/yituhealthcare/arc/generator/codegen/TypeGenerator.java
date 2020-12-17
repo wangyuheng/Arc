@@ -57,7 +57,7 @@ public class TypeGenerator implements IGenerator {
         final GraphqlType2JavapoetTypeName toJavapoetTypeName = new GraphqlType2JavapoetTypeName(packageManager);
         final MethodSpecBuilder toMethodSpec = new MethodSpecBuilder(toJavapoetTypeName);
         final IsGraphqlMethodField isGraphqlMethodField = new IsGraphqlMethodField(typeDefinitionRegistry);
-        final DgraphTypeFiller dgraphTypeFiller = new DgraphTypeFiller(toJavapoetTypeName, isGraphqlMethodField);
+        final DgraphTypeFiller dgraphTypeFiller = new DgraphTypeFiller(toJavapoetTypeName);
         final IsContainsGraphqlMethodField isContainGraphqlMethodField = new IsContainsGraphqlMethodField(isGraphqlMethodField);
         final AutowiredFieldFiller autowiredFieldFiller = new AutowiredFieldFiller(isContainGraphqlMethodField, packageManager);
         final TypeSpecConvert typeSpecConvert = new TypeSpecConvert(toJavapoetTypeName);
@@ -221,13 +221,11 @@ public class TypeGenerator implements IGenerator {
     static class DgraphTypeFiller implements Filler<TypeSpec.Builder, ObjectTypeDefinition> {
 
         private final GraphqlType2JavapoetTypeName toJavapoetTypeName;
-        private final IsGraphqlMethodField isGraphqlMethodField;
         private final FieldSpecGenGetter fieldSpecGenGetter = new FieldSpecGenGetter();
         private final FieldSpecGenSetter fieldSpecGenSetter = new FieldSpecGenSetter();
 
-        public DgraphTypeFiller(GraphqlType2JavapoetTypeName toJavapoetTypeName, IsGraphqlMethodField isGraphqlMethodField) {
+        public DgraphTypeFiller(GraphqlType2JavapoetTypeName toJavapoetTypeName) {
             this.toJavapoetTypeName = toJavapoetTypeName;
-            this.isGraphqlMethodField = isGraphqlMethodField;
         }
 
         @Override
@@ -235,7 +233,6 @@ public class TypeGenerator implements IGenerator {
             typeSpecBuilder.addAnnotation(AnnotationSpec.builder(DgraphType.class)
                     .addMember("value", "$S", objectTypeDefinition.getName().toUpperCase()).build());
             List<FieldSpec> fieldSpecs = objectTypeDefinition.getFieldDefinitions().stream()
-                    .filter(isGraphqlMethodField.negate())
                     .map(fieldDefinition -> {
                         FieldSpec.Builder fieldSpecBuilder = FieldSpec.builder(toJavapoetTypeName.apply(fieldDefinition.getType()), fieldDefinition.getName(), Modifier.PRIVATE)
                                 .addJavadoc(JavadocUtils.getFieldDocByDescription(fieldDefinition.getDescription(), fieldDefinition.getName()));
