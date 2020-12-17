@@ -52,6 +52,19 @@ public class Project implements IDomainClass {
   @Autowired
   private ProjectDataFetcher projectDataFetcher;
 
+  public Project(String id, String name, String description, List<ProjectCategory> category,
+                 OffsetDateTime createTime, ProjectDataFetcher projectDataFetcher) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.category = category;
+    this.createTime = createTime;
+    this.projectDataFetcher = projectDataFetcher;
+  }
+
+  public Project() {
+  }
+
   @GraphqlMethod(
           type = "Project"
   )
@@ -111,5 +124,60 @@ public class Project implements IDomainClass {
 
   public OffsetDateTime getCreateTime() {
     return createTime;
+  }
+
+  public static ProjectBuilder builder() {
+    return new ProjectBuilder();
+  }
+
+  public static class ProjectBuilder {
+    private String id;
+
+    private String name;
+
+    private String description;
+
+    private List<ProjectCategory> category;
+
+    private OffsetDateTime createTime;
+
+    private ProjectDataFetcher projectDataFetcher;
+
+    private ProjectBuilder() {
+    }
+
+    public ProjectBuilder id(String id) {
+      this.id = id;
+      return this;
+    }
+
+    public ProjectBuilder name(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public ProjectBuilder description(String description) {
+      this.description = description;
+      return this;
+    }
+
+    public ProjectBuilder category(List<ProjectCategory> category) {
+      this.category = category;
+      return this;
+    }
+
+    public ProjectBuilder createTime(OffsetDateTime createTime) {
+      this.createTime = createTime;
+      return this;
+    }
+
+    public ProjectBuilder projectDataFetcher(ProjectDataFetcher projectDataFetcher) {
+      this.projectDataFetcher = projectDataFetcher;
+      return this;
+    }
+
+    public Project build() {
+      return new Project(id,name,description,category,createTime,projectDataFetcher);
+    }
   }
 }

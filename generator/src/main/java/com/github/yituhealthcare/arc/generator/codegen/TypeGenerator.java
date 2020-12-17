@@ -6,6 +6,7 @@ import com.github.yituhealthcare.arc.dgraph.dictionary.IDomainClass;
 import com.github.yituhealthcare.arc.generator.codegen.spec.FieldSpecGenAbstractGetter;
 import com.github.yituhealthcare.arc.generator.codegen.spec.FieldSpecGenGetter;
 import com.github.yituhealthcare.arc.generator.codegen.spec.FieldSpecGenSetter;
+import com.github.yituhealthcare.arc.generator.codegen.spec.TypeSpecGenBuilder;
 import com.github.yituhealthcare.arc.generator.codegen.util.JavadocUtils;
 import com.github.yituhealthcare.arc.generator.codegen.util.PackageManager;
 import com.github.yituhealthcare.arc.generator.codegen.util.SpecNameManager;
@@ -60,7 +61,7 @@ public class TypeGenerator implements IGenerator {
         final IsContainsGraphqlMethodField isContainGraphqlMethodField = new IsContainsGraphqlMethodField(isGraphqlMethodField);
         final AutowiredFieldFiller autowiredFieldFiller = new AutowiredFieldFiller(isContainGraphqlMethodField, packageManager);
         final TypeSpecConvert typeSpecConvert = new TypeSpecConvert(toJavapoetTypeName);
-
+        final TypeSpecGenBuilder typeSpecGenBuilder = new TypeSpecGenBuilder();
 
         return typeDefinitionRegistry.types().values().stream()
                 .filter(it -> Arrays.stream(SUPPORT_TYPES).anyMatch(t -> t.isInstance(it)))
@@ -72,7 +73,8 @@ public class TypeGenerator implements IGenerator {
                             if (isOperator.test((ObjectTypeDefinition) typeDefinition)) {
                                 return new OperatorGenerator(typeSpecConvert, autowiredFieldFiller, toMethodSpec).apply((ObjectTypeDefinition) typeDefinition);
                             } else {
-                                return new ObjectGenerator(typeSpecConvert, dgraphTypeFiller, autowiredFieldFiller, toMethodSpec, isGraphqlMethodField).apply((ObjectTypeDefinition) typeDefinition);
+                                TypeSpec.Builder typeSpecBuilder = new ObjectGenerator(typeSpecConvert, dgraphTypeFiller, autowiredFieldFiller, toMethodSpec, isGraphqlMethodField).apply((ObjectTypeDefinition) typeDefinition);
+                                return typeSpecGenBuilder.apply(typeSpecBuilder.build()).toBuilder();
                             }
                         case Interface:
                             return new InterfaceGenerator(toJavapoetTypeName).apply((InterfaceTypeDefinition) typeDefinition);
@@ -84,7 +86,8 @@ public class TypeGenerator implements IGenerator {
                         default:
                             throw new IllegalArgumentException("type generator not support this graphql type!");
                     }
-                }).map(it -> JavaFile.builder(packageManager.getTypePackage(), it.build()).build());
+                })
+                .map(it -> JavaFile.builder(packageManager.getTypePackage(), it.build()).build());
     }
 
     static class ObjectGenerator implements Function<ObjectTypeDefinition, TypeSpec.Builder> {

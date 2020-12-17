@@ -26,6 +26,14 @@ public class Milestone implements IDomainClass {
    */
   private String name;
 
+  public Milestone(String id, String name) {
+    this.id = id;
+    this.name = name;
+  }
+
+  public Milestone() {
+  }
+
   public void setId(String id) {
     this.id = id;
   }
@@ -40,5 +48,32 @@ public class Milestone implements IDomainClass {
 
   public String getName() {
     return name;
+  }
+
+  public static MilestoneBuilder builder() {
+    return new MilestoneBuilder();
+  }
+
+  public static class MilestoneBuilder {
+    private String id;
+
+    private String name;
+
+    private MilestoneBuilder() {
+    }
+
+    public MilestoneBuilder id(String id) {
+      this.id = id;
+      return this;
+    }
+
+    public MilestoneBuilder name(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public Milestone build() {
+      return new Milestone(id,name);
+    }
   }
 }

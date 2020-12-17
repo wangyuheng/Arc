@@ -19,6 +19,13 @@ public class User implements IDomainClass {
    */
   private String name;
 
+  public User(String name) {
+    this.name = name;
+  }
+
+  public User() {
+  }
+
   public void setName(String name) {
     this.name = name;
   }
@@ -27,4 +34,23 @@ public class User implements IDomainClass {
     return name;
   }
 
+  public static UserBuilder builder() {
+    return new UserBuilder();
+  }
+
+  public static class UserBuilder {
+    private String name;
+
+    private UserBuilder() {
+    }
+
+    public UserBuilder name(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public User build() {
+      return new User(name);
+    }
+  }
 }
