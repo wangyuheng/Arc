@@ -10,7 +10,7 @@
         <plugin>
             <groupId>com.github.yituhealthcare</groupId>
             <artifactId>arc-maven-plugin</artifactId>
-            <version>1.4.0-SNAPSHOT</version>
+            <version>1.4.0</version>
         </plugin>
     </plugins>
 </build>
