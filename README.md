@@ -277,8 +277,8 @@ public class ArcGraphqlClientSampleApplication {
   "dropAll": false,
   "genStrategies": [
     {
-      "codeGenOperation": "OVERRIDE",
-      "codeGenType": "TYPE"
+      "codeGenOperation": "SKIP",
+      "codeGenType": "REPO"
     },
     {
       "codeGenOperation": "OVERRIDE",
