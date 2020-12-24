@@ -43,6 +43,7 @@
 
         <graphql-java.version>14.0</graphql-java.version>
         <graphql-java-extended-scalars.version>1.0.1</graphql-java-extended-scalars.version>
+        <graphql-java-extended-validation.version>14.0.1</graphql-java-extended-validation.version>
         <kickstart.version>7.0.1</kickstart.version>
 
         <dgraph4j.version>20.03.0</dgraph4j.version>
