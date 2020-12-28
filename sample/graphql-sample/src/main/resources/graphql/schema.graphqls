@@ -1,5 +1,6 @@
 scalar DateTime
 directive @Size(min : Int = 0, max : Int = 20, message : String = "graphql.validation.Size.message") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+directive @Auth(role : String!) on FIELD_DEFINITION
 
 schema{
     query: Query,
@@ -18,7 +19,7 @@ type Query{
 type Mutation{
     createProject(
         payload: ProjectInput
-    ): Project
+    ): Project @Auth(role : "admin")
 }
 
 """
