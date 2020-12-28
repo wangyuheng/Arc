@@ -5,11 +5,13 @@ import com.github.yituhealthcare.arc.mq.producer.Producer;
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
+import graphql.GraphQLContext;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.mockito.ArgumentCaptor;
 import org.mockito.internal.verification.Only;
 import org.powermock.api.mockito.PowerMockito;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 /**
@@ -31,6 +34,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 public class GraphQLControllerTest {
 
     private GraphQLController graphQLController;
+    private GraphQL graphQL;
     private Map<String, Object> mockMap = new HashMap<>();
 
     @Before
@@ -41,7 +45,7 @@ public class GraphQLControllerTest {
         when(mockResult.toSpecification()).thenReturn(mockMap);
         when(mockResult.getData()).thenReturn(new LinkedHashMap<>(mockMap));
         GraphQLProvider graphQLProvider = PowerMockito.mock(GraphQLProvider.class);
-        GraphQL graphQL = PowerMockito.mock(GraphQL.class);
+        graphQL = PowerMockito.mock(GraphQL.class);
         PowerMockito.when(graphQL.execute(any(ExecutionInput.class))).thenReturn(mockResult);
         PowerMockito.when(graphQL.execute(any(ExecutionInput.Builder.class))).thenReturn(mockResult);
         when(graphQLProvider.getGraphQL()).thenReturn(graphQL);
@@ -55,8 +59,9 @@ public class GraphQLControllerTest {
         requestBody.setOperationName("IntrospectionQuery");
         requestBody.setQuery("{a}");
 
+        MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
-        Object result = graphQLController.dispatcher(requestBody, response);
+        Object result = graphQLController.dispatcher(requestBody, request, response);
         assertEquals(mockMap, result);
     }
 
@@ -64,8 +69,9 @@ public class GraphQLControllerTest {
     public void should_get_methods_by_response() throws Exception {
         GraphQLRequestBody requestBody = new GraphQLRequestBody();
         requestBody.setQuery("{a}");
+        MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
-        graphQLController.dispatcher(requestBody, response);
+        graphQLController.dispatcher(requestBody, request, response);
         assertFalse(response.getHeaderNames().isEmpty());
         Set<String> result = response.getHeaderNames()
                 .stream()
@@ -83,10 +89,30 @@ public class GraphQLControllerTest {
 
         GraphQLRequestBody requestBody = new GraphQLRequestBody();
         requestBody.setQuery("{a}");
+        MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
-        graphQLController.dispatcher(requestBody, response);
+        graphQLController.dispatcher(requestBody, request, response);
 
-        Mockito.verify(producer, new Only()).send(any());
+        verify(producer, new Only()).send(any());
+    }
+
+    @Test
+    public void should_get_http_headers_by_graphql_context() throws Exception {
+        GraphQLRequestBody requestBody = new GraphQLRequestBody();
+        requestBody.setQuery("{a}");
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader("hak", "hav");
+        request.addHeader("hbk", "hbv");
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        graphQLController.dispatcher(requestBody, request, response);
+
+        ArgumentCaptor<ExecutionInput> argument = ArgumentCaptor.forClass(ExecutionInput.class);
+        verify(graphQL).execute(argument.capture());
+
+        GraphQLContext graphQLContext = (GraphQLContext) argument.getValue().getContext();
+        Map<String, Object> headers = graphQLContext.get("headers");
+        assertEquals("hav", headers.get("hak"));
+        assertEquals("hbv", headers.get("hbk"));
     }
 
 }
