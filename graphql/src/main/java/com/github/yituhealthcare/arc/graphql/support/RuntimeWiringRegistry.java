@@ -12,6 +12,9 @@ import graphql.schema.DataFetcher;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import graphql.schema.idl.TypeRuntimeWiring;
+import graphql.validation.rules.OnValidationErrorStrategy;
+import graphql.validation.rules.ValidationRules;
+import graphql.validation.schemawiring.ValidationSchemaWiring;
 import org.slf4j.Logger;
 import org.springframework.util.CollectionUtils;
 
@@ -73,6 +76,11 @@ public class RuntimeWiringRegistry {
         Stream.of(typeRegistry.getTypes(UnionTypeDefinition.class), typeRegistry.getTypes(InterfaceTypeDefinition.class))
                 .flatMap(Collection::stream)
                 .forEach(RuntimeWiringRegistry.fillBuilder(builder));
+
+        builder.directiveWiring(new ValidationSchemaWiring(ValidationRules.newValidationRules()
+                // will return null for the field input if it is not considered valid
+                .onValidationErrorStrategy(OnValidationErrorStrategy.RETURN_NULL)
+                .build()));
 
         return builder.build();
     }
