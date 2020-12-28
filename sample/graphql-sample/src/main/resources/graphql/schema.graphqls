@@ -1,4 +1,5 @@
 scalar DateTime
+directive @Size(min : Int = 0, max : Int = 20, message : String = "graphql.validation.Size.message") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
 schema{
     query: Query,
@@ -72,7 +73,7 @@ enum MilestoneStatus{
 }
 
 input ProjectInput{
-    name: String!
+    name: String! @Size(min : 3, max : 100)
     description: String!
     dsl: String!
     vendorBranches: [String!]!
