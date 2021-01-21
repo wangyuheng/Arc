@@ -1,6 +1,5 @@
 graphql.playground:
   mapping: /playground
-  endpoint: /schema
   enabled: true
   pageTitle: GraphqlExample
   cdn:
