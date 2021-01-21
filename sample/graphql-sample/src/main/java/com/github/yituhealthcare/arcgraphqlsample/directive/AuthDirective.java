@@ -1,13 +1,14 @@
 package com.github.yituhealthcare.arcgraphqlsample.directive;
 
 import com.github.yituhealthcare.arc.graphql.annotation.Directive;
+import com.github.yituhealthcare.arcgraphqlsample.biz.AuthService;
 import graphql.GraphQLContext;
 import graphql.schema.DataFetcher;
 import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLFieldsContainer;
 import graphql.schema.idl.SchemaDirectiveWiring;
 import graphql.schema.idl.SchemaDirectiveWiringEnvironment;
-import org.springframework.expression.AccessException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 
@@ -16,6 +17,9 @@ import java.util.Map;
  */
 @Directive("Auth")
 public class AuthDirective implements SchemaDirectiveWiring {
+
+    @Autowired
+    private AuthService authService;
 
     @Override
     public GraphQLFieldDefinition onField(SchemaDirectiveWiringEnvironment<GraphQLFieldDefinition> environment) {
@@ -29,20 +33,12 @@ public class AuthDirective implements SchemaDirectiveWiring {
             GraphQLContext graphQLContext = dataFetchingEnvironment.getContext();
             Map<String, Object> headers = graphQLContext.get("headers");
             String authorization = String.valueOf(headers.getOrDefault("authorization", ""));
-            String role = resolveRoleByToken(authorization);
-            if (targetAuthRole.equalsIgnoreCase(role)) {
-                return originalDataFetcher.get(dataFetchingEnvironment);
-            } else {
-                throw new AccessException("auth fail!");
-            }
+            authService.valid(targetAuthRole, authorization);
+            return originalDataFetcher.get(dataFetchingEnvironment);
         };
         // now change the field definition to have the new authorising data fetcher
         environment.getCodeRegistry().dataFetcher(parentType, field, authDataFetcher);
         return field;
-    }
-
-    private String resolveRoleByToken(String token) {
-        return token;
     }
 
 }
