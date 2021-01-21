@@ -1,6 +1,5 @@
 voyager:
   enabled: true
   mapping: /voyager
-  endpoint: /schema
   cdn:
     enabled: false

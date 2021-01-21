@@ -1,6 +1,5 @@
 graphql.playground:
   mapping: /playground
-  endpoint: /schema
   enabled: true
   pageTitle: GraphqlExample
   cdn:
@@ -20,7 +19,7 @@ graphql.playground:
     schema.disableComments: false
     tracing.hideTracingResponse: true
   headers:
-    Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2luZm8iOiJ7XCJlbWFpbFwiOlwiMTIzQDEyMy5jb21cIixcImlkXCI6MTAwMDAwNjksXCJwaG9uZVwiOlwiMTIzMTIzMTIzXCIsXCJyb2xlXCI6MSxcInRydWVOYW1lXCI6XCJhcGlcIixcInVzZXJuYW1lXCI6XCJhcGlcIn0iLCJpc3MiOiJLQUtBUE8iLCJleHAiOjE2NTI1MTE4OTZ9.uPA2nVPEJCVk6NvEurczy1hB8TeF9pjf5Qn_6-w9Feo
+    Authorization: admin
     Namespace: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lc3BhY2UiOiIweDIifQ.uM_gyrCmoqyS81rJtgzxrl_gqZumgXK4lvmwmJSH3mk
   tabs:
     - name: projectQuery
