@@ -8,13 +8,13 @@
 
 ### 1. 添加maven依赖
 
-最新版本为 **1.5.0-SNAPSHOT**
+最新版本为 **1.5.0**
 
 ```xml
 <dependency>
     <groupId>com.github.yituhealthcare</groupId>
     <artifactId>arc-graphql</artifactId>
-    <version>1.5.0-SNAPSHOT</version>
+    <version>1.5.0</version>
 </dependency>
 ```
 #### 2. 添加graphql schema文件 

@@ -11,7 +11,7 @@
 
     <groupId>com.github.yituhealthcare</groupId>
     <artifactId>arc-graphql-client-sample</artifactId>
-    <version>1.5.0-SNAPSHOT</version>
+    <version>1.5.0</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.github.yituhealthcare</groupId>
             <artifactId>arc-graphql-client</artifactId>
-            <version>1.5.0-SNAPSHOT</version>
+            <version>1.5.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -42,7 +42,7 @@ spring.zipkin.base-url=http://localhost:9411
 <dependency>
     <groupId>com.github.yituhealthcare</groupId>
     <artifactId>arc-graphql</artifactId>
-    <version>1.5.0-SNAPSHOT</version>
+    <version>1.5.0</version>
 </dependency>
 ```
 
@@ -140,7 +140,7 @@ docker run --rm -it -p 8080:8080 -p 9080:9080 -p 8000:8000 -v ~/dgraph:/dgraph d
     <dependency>
         <groupId>com.github.yituhealthcare</groupId>
         <artifactId>arc-dgraph</artifactId>
-        <version>1.5.0-SNAPSHOT</version>
+        <version>1.5.0</version>
     </dependency>
 ```
 
@@ -211,7 +211,7 @@ public class ProjectRepository extends SimpleDgraphRepository<Project> {
     <dependency>
         <groupId>com.github.yituhealthcare</groupId>
         <artifactId>arc-graphql-client</artifactId>
-        <version>1.5.0-SNAPSHOT</version>
+        <version>1.5.0</version>
     </dependency>
 ```
 
@@ -263,7 +263,7 @@ public class ArcGraphqlClientSampleApplication {
         <plugin>
             <groupId>com.github.yituhealthcare</groupId>
             <artifactId>arc-maven-plugin</artifactId>
-            <version>1.5.0-SNAPSHOT</version>
+            <version>1.5.0</version>
         </plugin>
     </plugins>
 </build>
