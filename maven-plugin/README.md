@@ -14,7 +14,7 @@ Maven 插件, 方便使用Arc. 目前支持的功能
         <plugin>
             <groupId>com.github.yituhealthcare</groupId>
             <artifactId>arc-maven-plugin</artifactId>
-            <version>1.4.0</version>
+            <version>1.5.0</version>
         </plugin>
     </plugins>
 </build>
@@ -52,7 +52,7 @@ mvn arc:generate -Dtarget=dgraph
 <plugin>
     <groupId>com.github.yituhealthcare</groupId>
     <artifactId>arc-maven-plugin</artifactId>
-    <version>1.4.0</version>
+    <version>1.5.0</version>
     <configuration>
         <configJson>${basedir}/src/main/resources/arc-generator.json</configJson>
     </configuration>

@@ -22,7 +22,8 @@ public class GraphqlAutoConfigurationTest {
     @Test
     public void test_context_load() {
         this.contextRunner.run(context -> {
-            assertNotNull(context.getBean("GraphqlPostProcessor"));
+            assertNotNull(context.getBean("graphqlPostProcessor"));
+            assertNotNull(context.getBean("directivePostProcessor"));
             assertNotNull(context.getBean("graphQLController"));
             assertNotNull(context.getBean("dataFetcherInterceptorRegistry"));
         });

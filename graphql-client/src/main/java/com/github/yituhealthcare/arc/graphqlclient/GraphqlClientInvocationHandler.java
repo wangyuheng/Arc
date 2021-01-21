@@ -6,9 +6,10 @@ import com.github.yituhealthcare.arc.graphqlclient.model.GraphqlRequest;
 import com.github.yituhealthcare.arc.graphqlclient.model.GraphqlResponse;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.Assert;
+import org.springframework.util.FileCopyUtils;
 
+import java.io.InputStreamReader;
 import java.lang.reflect.*;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ class GraphqlClientInvocationHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if (method.isAnnotationPresent(GraphqlMapping.class)) {
             GraphqlMapping graphqlMapping = method.getAnnotation(GraphqlMapping.class);
-            String ql = String.join("", Files.readAllLines(new ClassPathResource(graphqlMapping.path()).getFile().toPath()));
+            String ql = FileCopyUtils.copyToString(new InputStreamReader(new ClassPathResource(graphqlMapping.path()).getInputStream()));
             Parameter[] parameters = method.getParameters();
             Map<String, Object> vars = new HashMap<>(parameters.length);
             for (int i = 0; i < parameters.length; i++) {

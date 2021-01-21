@@ -10,8 +10,12 @@ import graphql.language.UnionTypeDefinition;
 import graphql.scalars.ExtendedScalars;
 import graphql.schema.DataFetcher;
 import graphql.schema.idl.RuntimeWiring;
+import graphql.schema.idl.SchemaDirectiveWiring;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import graphql.schema.idl.TypeRuntimeWiring;
+import graphql.validation.rules.OnValidationErrorStrategy;
+import graphql.validation.rules.ValidationRules;
+import graphql.validation.schemawiring.ValidationSchemaWiring;
 import org.slf4j.Logger;
 import org.springframework.util.CollectionUtils;
 
@@ -38,11 +42,16 @@ public class RuntimeWiringRegistry {
     }
 
     private static final Map<String, Map<String, DataFetcher<?>>> TYPE_MAP_FIELD_AND_DF = new ConcurrentHashMap<>();
+    private static final Map<String, SchemaDirectiveWiring> NAME_AND_DIRECTIVE_WIRING = new ConcurrentHashMap<>();
 
     public static void register(String type, String fieldName, DataFetcher<?> dataFetcher) {
         Map<String, DataFetcher<?>> map = TYPE_MAP_FIELD_AND_DF.getOrDefault(type, new ConcurrentHashMap<>());
         map.put(fieldName, dataFetcher);
         TYPE_MAP_FIELD_AND_DF.putIfAbsent(type, map);
+    }
+
+    public static void registerDirective(String name, SchemaDirectiveWiring schemaDirectiveWiring) {
+        NAME_AND_DIRECTIVE_WIRING.putIfAbsent(name, schemaDirectiveWiring);
     }
 
     private static TypeRuntimeWiring.Builder builder(String name, Map<String, DataFetcher<?>> dataFetcherMap, DataFetcherInterceptorRegistry dataFetcherInterceptorRegistry) {
@@ -69,10 +78,16 @@ public class RuntimeWiringRegistry {
                 .scalar(ExtendedScalars.Object)
                 .scalar(ExtendedScalars.Date);
         TYPE_MAP_FIELD_AND_DF.forEach((type, map) -> builder.type(builder(type, map, dataFetcherInterceptorRegistry)));
+        NAME_AND_DIRECTIVE_WIRING.forEach(builder::directive);
 
         Stream.of(typeRegistry.getTypes(UnionTypeDefinition.class), typeRegistry.getTypes(InterfaceTypeDefinition.class))
                 .flatMap(Collection::stream)
                 .forEach(RuntimeWiringRegistry.fillBuilder(builder));
+
+        builder.directiveWiring(new ValidationSchemaWiring(ValidationRules.newValidationRules()
+                // will return null for the field input if it is not considered valid
+                .onValidationErrorStrategy(OnValidationErrorStrategy.RETURN_NULL)
+                .build()));
 
         return builder.build();
     }
@@ -90,4 +105,5 @@ public class RuntimeWiringRegistry {
                     return env.getSchema().getObjectType(domainClassName);
                 }));
     }
+
 }

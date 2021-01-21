@@ -1,3 +1,18 @@
+# 1.5.0
+
+## HIGHLIGHT
+
+- 提供自定义 directive bean 的方式 [68](https://github.com/YituHealthcare/Arc/issues/68)
+
+### Graphql
+
+- ENHANCEMENT: 增加graphql validation 扩展依赖 [70](https://github.com/YituHealthcare/Arc/pull/70)
+
+### Graphql Client
+
+- BUGFIX: graphql-client发布后无法读取ql文件 [72](https://github.com/YituHealthcare/Arc/issues/72)
+
+
 # 1.4.0
 
 ## HIGHLIGHT
