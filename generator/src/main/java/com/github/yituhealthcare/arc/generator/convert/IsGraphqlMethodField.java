@@ -1,12 +1,14 @@
 package com.github.yituhealthcare.arc.generator.convert;
 
 import com.github.yituhealthcare.arc.core.dictionary.GraphqlFieldTypeEnum;
+import com.github.yituhealthcare.arc.generator.dictionary.GeneratorGlobalConst;
 import com.github.yituhealthcare.arc.graphql.util.GraphqlTypeUtils;
 import graphql.language.FieldDefinition;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import graphql.schema.idl.TypeInfo;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
@@ -28,8 +30,13 @@ public class IsGraphqlMethodField implements Predicate<FieldDefinition> {
     @Override
     public boolean test(FieldDefinition fieldDefinition) {
         return hasInput()
+                .or(isAction())
                 .or(isNotGraphqlFieldType().and(isNotEnum()))
                 .test(fieldDefinition);
+    }
+
+    private Predicate<FieldDefinition> isAction() {
+        return f -> Objects.nonNull(f.getDirective(GeneratorGlobalConst.DIRECTIVE_ACTION));
     }
 
     private Predicate<FieldDefinition> hasInput() {
