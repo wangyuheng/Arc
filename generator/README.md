@@ -17,7 +17,7 @@
     <version>1.6.0-SNAPSHOT</version>
 </dependency>
 ```
-#### 2. 添加graphql schema文件 
+### 2. 添加graphql schema文件 
 
 新建文件 `test/resources/graphql/schema.graphqls`
 
@@ -70,31 +70,47 @@ input ProjectInput{
 }
 ```
 
-#### 3. 编写代码
+### 3. 新建配置文件
 
-1. 编写单测case并执行
+新建配置文件， 默认路径为 `resources:arc-generator.json` 可以通过plugin配置修改
 
-Example
-
-```java
-public class Generator {
-
-    @Test
-    public void generate_java_code() throws IOException {
-        ClassPathResource schema = new ClassPathResource("graphql/schema.graphqls");
-        CodeWriter codeWriter = new CodeWriter(Paths.get(".", "/src/main/java"));
-        CodeGenConfig config = new CodeGenConfig(Collections.emptyList());
-        new JavaCodeGenerator(codeWriter, config).generate(schema.getInputStream(), "com.github.yituhealthcare.arc.samplegenerator");
+```json
+{
+  "basePackage": "com.github.yituhealthcare.arcgeneratorsample",
+  "dropAll": false,
+  "genStrategies": [
+    {
+      "codeGenOperation": "SKIP",
+      "codeGenType": "REPO"
+    },
+    {
+      "codeGenOperation": "OVERRIDE",
+      "codeGenType": "API"
     }
-
-
-    @Test
-    public void generate_dgraph_schema() throws IOException {
-        List<String> sql = new DgraphSchemaGenerator().generate(new ClassPathResource("graphql/schema.graphqls").getInputStream());
-        Files.write(Paths.get(".", "/src/main/resources", "dgraph", "schema.dgraph"), sql);
-    }
+  ],
+  "ignoreJavaFileNames": [
+    "User"
+  ],
+  "dgraphPath": "dgraph/schema.dgraph"
 }
+```
 
+### 4. 执行maven命令
+
+```shell script
+mvn arc:generate
+```
+
+可以通过参数`-Dtarget`决定生成**java** or **dgraph schema** 如
+
+```shell script
+mvn arc:generate -Dtarget=java
 ```
 
 运行后会在根据配置在指定目录生成相关业务代码
+
+## 其他
+
+### 1. 内置directive
+
+- directive @Action on FIELD_DEFINITION 区分field是字段还是方法
