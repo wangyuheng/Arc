@@ -12,3 +12,6 @@ spring:
 #      probability: 1
 server:
   port: 8401
+arc:
+  graphql:
+    define: graphql/*.graphqls

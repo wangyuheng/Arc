@@ -14,12 +14,3 @@ type Mutation{
         payload: MockInput
     ): Mock
 }
-
-type Mock{
-    id: String!
-    name: String!
-}
-
-input MockInput{
-    name: String!
-}

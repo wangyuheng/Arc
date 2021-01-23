@@ -9,10 +9,12 @@ import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
+import graphql.schema.idl.errors.SchemaProblem;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import java.io.IOException;
 
@@ -22,13 +24,21 @@ import java.io.IOException;
  * @author yuheng.wang
  * @see GraphQL
  */
-public class GraphQLProvider {
+public class GraphQLProvider implements InitializingBean {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(GraphQLProvider.class);
     @Value("${arc.graphql.define:graphql/schema.graphqls}")
-    private ClassPathResource schema;
-    @Autowired(required = false)
+    private String locationPattern;
+
+    private PathMatchingResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+    private TypeDefinitionRegistry typeRegistry = new TypeDefinitionRegistry();
+
     private DataFetcherInterceptorRegistry dataFetcherInterceptorRegistry;
+
+    public GraphQLProvider(DataFetcherInterceptorRegistry dataFetcherInterceptorRegistry) {
+        this.dataFetcherInterceptorRegistry = dataFetcherInterceptorRegistry;
+    }
+
     private GraphQL graphQL;
 
     public GraphQL getGraphQL() {
@@ -40,28 +50,38 @@ public class GraphQLProvider {
 
     private synchronized void refresh() {
         if (null == graphQL) {
-            this.initGraphQL();
+            GraphQLSchema graphQLSchema = new SchemaGenerator()
+                    .makeExecutableSchema(typeRegistry, RuntimeWiringRegistry.initRuntimeWiring(typeRegistry, dataFetcherInterceptorRegistry));
+            this.graphQL = GraphQL
+                    .newGraphQL(graphQLSchema)
+                    .queryExecutionStrategy(new AsyncExecutionStrategy(new CustomDataFetcherExceptionHandler()))
+                    .mutationExecutionStrategy(new AsyncExecutionStrategy(new CustomDataFetcherExceptionHandler()))
+                    .build()
+            ;
         }
     }
 
-    private void initGraphQL() {
+    private void loadSchema() {
         log.info("init graphql");
-        TypeDefinitionRegistry typeRegistry;
+        SchemaParser schemaParser = new SchemaParser();
         try {
-            typeRegistry = new SchemaParser().parse(schema.getInputStream());
+            Resource[] resources = resourcePatternResolver.getResources(locationPattern);
+            for (Resource resource : resources) {
+                typeRegistry.merge(schemaParser.parse(resource.getInputStream()));
+            }
+        } catch (SchemaProblem schemaProblem) {
+            log.error("schema defined error! locationPattern:{}", locationPattern, schemaProblem);
+            throw schemaProblem;
         } catch (IOException e) {
-            log.error("read graphql schema fail!", e);
-            throw new IllegalStateException("read graphql schema fail! path: " + schema.getPath());
+            log.warn("read graphql schema fail!", e);
         }
-
-        GraphQLSchema graphQLSchema = new SchemaGenerator()
-                .makeExecutableSchema(typeRegistry, RuntimeWiringRegistry.initRuntimeWiring(typeRegistry, dataFetcherInterceptorRegistry));
-        this.graphQL = GraphQL
-                .newGraphQL(graphQLSchema)
-                .queryExecutionStrategy(new AsyncExecutionStrategy(new CustomDataFetcherExceptionHandler()))
-                .mutationExecutionStrategy(new AsyncExecutionStrategy(new CustomDataFetcherExceptionHandler()))
-                .build()
-        ;
+        if (typeRegistry.types().isEmpty()) {
+            throw new IllegalStateException("read graphql schema fail! locationPattern: " + locationPattern);
+        }
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        this.loadSchema();
+    }
 }
