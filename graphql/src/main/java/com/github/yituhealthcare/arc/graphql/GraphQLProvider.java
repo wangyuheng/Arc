@@ -30,10 +30,10 @@ public class GraphQLProvider implements InitializingBean {
     @Value("${arc.graphql.define:graphql/schema.graphqls}")
     private String locationPattern;
 
-    private PathMatchingResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
-    private TypeDefinitionRegistry typeRegistry = new TypeDefinitionRegistry();
+    private final PathMatchingResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+    private final TypeDefinitionRegistry typeRegistry = new TypeDefinitionRegistry();
 
-    private DataFetcherInterceptorRegistry dataFetcherInterceptorRegistry;
+    private final DataFetcherInterceptorRegistry dataFetcherInterceptorRegistry;
 
     public GraphQLProvider(DataFetcherInterceptorRegistry dataFetcherInterceptorRegistry) {
         this.dataFetcherInterceptorRegistry = dataFetcherInterceptorRegistry;
