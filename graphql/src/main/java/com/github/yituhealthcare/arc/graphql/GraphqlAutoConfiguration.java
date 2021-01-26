@@ -32,7 +32,7 @@ public class GraphqlAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public GraphQLProvider graphQLProvider() {
-        return new GraphQLProvider();
+        return new GraphQLProvider(dataFetcherInterceptorRegistry());
     }
 
     @Bean
