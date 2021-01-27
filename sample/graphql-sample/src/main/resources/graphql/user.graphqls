@@ -1,3 +1,4 @@
 type User {
     name: String!
+    projectName: String
 }

@@ -1,5 +1,8 @@
 package com.github.yituhealthcare.arcgraphqlsample.domain;
 
+import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
+
+@Graphql
 public class Milestone  {
 
     private String id;
@@ -53,6 +56,7 @@ public class Milestone  {
         this.status = status;
     }
 
+    @Override
     public String toString() {
         return "Milestone(id=" + this.getId() + ", name=" + this.getName() + ", description=" + this.getDescription() + ", status=" + this.getStatus() + ")";
     }
@@ -97,6 +101,7 @@ public class Milestone  {
             return new Milestone(id, name, description, status);
         }
 
+        @Override
         public String toString() {
             return "Milestone.MilestoneBuilder(id=" + this.id + ", name=" + this.name + ", description=" + this.description + ", status=" + this.status + ")";
         }
