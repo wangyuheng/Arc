@@ -11,6 +11,7 @@ import com.github.yituhealthcare.arc.mq.Message;
 import com.github.yituhealthcare.arc.mq.consumer.Consumer;
 import com.github.yituhealthcare.arcgraphqlsample.infrastructure.CommonRepository;
 import com.github.yituhealthcare.arcgraphqlsample.input.ProjectInput;
+import graphql.GraphQLContext;
 import graphql.schema.DataFetcher;
 import org.slf4j.Logger;
 
@@ -60,7 +61,9 @@ public class Project {
     public DataFetcher<User> creator() {
         return dataFetchingEnvironment -> {
             Milestone milestone = dataFetchingEnvironment.getSource();
-            return new User(UUID.randomUUID().toString(), "zhangsan");
+            GraphQLContext graphQLContext = dataFetchingEnvironment.getContext();
+            Project project = graphQLContext.get("Project");
+            return new User(UUID.randomUUID().toString(), "zhangsan", project.name);
         };
     }
 
