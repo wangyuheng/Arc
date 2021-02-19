@@ -43,25 +43,34 @@ public class JSONFieldDeserializerUtil {
         });
     }
 
-    public static Map<String, Object> getJsonMap(List<Class> classes) {
+    public static Map<String,Object> getJsonMap(Class clazz){
+        return getJsonMap(Arrays.asList(clazz),new ArrayList<>());
+    }
+
+    private static Map<String, Object> getJsonMap(List<Class> classes,List<Class> alreadyExistedClasses) {
         Map<String, Object> map = new HashMap<>();
         for (Class clazz : classes) {
+            if (alreadyExistedClasses.contains(clazz)){
+                continue;
+            }
+            alreadyExistedClasses.add(clazz);
             Field[] fields = clazz.getDeclaredFields();
             for (Field field : fields) {
-                if (Objects.equals(field.getType(), JSONObject.class)) {
+                if (Objects.equals(field.getType(), JSONObject.class) || Objects.equals(field.getType(),Map.class)) {
                     map.put(DgraphTypeUtil.getDgraphTypeValue(clazz) + "." + field.getName(), null);
+                    continue;
                 }
                 if (!BASIC_CLASS_EXCEPT_JSON.contains(field.getType()) && !field.isEnumConstant()) {
                     if (Objects.equals(field.getType(), List.class)) {
                         Class listInnerClazz = (Class) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
                         if (!BASIC_CLASS_EXCEPT_JSON.contains(listInnerClazz)) {
-                            Map<String, Object> innerJsonMap = getJsonMap(Collections.singletonList((Class) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0]));
+                            Map<String, Object> innerJsonMap = getJsonMap(Collections.singletonList((Class) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0]),new ArrayList<>(alreadyExistedClasses));
                             if (!CollectionUtils.isEmpty(innerJsonMap.keySet())) {
                                 map.put(DgraphTypeUtil.getDgraphTypeValue(clazz) + "." + field.getName(), innerJsonMap);
                             }
                         }
                     } else {
-                        Map<String, Object> innerJsonMap = getJsonMap(Collections.singletonList(field.getType()));
+                        Map<String, Object> innerJsonMap = getJsonMap(Collections.singletonList(field.getType()),new ArrayList<>(alreadyExistedClasses));
                         if (!CollectionUtils.isEmpty(innerJsonMap.keySet())) {
                             map.put(DgraphTypeUtil.getDgraphTypeValue(clazz) + "." + field.getName(), innerJsonMap);
                         }
@@ -69,7 +78,7 @@ public class JSONFieldDeserializerUtil {
                 }
                 UnionClasses unionClasses = field.getAnnotation(UnionClasses.class);
                 if (Objects.nonNull(unionClasses)) {
-                    Map<String, Object> innerJsonMap = getJsonMap(Arrays.stream(unionClasses.value()).collect(Collectors.toList()));
+                    Map<String, Object> innerJsonMap = getJsonMap(Arrays.stream(unionClasses.value()).collect(Collectors.toList()),new ArrayList<>(alreadyExistedClasses));
                     if (!CollectionUtils.isEmpty(innerJsonMap.keySet())) {
                         map.put(DgraphTypeUtil.getDgraphTypeValue(clazz) + "." + field.getName(), innerJsonMap);
                     }
