@@ -1,0 +1,8 @@
+type Mock{
+    id: String!
+    name: String!
+}
+
+input MockInput{
+    name: String!
+}

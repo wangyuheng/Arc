@@ -1,57 +1,16 @@
-scalar DateTime
-directive @Action on FIELD_DEFINITION
-
-schema{
-    query: Query,
-    mutation: Mutation
-}
-
-type Query{
-    project(
-        id: String
-    ): Project
-    users: [User]
-}
-
-type Mutation{
-    createProject(
-        payload: ProjectInput
-    ): Project
-    createMilestone(
-        payload: MilestoneInput
-    ): Milestone
-}
-
-"""
-项目分类
-"""
-enum ProjectCategory {
-    """
-    示例项目
-    """
-    DEMO
-    """
-    生产项目
-    """
-    PRODUCTION
-}
 
 """
 名称
 为了达到某个产品迭代、产品模块开发、或者科研调研等目的所做的工作.
 """
 type Project{
-    id: ID!
+    id: String!
     name: String!
     description: String!
-    category: [ProjectCategory]
     createTime: DateTime!
     milestones(
         status: MilestoneStatus
     ): [Milestone]
-    owner: User
-    members: [User]
-    action: String @Action
 }
 """
 里程碑
@@ -60,11 +19,9 @@ type Project{
 type Milestone{
     id: String!
     name: String!
+    description: String!
     status: MilestoneStatus
-}
-
-type User {
-    name: String!
+    creator: User
 }
 
 """
@@ -90,14 +47,8 @@ enum MilestoneStatus{
 }
 
 input ProjectInput{
-    name: String!
+    name: String! @Size(min : 3, max : 100)
     description: String!
+    dsl: String!
     vendorBranches: [String!]!
-    category: ProjectCategory!
-}
-
-
-input MilestoneInput{
-    projectId: String!
-    name: String!
 }

@@ -8,13 +8,13 @@
 
 ### 1. 添加maven依赖
 
-最新版本为 **1.5.0**
+最新版本为 **1.6.0-SNAPSHOT**
 
 ```xml
 <dependency>
     <groupId>com.github.yituhealthcare</groupId>
     <artifactId>arc-graphql-client</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.0-SNAPSHOT</version>
 </dependency>
 ```
 #### 2. 在resources目录下添加graphql 查询语句 

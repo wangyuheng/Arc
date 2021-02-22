@@ -32,4 +32,6 @@ public class GeneratorGlobalConst {
 
     public static final String HANDLE_METHOD_SUFFIX = "handle";
 
+    public static final String DIRECTIVE_ACTION = "Action";
+
 }
