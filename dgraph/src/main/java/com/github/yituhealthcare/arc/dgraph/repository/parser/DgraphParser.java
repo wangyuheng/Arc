@@ -75,7 +75,7 @@ public class DgraphParser {
     public <T> List<T> extractJSONArray(JSONArray array) {
         return array.stream()
                 .map(it -> (JSONObject) it)
-                .peek(it -> JSONFieldDeserializerUtil.changeJson(it,JSONFieldDeserializerUtil.getJsonMap(Collections.singletonList(domainClass))))
+                .peek(it -> JSONFieldDeserializerUtil.changeJson(it,JSONFieldDeserializerUtil.getJsonMap(domainClass)))
                 .map(jsonObject -> JSON.toJSONString(jsonObject, postFilter))
                 .map(jsonStr -> (T) JSON.parseObject(jsonStr, domainClass, new JSONObjectDeserializer()))
                 .peek(this::unionClassHandle)
@@ -92,7 +92,7 @@ public class DgraphParser {
     public <T> Optional<T> extractJSON(JSONObject jsonObject) {
         return Optional.ofNullable(jsonObject)
                 .map(it -> {
-                    JSONFieldDeserializerUtil.changeJson(it,JSONFieldDeserializerUtil.getJsonMap(Collections.singletonList(domainClass)));
+                    JSONFieldDeserializerUtil.changeJson(it,JSONFieldDeserializerUtil.getJsonMap(domainClass));
                     return it;
                 })
                 .map(it -> JSON.toJSONString(it, postFilter))
