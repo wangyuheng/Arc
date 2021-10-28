@@ -8,6 +8,10 @@
             name
             description
             status
+            creator {
+                name
+                projectName
+            }
         }
     }
 }

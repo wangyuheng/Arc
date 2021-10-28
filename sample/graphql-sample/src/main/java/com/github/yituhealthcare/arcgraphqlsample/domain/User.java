@@ -4,10 +4,12 @@ public class User {
 
     private String id;
     private String name;
+    private String projectName;
 
-    public User(String id, String name) {
+    public User(String id, String name, String projectName) {
         this.id = id;
         this.name = name;
+        this.projectName = projectName;
     }
 
     public User() {
@@ -33,13 +35,27 @@ public class User {
         this.name = name;
     }
 
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    @Override
     public String toString() {
-        return "User(id=" + this.getId() + ", name=" + this.getName() + ")";
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", projectName='" + projectName + '\'' +
+                '}';
     }
 
     public static class UserBuilder {
         private String id;
         private String name;
+        private String projectName;
 
         UserBuilder() {
         }
@@ -53,13 +69,22 @@ public class User {
             this.name = name;
             return this;
         }
-
-        public User build() {
-            return new User(id, name);
+        public User.UserBuilder projectName(String projectName) {
+            this.projectName = projectName;
+            return this;
         }
 
+        public User build() {
+            return new User(id, name, projectName);
+        }
+
+        @Override
         public String toString() {
-            return "User.UserBuilder(id=" + this.id + ", name=" + this.name + ")";
+            return "UserBuilder{" +
+                    "id='" + id + '\'' +
+                    ", name='" + name + '\'' +
+                    ", projectName='" + projectName + '\'' +
+                    '}';
         }
     }
 }

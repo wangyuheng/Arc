@@ -29,27 +29,3 @@ directive @Positive(message : String = "graphql.validation.Positive.message") on
 directive @PositiveOrZero(message : String = "graphql.validation.PositiveOrZero.message") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 directive @Range(min : Int = 0, max : Int = 2147483647, message : String = "graphql.validation.Range.message") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 directive @Size(min : Int = 0, max : Int = 2147483647, message : String = "graphql.validation.Size.message") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
-"""
-Custom
-"""
-directive @Auth(role : String!) on FIELD_DEFINITION
-
-schema{
-    query: Query,
-    mutation: Mutation
-}
-
-type Query{
-    project(
-        id: String
-    ): Project
-    projects(
-        id: String
-    ): [Project]
-}
-
-type Mutation{
-    createProject(
-        payload: ProjectInput
-    ): Project @Auth(role : "admin")
-}
