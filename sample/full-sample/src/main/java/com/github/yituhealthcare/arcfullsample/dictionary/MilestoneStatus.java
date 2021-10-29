@@ -1,4 +1,4 @@
-package com.github.yituhealthcare.arcfullsample.dictionary;
+package io.github.wangyuheng.arcfullsample.dictionary;
 
 public enum MilestoneStatus {
     NOT_STARTED,

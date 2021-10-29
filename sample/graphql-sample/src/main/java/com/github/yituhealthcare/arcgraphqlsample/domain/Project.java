@@ -1,16 +1,16 @@
-package com.github.yituhealthcare.arcgraphqlsample.domain;
+package io.github.wangyuheng.arcgraphqlsample.domain;
 
 
-import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
-import com.github.yituhealthcare.arc.graphql.annotation.GraphqlMethod;
-import com.github.yituhealthcare.arc.graphql.annotation.GraphqlMutation;
-import com.github.yituhealthcare.arc.graphql.annotation.GraphqlQuery;
-import com.github.yituhealthcare.arc.graphql.event.DomainEvent;
-import com.github.yituhealthcare.arc.graphql.util.GraphqlPayloadUtil;
-import com.github.yituhealthcare.arc.mq.Message;
-import com.github.yituhealthcare.arc.mq.consumer.Consumer;
-import com.github.yituhealthcare.arcgraphqlsample.infrastructure.CommonRepository;
-import com.github.yituhealthcare.arcgraphqlsample.input.ProjectInput;
+import io.github.wangyuheng.arc.graphql.annotation.Graphql;
+import io.github.wangyuheng.arc.graphql.annotation.GraphqlMethod;
+import io.github.wangyuheng.arc.graphql.annotation.GraphqlMutation;
+import io.github.wangyuheng.arc.graphql.annotation.GraphqlQuery;
+import io.github.wangyuheng.arc.graphql.event.DomainEvent;
+import io.github.wangyuheng.arc.graphql.util.GraphqlPayloadUtil;
+import io.github.wangyuheng.arc.mq.Message;
+import io.github.wangyuheng.arc.mq.consumer.Consumer;
+import io.github.wangyuheng.arcgraphqlsample.infrastructure.CommonRepository;
+import io.github.wangyuheng.arcgraphqlsample.input.ProjectInput;
 import graphql.GraphQLContext;
 import graphql.schema.DataFetcher;
 import org.slf4j.Logger;

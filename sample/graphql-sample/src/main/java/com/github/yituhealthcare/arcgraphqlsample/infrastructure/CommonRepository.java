@@ -1,6 +1,6 @@
-package com.github.yituhealthcare.arcgraphqlsample.infrastructure;
+package io.github.wangyuheng.arcgraphqlsample.infrastructure;
 
-import com.github.yituhealthcare.arcgraphqlsample.domain.Project;
+import io.github.wangyuheng.arcgraphqlsample.domain.Project;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

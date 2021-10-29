@@ -1,8 +1,8 @@
-package com.github.yituhealthcare.arcmqsample;
+package io.github.wangyuheng.arcmqsample;
 
-import com.github.yituhealthcare.arc.mq.Message;
-import com.github.yituhealthcare.arc.mq.consumer.Consumer;
-import com.github.yituhealthcare.arc.mq.producer.Producer;
+import io.github.wangyuheng.arc.mq.Message;
+import io.github.wangyuheng.arc.mq.consumer.Consumer;
+import io.github.wangyuheng.arc.mq.producer.Producer;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;

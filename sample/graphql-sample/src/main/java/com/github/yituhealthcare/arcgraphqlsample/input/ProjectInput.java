@@ -1,4 +1,4 @@
-package com.github.yituhealthcare.arcgraphqlsample.input;
+package io.github.wangyuheng.arcgraphqlsample.input;
 
 import java.util.List;
 

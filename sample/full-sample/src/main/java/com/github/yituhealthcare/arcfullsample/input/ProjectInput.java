@@ -1,6 +1,6 @@
-package com.github.yituhealthcare.arcfullsample.input;
+package io.github.wangyuheng.arcfullsample.input;
 
-import com.github.yituhealthcare.arcfullsample.dictionary.ProjectCategory;
+import io.github.wangyuheng.arcfullsample.dictionary.ProjectCategory;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package com.github.yituhealthcare.arcgraphqlsample.directive;
+package io.github.wangyuheng.arcgraphqlsample.directive;
 
-import com.github.yituhealthcare.arc.graphql.annotation.Directive;
-import com.github.yituhealthcare.arcgraphqlsample.biz.AuthService;
+import io.github.wangyuheng.arc.graphql.annotation.Directive;
+import io.github.wangyuheng.arcgraphqlsample.biz.AuthService;
 import graphql.GraphQLContext;
 import graphql.schema.DataFetcher;
 import graphql.schema.GraphQLFieldDefinition;

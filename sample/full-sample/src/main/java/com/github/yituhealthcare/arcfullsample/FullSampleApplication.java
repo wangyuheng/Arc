@@ -1,10 +1,10 @@
-package com.github.yituhealthcare.arcfullsample;
+package io.github.wangyuheng.arcfullsample;
 
-import com.github.yituhealthcare.arc.dgraph.annotation.DgraphScan;
+import io.github.wangyuheng.arc.dgraph.annotation.DgraphScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@DgraphScan(basePackage = {"com.github.yituhealthcare.arcfullsample"})
+@DgraphScan(basePackage = {"io.github.wangyuheng.arcfullsample"})
 @SpringBootApplication
 public class FullSampleApplication {
 

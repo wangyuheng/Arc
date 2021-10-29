@@ -1,4 +1,4 @@
-package com.github.yituhealthcare.arcfullsample.domain;
+package io.github.wangyuheng.arcfullsample.domain;
 
 public class User {
 

@@ -1,9 +1,9 @@
-package com.github.yituhealthcare.arcfullsample.domain;
+package io.github.wangyuheng.arcfullsample.domain;
 
-import com.github.yituhealthcare.arc.dgraph.annotation.DgraphType;
-import com.github.yituhealthcare.arc.dgraph.annotation.UidField;
-import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
-import com.github.yituhealthcare.arcfullsample.dictionary.MilestoneStatus;
+import io.github.wangyuheng.arc.dgraph.annotation.DgraphType;
+import io.github.wangyuheng.arc.dgraph.annotation.UidField;
+import io.github.wangyuheng.arc.graphql.annotation.Graphql;
+import io.github.wangyuheng.arcfullsample.dictionary.MilestoneStatus;
 
 @Graphql
 @DgraphType("MILESTONE")

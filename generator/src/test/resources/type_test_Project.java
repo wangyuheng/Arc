@@ -2,11 +2,11 @@ package a.b.c.type;
 
 import a.b.c.datafetcher.ProjectDataFetcher;
 import a.b.c.dictionary.ProjectCategory;
-import com.github.yituhealthcare.arc.dgraph.annotation.DgraphType;
-import com.github.yituhealthcare.arc.dgraph.annotation.UidField;
-import com.github.yituhealthcare.arc.dgraph.dictionary.IDomainClass;
-import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
-import com.github.yituhealthcare.arc.graphql.annotation.GraphqlMethod;
+import io.github.wangyuheng.arc.dgraph.annotation.DgraphType;
+import io.github.wangyuheng.arc.dgraph.annotation.UidField;
+import io.github.wangyuheng.arc.dgraph.dictionary.IDomainClass;
+import io.github.wangyuheng.arc.graphql.annotation.Graphql;
+import io.github.wangyuheng.arc.graphql.annotation.GraphqlMethod;
 import graphql.schema.DataFetcher;
 import java.lang.String;
 import java.time.OffsetDateTime;

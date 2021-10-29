@@ -1,10 +1,10 @@
-package com.github.yituhealthcare.arcgraphqlclientsample;
+package io.github.wangyuheng.arcgraphqlclientsample;
 
-import com.github.yituhealthcare.arc.graphqlclient.annotation.EnableGraphqlClients;
-import com.github.yituhealthcare.arc.graphqlclient.annotation.GraphqlClient;
-import com.github.yituhealthcare.arc.graphqlclient.annotation.GraphqlMapping;
-import com.github.yituhealthcare.arc.graphqlclient.annotation.GraphqlParam;
-import com.github.yituhealthcare.arc.graphqlclient.model.GraphqlResponse;
+import io.github.wangyuheng.arc.graphqlclient.annotation.EnableGraphqlClients;
+import io.github.wangyuheng.arc.graphqlclient.annotation.GraphqlClient;
+import io.github.wangyuheng.arc.graphqlclient.annotation.GraphqlMapping;
+import io.github.wangyuheng.arc.graphqlclient.annotation.GraphqlParam;
+import io.github.wangyuheng.arc.graphqlclient.model.GraphqlResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author yuheng.wang
  */
-@EnableGraphqlClients(basePackages = "com.github.yituhealthcare.arcgraphqlclientsample")
+@EnableGraphqlClients(basePackages = "io.github.wangyuheng.arcgraphqlclientsample")
 @RestController
 @SpringBootApplication
 public class ArcGraphqlClientSampleApplication {

@@ -1,6 +1,6 @@
-package com.github.yituhealthcare.arcgraphqlsample.aop;
+package io.github.wangyuheng.arcgraphqlsample.aop;
 
-import com.github.yituhealthcare.arc.graphql.interceptor.DataFetcherInterceptorRegistry;
+import io.github.wangyuheng.arc.graphql.interceptor.DataFetcherInterceptorRegistry;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

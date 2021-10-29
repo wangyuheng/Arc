@@ -1,4 +1,4 @@
-package com.github.yituhealthcare.arcfullsample.input;
+package io.github.wangyuheng.arcfullsample.input;
 
 public class MilestoneInput {
     private String projectId;

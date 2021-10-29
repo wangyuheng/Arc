@@ -1,4 +1,4 @@
-package com.github.yituhealthcare.arcgraphqlsample;
+package io.github.wangyuheng.arcgraphqlsample;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -12,9 +12,9 @@ Maven 插件, 方便使用Arc. 目前支持的功能
 <build>
     <plugins>
         <plugin>
-            <groupId>com.github.yituhealthcare</groupId>
+            <groupId>io.github.wangyuheng</groupId>
             <artifactId>arc-maven-plugin</artifactId>
-            <version>1.6.0-SNAPSHOT</version>
+            <version>1.6.0</version>
         </plugin>
     </plugins>
 </build>
@@ -50,9 +50,9 @@ mvn arc:generate -Dtarget=dgraph
 
 ```xml
 <plugin>
-    <groupId>com.github.yituhealthcare</groupId>
+    <groupId>io.github.wangyuheng</groupId>
     <artifactId>arc-maven-plugin</artifactId>
-    <version>1.6.0-SNAPSHOT</version>
+    <version>1.6.0</version>
     <configuration>
         <configJson>${basedir}/src/main/resources/arc-generator.json</configJson>
     </configuration>
@@ -63,7 +63,7 @@ mvn arc:generate -Dtarget=dgraph
 
 ```json
 {
-  "basePackage": "com.github.yituhealthcare.arcgeneratorsample",
+  "basePackage": "io.github.wangyuheng.arcgeneratorsample",
   "dropAll": false,
   "genStrategies": [
     {

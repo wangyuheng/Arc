@@ -2,7 +2,7 @@
     <img src="doc/arc-logo.png">
 </p>
 
-![Java CI Task - master](https://github.com/YituHealthcare/Arc/workflows/Java%20CI%20Task%20-%20master/badge.svg) ![Maven Package](https://github.com/YituHealthcare/Arc/workflows/Maven%20Package/badge.svg?branch=master) [![Coverage Status](https://coveralls.io/repos/github/YituHealthcare/Arc/badge.svg?branch=master)](https://coveralls.io/github/YituHealthcare/Arc?branch=master) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=alert_status)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=bugs)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=YituHealthcare_Arc&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=YituHealthcare_Arc)
+![Java CI Task - master](https://github.com/wangyuheng/Arc/workflows/Java%20CI%20Task%20-%20master/badge.svg) ![Maven Package](https://github.com/wangyuheng/Arc/workflows/Maven%20Package/badge.svg?branch=master) [![Coverage Status](https://coveralls.io/repos/github/wangyuheng/Arc/badge.svg?branch=master)](https://coveralls.io/github/wangyuheng/Arc?branch=master) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=wangyuheng_Arc&metric=alert_status)](https://sonarcloud.io/dashboard?id=wangyuheng_Arc) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=wangyuheng_Arc&metric=bugs)](https://sonarcloud.io/dashboard?id=wangyuheng_Arc) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=wangyuheng_Arc&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=wangyuheng_Arc)
 
 通过`GraphQL Schema`描述业务领域，并提供一套基于`GraphQL`+`Dgraph`的开发框架，快速落地**DDD**。
 
@@ -17,9 +17,9 @@
 - mq: 简易内嵌消息队列
 - generator: 代码生成器。根据GraphQL Schema生成Java代码及DgraphSchema
 
-![arc-dependent](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/YituHealthcare/arc/master/doc/dependent.puml)
+![arc-dependent](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/wangyuheng/arc/master/doc/dependent.puml)
 
-![arc-generator](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/YituHealthcare/arc/master/doc/generator.puml)
+![arc-generator](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/wangyuheng/arc/master/doc/generator.puml)
 
 ## 如何使用
 
@@ -40,9 +40,9 @@ spring.zipkin.base-url=http://localhost:9411
 
 ```xml
 <dependency>
-    <groupId>com.github.yituhealthcare</groupId>
+    <groupId>io.github.wangyuheng</groupId>
     <artifactId>arc-graphql</artifactId>
-    <version>1.6.0-SNAPSHOT</version>
+    <version>1.6.0</version>
 </dependency>
 ```
 
@@ -138,9 +138,9 @@ docker run --rm -it -p 8080:8080 -p 9080:9080 -p 8000:8000 -v ~/dgraph:/dgraph d
 
 ```xml
     <dependency>
-        <groupId>com.github.yituhealthcare</groupId>
+        <groupId>io.github.wangyuheng</groupId>
         <artifactId>arc-dgraph</artifactId>
-        <version>1.6.0-SNAPSHOT</version>
+        <version>1.6.0</version>
     </dependency>
 ```
 
@@ -209,9 +209,9 @@ public class ProjectRepository extends SimpleDgraphRepository<Project> {
 
 ```xml
     <dependency>
-        <groupId>com.github.yituhealthcare</groupId>
+        <groupId>io.github.wangyuheng</groupId>
         <artifactId>arc-graphql-client</artifactId>
-        <version>1.6.0-SNAPSHOT</version>
+        <version>1.6.0</version>
     </dependency>
 ```
 
@@ -228,7 +228,7 @@ query hello($echoText: String!) {
 3.3 编写java代码
 
 ```java
-@EnableGraphqlClients(basePackages = "com.github.yituhealthcare.arcgraphqlclientsample")
+@EnableGraphqlClients(basePackages = "io.github.wangyuheng.arcgraphqlclientsample")
 @RestController
 @SpringBootApplication
 public class ArcGraphqlClientSampleApplication {
@@ -261,9 +261,9 @@ public class ArcGraphqlClientSampleApplication {
 <build>
     <plugins>
         <plugin>
-            <groupId>com.github.yituhealthcare</groupId>
+            <groupId>io.github.wangyuheng</groupId>
             <artifactId>arc-maven-plugin</artifactId>
-            <version>1.6.0-SNAPSHOT</version>
+            <version>1.6.0</version>
         </plugin>
     </plugins>
 </build>
@@ -273,7 +273,7 @@ public class ArcGraphqlClientSampleApplication {
 
 ```json
 {
-  "basePackage": "com.github.yituhealthcare.arcgeneratorsample",
+  "basePackage": "io.github.wangyuheng.arcgeneratorsample",
   "dropAll": false,
   "genStrategies": [
     {
@@ -327,7 +327,7 @@ mvn arc:generate
 
 ## 整体开发流程
 
-![workflow](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/YituHealthcare/arc/master/doc/workflow.puml)
+![workflow](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/wangyuheng/arc/master/doc/workflow.puml)
 
 1. 定义GraphQL schema，产生GraphQL.schema文件
 2. 定义dgraph schema，修改类型并定义type。

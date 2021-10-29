@@ -6,7 +6,7 @@ Sample For `arc-graphql`
 
 ```shell script
 mvn clean install
-java -jar target/arc-graphql-sample-1.6.0-SNAPSHOT.jar 
+java -jar target/arc-graphql-sample-1.6.0.jar 
 ```
 
 或者通过 maven 插件运行

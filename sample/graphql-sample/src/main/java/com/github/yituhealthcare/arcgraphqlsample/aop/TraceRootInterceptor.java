@@ -1,6 +1,6 @@
-package com.github.yituhealthcare.arcgraphqlsample.aop;
+package io.github.wangyuheng.arcgraphqlsample.aop;
 
-import com.github.yituhealthcare.arc.graphql.interceptor.DataFetcherHandlerInterceptor;
+import io.github.wangyuheng.arc.graphql.interceptor.DataFetcherHandlerInterceptor;
 import graphql.GraphQLContext;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLNamedType;

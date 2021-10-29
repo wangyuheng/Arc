@@ -1,4 +1,4 @@
-package com.github.yituhealthcare.arcgraphqlsample.biz;
+package io.github.wangyuheng.arcgraphqlsample.biz;
 
 import org.springframework.expression.AccessException;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
-package com.github.yituhealthcare.arcgraphqlsample.domain;
+package io.github.wangyuheng.arcgraphqlsample.domain;
 
-import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
+import io.github.wangyuheng.arc.graphql.annotation.Graphql;
 
 @Graphql
 public class Milestone  {
