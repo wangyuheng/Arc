@@ -1,6 +1,0 @@
-voyager:
-  enabled: true
-  mapping: /voyager
-  endpoint: /graphql
-  cdn:
-    enabled: false
