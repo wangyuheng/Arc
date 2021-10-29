@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.github.yituhealthcare</groupId>
+        <groupId>io.github.wangyuheng</groupId>
         <artifactId>arc</artifactId>
         <version>${revision}</version>
     </parent>
@@ -15,12 +15,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.yituhealthcare</groupId>
+            <groupId>io.github.wangyuheng</groupId>
             <artifactId>arc-graphql</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.github.yituhealthcare</groupId>
+            <groupId>io.github.wangyuheng</groupId>
             <artifactId>arc-dgraph</artifactId>
             <version>${project.version}</version>
         </dependency>

@@ -1,5 +1,5 @@
 {
-  "basePackage": "com.github.yituhealthcare.arc",
+  "basePackage": "io.github.wangyuheng.arc",
   "dropAll": false,
   "genStrategies": [
     {

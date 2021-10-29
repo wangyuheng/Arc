@@ -2,11 +2,11 @@ package a.b.c.type;
 
 import a.b.c.datafetcher.ProjectDataFetcher;
 import a.b.c.dictionary.ProjectCategory;
-import com.github.yituhealthcare.arc.dgraph.annotation.DgraphType;
-import com.github.yituhealthcare.arc.dgraph.annotation.UidField;
-import com.github.yituhealthcare.arc.dgraph.dictionary.IDomainClass;
-import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
-import com.github.yituhealthcare.arc.graphql.annotation.GraphqlMethod;
+import io.github.wangyuheng.arc.dgraph.annotation.DgraphType;
+import io.github.wangyuheng.arc.dgraph.annotation.UidField;
+import io.github.wangyuheng.arc.dgraph.dictionary.IDomainClass;
+import io.github.wangyuheng.arc.graphql.annotation.Graphql;
+import io.github.wangyuheng.arc.graphql.annotation.GraphqlMethod;
 import graphql.schema.DataFetcher;
 import java.lang.String;
 import java.time.OffsetDateTime;
@@ -64,12 +64,17 @@ public class Project implements IDomainClass {
    */
   private List<User> members;
 
+  /**
+   * action
+   */
+  private String action;
+
   @Autowired
   private ProjectDataFetcher projectDataFetcher;
 
   public Project(String id, String name, String description, List<ProjectCategory> category,
                  OffsetDateTime createTime, List<Milestone> milestones, User owner, List<User> members,
-                 ProjectDataFetcher projectDataFetcher) {
+                 String action, ProjectDataFetcher projectDataFetcher) {
     this.id = id;
     this.name = name;
     this.description = description;
@@ -78,6 +83,7 @@ public class Project implements IDomainClass {
     this.milestones = milestones;
     this.owner = owner;
     this.members = members;
+    this.action = action;
     this.projectDataFetcher = projectDataFetcher;
   }
 
@@ -103,6 +109,13 @@ public class Project implements IDomainClass {
   )
   public DataFetcher<List<User>> members() {
     return dataFetchingEnvironment -> projectDataFetcher.handleMembers(dataFetchingEnvironment);
+  }
+
+  @GraphqlMethod(
+          type = "Project"
+  )
+  public DataFetcher<String> action() {
+    return dataFetchingEnvironment -> projectDataFetcher.handleAction(dataFetchingEnvironment);
   }
 
   public void setId(String id) {
@@ -169,6 +182,14 @@ public class Project implements IDomainClass {
     return members;
   }
 
+  public void setAction(String action) {
+    this.action = action;
+  }
+
+  public String getAction() {
+    return action;
+  }
+
   public static ProjectBuilder builder() {
     return new ProjectBuilder();
   }
@@ -189,6 +210,8 @@ public class Project implements IDomainClass {
     private User owner;
 
     private List<User> members;
+
+    private String action;
 
     private ProjectDataFetcher projectDataFetcher;
 
@@ -235,13 +258,18 @@ public class Project implements IDomainClass {
       return this;
     }
 
+    public ProjectBuilder action(String action) {
+      this.action = action;
+      return this;
+    }
+
     public ProjectBuilder projectDataFetcher(ProjectDataFetcher projectDataFetcher) {
       this.projectDataFetcher = projectDataFetcher;
       return this;
     }
 
     public Project build() {
-      return new Project(id,name,description,category,createTime,milestones,owner,members,projectDataFetcher);
+      return new Project(id,name,description,category,createTime,milestones,owner,members,action,projectDataFetcher);
     }
   }
 }

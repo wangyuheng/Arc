@@ -20,7 +20,7 @@
         <repository>
           <id>devops</id>
           <name>devops workflow</name>
-          <url>https://maven.pkg.github.com/YituHealthcare</url>
+          <url>https://maven.pkg.github.com/wangyuheng</url>
         </repository>
       </repositories>
     </profile>

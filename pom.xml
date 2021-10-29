@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.github.yituhealthcare</groupId>
+    <groupId>io.github.wangyuheng</groupId>
     <artifactId>arc</artifactId>
     <packaging>pom</packaging>
     <version>${revision}</version>
@@ -33,7 +33,7 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
 
-        <revision>1.5.0</revision>
+        <revision>1.6.0-SNAPSHOT</revision>
 
         <spring-cloud-starter-zipkin.version>2.2.4.RELEASE</spring-cloud-starter-zipkin.version>
 
@@ -139,23 +139,6 @@
                     <executions>
                         <execution>
                             <phase>compile</phase>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <configuration>
-                        <additionalJOptions>
-                            <additionalJOption>-Xdoclint:none</additionalJOption>
-                        </additionalJOptions>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>attach-javadocs</id>
                             <goals>
                                 <goal>jar</goal>
                             </goals>
@@ -311,8 +294,8 @@
     </licenses>
 
     <scm>
-        <connection>https://github.com/YituHealthcare/Arc</connection>
-        <url>https://github.com/YituHealthcare/Arc.git</url>
+        <connection>https://github.com/wangyuheng/Arc</connection>
+        <url>https://github.com/wangyuheng/Arc.git</url>
         <developerConnection>https://github.com/wangyuheng</developerConnection>
     </scm>
 

@@ -1,4 +1,5 @@
 scalar DateTime
+directive @Action on FIELD_DEFINITION
 
 schema{
     query: Query,
@@ -50,6 +51,7 @@ type Project{
     ): [Milestone]
     owner: User
     members: [User]
+    action: String @Action
 }
 """
 里程碑

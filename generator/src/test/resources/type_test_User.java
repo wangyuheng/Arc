@@ -1,8 +1,8 @@
 package a.b.c.type;
 
-import com.github.yituhealthcare.arc.dgraph.annotation.DgraphType;
-import com.github.yituhealthcare.arc.dgraph.dictionary.IDomainClass;
-import com.github.yituhealthcare.arc.graphql.annotation.Graphql;
+import io.github.wangyuheng.arc.dgraph.annotation.DgraphType;
+import io.github.wangyuheng.arc.dgraph.dictionary.IDomainClass;
+import io.github.wangyuheng.arc.graphql.annotation.Graphql;
 import java.lang.String;
 
 /**
