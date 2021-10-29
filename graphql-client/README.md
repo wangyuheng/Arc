@@ -12,7 +12,7 @@
 
 ```xml
 <dependency>
-    <groupId>com.github.yituhealthcare</groupId>
+    <groupId>io.github.wangyuheng</groupId>
     <artifactId>arc-graphql-client</artifactId>
     <version>1.6.0-SNAPSHOT</version>
 </dependency>
@@ -38,7 +38,7 @@ query hello($echoText: String!) {
 Example
 
 ```java
-@EnableGraphqlClients(basePackages = "com.github.yituhealthcare.arcgraphqlclientsample")
+@EnableGraphqlClients(basePackages = "io.github.wangyuheng.arcgraphqlclientsample")
 @RestController
 @SpringBootApplication
 public class ArcGraphqlClientSampleApplication {

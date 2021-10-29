@@ -8,7 +8,7 @@
 <build>
     <plugins>
         <plugin>
-            <groupId>com.github.yituhealthcare</groupId>
+            <groupId>io.github.wangyuheng</groupId>
             <artifactId>arc-maven-plugin</artifactId>
             <version>1.6.0-SNAPSHOT</version>
         </plugin>
@@ -22,7 +22,7 @@ classpath: arc-generator.json
 
 ```json
 {
-  "basePackage": "com.github.yituhealthcare.arcgeneratorsample",
+  "basePackage": "io.github.wangyuheng.arcgeneratorsample",
   "dropAll": false,
   "genStrategies": [
     {

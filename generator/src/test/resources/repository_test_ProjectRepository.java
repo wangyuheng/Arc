@@ -1,6 +1,6 @@
 package a.b.c.repo;
 import a.b.c.type.Project;
-import com.github.yituhealthcare.arc.dgraph.repository.SimpleDgraphRepository;
+import io.github.wangyuheng.arc.dgraph.repository.SimpleDgraphRepository;
 import org.springframework.stereotype.Repository;
 /**
  * Generate with GraphQL Schema

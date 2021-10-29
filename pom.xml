@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.github.yituhealthcare</groupId>
+    <groupId>io.github.wangyuheng</groupId>
     <artifactId>arc</artifactId>
     <packaging>pom</packaging>
     <version>${revision}</version>
@@ -311,8 +311,8 @@
     </licenses>
 
     <scm>
-        <connection>https://github.com/YituHealthcare/Arc</connection>
-        <url>https://github.com/YituHealthcare/Arc.git</url>
+        <connection>https://github.com/wangyuheng/Arc</connection>
+        <url>https://github.com/wangyuheng/Arc.git</url>
         <developerConnection>https://github.com/wangyuheng</developerConnection>
     </scm>
 

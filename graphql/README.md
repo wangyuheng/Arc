@@ -12,7 +12,7 @@
 
 ```xml
 <dependency>
-    <groupId>com.github.yituhealthcare</groupId>
+    <groupId>io.github.wangyuheng</groupId>
     <artifactId>arc-graphql</artifactId>
     <version>1.6.0-SNAPSHOT</version>
 </dependency>

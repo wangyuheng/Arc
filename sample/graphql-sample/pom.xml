@@ -11,7 +11,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.github.yituhealthcare</groupId>
+    <groupId>io.github.wangyuheng</groupId>
     <artifactId>arc-graphql-sample</artifactId>
     <version>1.6.0-SNAPSHOT</version>
 
@@ -22,7 +22,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.yituhealthcare</groupId>
+            <groupId>io.github.wangyuheng</groupId>
             <artifactId>arc-graphql</artifactId>
             <version>1.6.0-SNAPSHOT</version>
         </dependency>

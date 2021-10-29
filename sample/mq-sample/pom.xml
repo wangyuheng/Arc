@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.yituhealthcare</groupId>
+    <groupId>io.github.wangyuheng</groupId>
     <artifactId>arc-mq-sample</artifactId>
     <version>1.6.0-SNAPSHOT</version>
 
@@ -15,7 +15,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.yituhealthcare</groupId>
+            <groupId>io.github.wangyuheng</groupId>
             <artifactId>arc-mq</artifactId>
             <version>1.6.0-SNAPSHOT</version>
         </dependency>
