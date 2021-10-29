@@ -8,13 +8,13 @@
 
 ### 1. 添加maven依赖
 
-最新版本为 **1.6.0**
+最新版本为 **1.6.0-SNAPSHOT**
 
 ```xml
 <dependency>
     <groupId>io.github.wangyuheng</groupId>
     <artifactId>arc-graphql</artifactId>
-    <version>1.6.0</version>
+    <version>1.6.0-SNAPSHOT</version>
 </dependency>
 ```
 #### 2. 添加graphql schema文件 

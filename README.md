@@ -42,7 +42,7 @@ spring.zipkin.base-url=http://localhost:9411
 <dependency>
     <groupId>io.github.wangyuheng</groupId>
     <artifactId>arc-graphql</artifactId>
-    <version>1.6.0</version>
+    <version>1.6.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -140,7 +140,7 @@ docker run --rm -it -p 8080:8080 -p 9080:9080 -p 8000:8000 -v ~/dgraph:/dgraph d
     <dependency>
         <groupId>io.github.wangyuheng</groupId>
         <artifactId>arc-dgraph</artifactId>
-        <version>1.6.0</version>
+        <version>1.6.0-SNAPSHOT</version>
     </dependency>
 ```
 
@@ -211,7 +211,7 @@ public class ProjectRepository extends SimpleDgraphRepository<Project> {
     <dependency>
         <groupId>io.github.wangyuheng</groupId>
         <artifactId>arc-graphql-client</artifactId>
-        <version>1.6.0</version>
+        <version>1.6.0-SNAPSHOT</version>
     </dependency>
 ```
 
@@ -263,7 +263,7 @@ public class ArcGraphqlClientSampleApplication {
         <plugin>
             <groupId>io.github.wangyuheng</groupId>
             <artifactId>arc-maven-plugin</artifactId>
-            <version>1.6.0</version>
+            <version>1.6.0-SNAPSHOT</version>
         </plugin>
     </plugins>
 </build>

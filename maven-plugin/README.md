@@ -14,7 +14,7 @@ Maven 插件, 方便使用Arc. 目前支持的功能
         <plugin>
             <groupId>io.github.wangyuheng</groupId>
             <artifactId>arc-maven-plugin</artifactId>
-            <version>1.6.0</version>
+            <version>1.6.0-SNAPSHOT</version>
         </plugin>
     </plugins>
 </build>
@@ -52,7 +52,7 @@ mvn arc:generate -Dtarget=dgraph
 <plugin>
     <groupId>io.github.wangyuheng</groupId>
     <artifactId>arc-maven-plugin</artifactId>
-    <version>1.6.0</version>
+    <version>1.6.0-SNAPSHOT</version>
     <configuration>
         <configJson>${basedir}/src/main/resources/arc-generator.json</configJson>
     </configuration>
