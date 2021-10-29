@@ -5,6 +5,7 @@ import io.github.wangyuheng.arc.mq.producer.Producer;
 import io.github.wangyuheng.arc.mq.transport.Transport;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Ignore
 public class TestConsumer {
 
     @Autowired

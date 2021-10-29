@@ -10,6 +10,7 @@ import graphql.schema.GraphQLSchema;
 import graphql.schema.TypeResolver;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.TypeDefinitionRegistry;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.powermock.api.mockito.PowerMockito;
 
@@ -25,6 +26,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
  *
  * @author yuheng.wang
  */
+@Ignore
 public class RuntimeWiringRegistryTest {
 
     @Test

@@ -2,6 +2,7 @@ package io.github.wangyuheng.arc.generator;
 
 import io.github.wangyuheng.arc.generator.conf.CodeGenConfig;
 import io.github.wangyuheng.arc.generator.io.CodeWriter;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -18,6 +19,7 @@ import static org.powermock.api.mockito.PowerMockito.doNothing;
  *
  * @author yuheng.wang
  */
+@Ignore
 public class JavaCodeGeneratorTest {
 
     @Test
