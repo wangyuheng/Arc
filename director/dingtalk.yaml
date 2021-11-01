@@ -9,7 +9,7 @@ global:
     api: https://oapi.dingtalk.com
     appkey: ""
     appsecret: ""
-flow:
+flows:
   - key: "获取企业内部应用的access_token"
     type: request
     request:
