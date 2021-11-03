@@ -1,0 +1,51 @@
+{
+  "data": {
+    "projects": [
+      {
+        "id": "0x282c",
+        "name": "项目1",
+        "description": "这是一个项目的描述信息",
+        "creator": {
+          "name": "工具人",
+          "username": "gongjuren",
+          "id": 12354321
+        },
+        "createTime": "2020-05-13T20:14:33.407+08:00",
+        "dataProcess": {
+          "vendorBranches": [
+            "ZRY001",
+            "ZRY002",
+            "ZRY003"
+          ],
+          "dsl": "aabbsscc"
+        },
+        "milestones": [
+          {
+            "name": "ms1",
+            "description": "这是一个ms的描述信息",
+            "version": "0.0.1-PRE",
+            "createTime": "2020-05-13T20:14:41.814+08:00",
+            "status": "NOT_STARTED",
+            "creator": {
+              "name": "工具人",
+              "username": "gongjuren",
+              "id": 12354321
+            }
+          },
+          {
+            "name": "ms2",
+            "description": "这是一个ms的描述信息",
+            "version": "0.0.1-GA",
+            "createTime": "2020-05-13T20:14:49.056+08:00",
+            "status": "RELEASE",
+            "creator": {
+              "name": "工具人",
+              "username": "gongjuren",
+              "id": 12354321
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
