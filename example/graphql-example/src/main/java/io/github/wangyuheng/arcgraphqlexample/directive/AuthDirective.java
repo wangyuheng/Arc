@@ -28,8 +28,8 @@ public class AuthDirective implements SchemaDirectiveWiring {
         GraphQLFieldDefinition field = environment.getElement();
         GraphQLFieldsContainer parentType = environment.getFieldsContainer();
         // build a data fetcher that first checks authorisation roles before then calling the original data fetcher
-        DataFetcher originalDataFetcher = environment.getCodeRegistry().getDataFetcher(parentType, field);
-        DataFetcher authDataFetcher = dataFetchingEnvironment -> {
+        DataFetcher<?> originalDataFetcher = environment.getCodeRegistry().getDataFetcher(parentType, field);
+        DataFetcher<?> authDataFetcher = dataFetchingEnvironment -> {
             GraphQLContext graphQLContext = dataFetchingEnvironment.getContext();
             Map<String, Object> headers = graphQLContext.get("headers");
             String authorization = String.valueOf(headers.getOrDefault("authorization", ""));
