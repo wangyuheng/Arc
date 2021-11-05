@@ -1,0 +1,5 @@
+voyager:
+  enabled: true
+  mapping: /voyager
+  cdn:
+    enabled: false

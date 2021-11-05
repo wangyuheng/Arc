@@ -1,10 +1,9 @@
 package io.github.wangyuheng.arc.graphql;
 
-import io.github.wangyuheng.arc.graphql.interceptor.DataFetcherInterceptorRegistry;
 import graphql.GraphQL;
 import graphql.schema.idl.errors.SchemaProblem;
+import io.github.wangyuheng.arc.graphql.interceptor.DataFetcherInterceptorRegistry;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -24,7 +23,6 @@ import static org.junit.Assert.assertNotNull;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(GraphQLProvider.class)
-@Ignore
 public class GraphQLProviderTest {
 
     @Rule

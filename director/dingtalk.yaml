@@ -1,0 +1,48 @@
+global:
+  default:
+    oapi: https://oapi.dingtalk.com
+    api: https://api.dingtalk.com
+    appkey:
+    appsecret:
+  dev:
+    oapi: https://oapi.dingtalk.com
+    api: https://oapi.dingtalk.com
+    appkey: ""
+    appsecret: ""
+flows:
+  - key: "获取企业内部应用的access_token"
+    type: request
+    request:
+      url: ${global.oapi}/gettoken?appkey=${global.appkey}&appsecret=${global.appsecret}
+      method: GET
+      result: token
+  - key: "获取根部门用户userid列表"
+    type: request
+    request:
+      url: ${global.oapi}/topapi/user/listid?access_token=${token.access_token}
+      method: POST
+      header:
+        Content-Type: application/json
+      body:
+        dept_id: 1
+      result: userids
+  - key: "保存记录"
+    type: output
+    output:
+      path: "dingtalk_send_userids.csv"
+      group: uid -in-> ${userids.result.userid_list}
+      title:
+        - "userid"
+      col:
+        - ${uid}
+  - key: "批量发送单聊消息"
+    type: request
+    request:
+      url: ${global.api}/v1.0/robot/oToMessages/batchSend
+      method: POST
+      header:
+        x-acs-dingtalk-access-token: ${token.access_token}
+      body:
+        robotCode: ${global.appkey}
+        userIds: ${userids.result.userid_list}
+      result: batchSend

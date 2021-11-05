@@ -2,7 +2,7 @@
 
 根据`GraphQL Schema`生成`Java`代码及`DgraphSchema`
 
-参考 [graphql-sample](./generator/src/test/java/ai/care/arc/generator/codegen/GeneratorIntegralTest.java)
+参考 [graphql-example](./generator/src/test/java/ai/care/arc/generator/codegen/GeneratorIntegralTest.java)
 
 ## 使用
 
@@ -76,7 +76,7 @@ input ProjectInput{
 
 ```json
 {
-  "basePackage": "io.github.wangyuheng.arcgeneratorsample",
+  "basePackage": "io.github.wangyuheng.arcgeneratorexample",
   "dropAll": false,
   "genStrategies": [
     {

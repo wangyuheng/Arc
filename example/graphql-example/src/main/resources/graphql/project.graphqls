@@ -1,0 +1,54 @@
+
+"""
+名称
+为了达到某个产品迭代、产品模块开发、或者科研调研等目的所做的工作.
+"""
+type Project{
+    id: String!
+    name: String!
+    description: String!
+    createTime: DateTime!
+    milestones(
+        status: MilestoneStatus
+    ): [Milestone]
+}
+"""
+里程碑
+表述一个Project的某个时间阶段及阶段性目标. 一个Project可以同时拥有多个处于相同或者不同阶段的Milestone.
+"""
+type Milestone{
+    id: String!
+    name: String!
+    description: String!
+    status: MilestoneStatus
+    creator: User
+}
+
+"""
+里程碑状态
+"""
+enum MilestoneStatus{
+    """
+    未开始
+    """
+    NOT_STARTED,
+    """
+    进行中
+    """
+    DOING,
+    """
+    发布
+    """
+    RELEASE,
+    """
+    关闭
+    """
+    CLOSE
+}
+
+input ProjectInput{
+    name: String! @Size(min : 3, max : 100)
+    description: String!
+    dsl: String!
+    vendorBranches: [String!]!
+}

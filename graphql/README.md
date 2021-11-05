@@ -2,7 +2,7 @@
 
 为Spring项目提供Graphql能力.
 
-示例项目可以参考 [graphql-sample](./sample/graphql-sample)
+示例项目可以参考 [graphql-example](./example/graphql-example)
 
 ## 使用
 

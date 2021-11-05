@@ -63,7 +63,7 @@ mvn arc:generate -Dtarget=dgraph
 
 ```json
 {
-  "basePackage": "io.github.wangyuheng.arcgeneratorsample",
+  "basePackage": "io.github.wangyuheng.arcgeneratorexample",
   "dropAll": false,
   "genStrategies": [
     {
