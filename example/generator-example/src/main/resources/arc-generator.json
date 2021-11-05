@@ -1,0 +1,17 @@
+{
+  "basePackage": "io.github.wangyuheng.arcgeneratorexample",
+  "dropAll": false,
+  "genStrategies": [
+    {
+      "codeGenOperation": "OVERRIDE",
+      "codeGenType": "TYPE"
+    },
+    {
+      "codeGenOperation": "OVERRIDE",
+      "codeGenType": "API"
+    }
+  ],
+  "ignoreJavaFileNames": [
+    "UserCustom"
+  ]
+}
