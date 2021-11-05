@@ -8,7 +8,7 @@ spring:
 #  zipkin:
 #    base-url: http://localhost:9411
 #  sleuth:
-#    sampler:
+#    exampler:
 #      probability: 1
 server:
   port: 8401

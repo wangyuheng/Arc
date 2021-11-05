@@ -45,5 +45,4 @@ func main() {
 	c, _ := ioutil.ReadFile("dingtalk.yaml")
 	_ = yaml.Unmarshal(c, &dsl)
 	fmt.Println(dsl.Flows[0])
-
 }

@@ -15,7 +15,7 @@ public class CodeGenConfigTest {
     @Test
     public void should_deserialize_by_json() {
         String json = "{\n" +
-                "    \"basePackage\": \"io.github.wangyuheng.arcgeneratorsample\",\n" +
+                "    \"basePackage\": \"io.github.wangyuheng.arcgeneratorexample\",\n" +
                 "    \"dropAll\": false,\n" +
                 "    \"genStrategies\": [\n" +
                 "        {\n" +

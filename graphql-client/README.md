@@ -38,13 +38,13 @@ query hello($echoText: String!) {
 Example
 
 ```java
-@EnableGraphqlClients(basePackages = "io.github.wangyuheng.arcgraphqlclientsample")
+@EnableGraphqlClients(basePackages = "io.github.wangyuheng.arcgraphqlclientexample")
 @RestController
 @SpringBootApplication
-public class ArcGraphqlClientSampleApplication {
+public class ArcGraphqlClientExampleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ArcGraphqlClientSampleApplication.class, args);
+        SpringApplication.run(ArcGraphqlClientExampleApplication.class, args);
     }
 
     @Autowired

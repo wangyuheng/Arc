@@ -23,7 +23,7 @@
 
 ## 如何使用
 
-可根据需求单独使用各组件. 配置文件，可以参考 [full-sample#application-default.properties](./sample/full-sample/src/main/resources/application-default.properties)
+可根据需求单独使用各组件. 配置文件，可以参考 [full-example#application-default.properties](./example/full-example/src/main/resources/application-default.properties)
 
 通用配置 
 
@@ -228,13 +228,13 @@ query hello($echoText: String!) {
 3.3 编写java代码
 
 ```java
-@EnableGraphqlClients(basePackages = "io.github.wangyuheng.arcgraphqlclientsample")
+@EnableGraphqlClients(basePackages = "io.github.wangyuheng.arcgraphqlclientexample")
 @RestController
 @SpringBootApplication
-public class ArcGraphqlClientSampleApplication {
+public class ArcGraphqlClientExampleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ArcGraphqlClientSampleApplication.class, args);
+        SpringApplication.run(ArcGraphqlClientExampleApplication.class, args);
     }
 
     @Autowired
@@ -273,7 +273,7 @@ public class ArcGraphqlClientSampleApplication {
 
 ```json
 {
-  "basePackage": "io.github.wangyuheng.arcgeneratorsample",
+  "basePackage": "io.github.wangyuheng.arcgeneratorexample",
   "dropAll": false,
   "genStrategies": [
     {
@@ -305,12 +305,12 @@ mvn arc:generate
 - [arc-graphql-client](./graphql-client/README.md)
 - [arc-generator](./generator/README.md)
 
-## Sample
+## Example
 
-- [full-sample](./sample/full-sample)
-- [graphql-sample](./sample/graphql-sample)
-- [mq-sample](./sample/mq-sample)
-- [generator-sample](./sample/generator-sample)
+- [full-example](./example/full-example)
+- [graphql-example](./example/graphql-example)
+- [mq-example](./example/mq-example)
+- [generator-example](./example/generator-example)
 
 ## 背景知识
 
