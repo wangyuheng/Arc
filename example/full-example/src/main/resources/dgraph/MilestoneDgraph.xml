@@ -1,0 +1,27 @@
+<dgraph>
+    <var id="type">
+        MILESTONE
+    </var>
+    <var id="common">
+        uid
+        expand(MILESTONE)
+    </var>
+    <query id="listByProjectId">
+        query listByProjectId($projectId: string) {
+            var(func:uid($projectId)) {
+                has {
+                    var mids as uid
+                }
+            }
+            listByProjectId(func:uid(mids)) {
+                uid
+                expand(_all_)
+            }
+        }
+    </query>
+    <mutation id="updateStatus">
+        <![CDATA[
+            <$id> <MILESTONE.status> "$status" .
+        ]]>
+    </mutation>
+</dgraph>

@@ -1,0 +1,11 @@
+mutation {
+    createMilestone(
+        payload: {
+            name: "m1"
+            projectId: "0x6"
+        }
+    ) {
+        id
+        name
+    }
+}
