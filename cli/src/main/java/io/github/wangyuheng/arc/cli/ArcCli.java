@@ -33,7 +33,7 @@ class GeneratorCli implements Callable<Integer> {
     private File configJson;
     @CommandLine.Option(names = {"-s", "--schema"}, paramLabel = "FILE", description = "graphql schema file")
     private File schemaPath;
-    @CommandLine.Option(names = {"-t", "--target"}, defaultValue = "all")
+    @CommandLine.Option(names = {"-t", "--target"}, defaultValue = "all", description = "all | java | dgraph")
     private String target;
 
     private static final String TARGET_ALL = "all";
